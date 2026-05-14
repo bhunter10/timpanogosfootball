@@ -1,5 +1,14 @@
+export const scheduleTeamLevels = [
+  { value: "varsity", label: "Varsity" },
+  { value: "jv", label: "JV" },
+  { value: "freshman", label: "Freshman" },
+] as const;
+
+export type ScheduleTeamLevel = (typeof scheduleTeamLevels)[number]["value"];
+
 export type ScheduleGame = {
   id: string;
+  teamLevel: ScheduleTeamLevel;
   opponentId?: string;
   opponent: string;
   opponentMascot?: string;

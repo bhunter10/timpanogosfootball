@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { getScheduleGames } from "@/lib/data/schedule";
-import type { ScheduleGame } from "@/types/firestore";
+import {
+  scheduleTeamLevels,
+  type ScheduleGame,
+  type ScheduleTeamLevel,
+} from "@/types/firestore";
 
 export const metadata: Metadata = {
   title: "Schedule",
@@ -33,6 +38,19 @@ function getMapHref(address?: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+function getSelectedTeamLevel(value?: string | string[]): ScheduleTeamLevel {
+  const teamLevel = Array.isArray(value) ? value[0] : value;
+  return scheduleTeamLevels.some((level) => level.value === teamLevel)
+    ? (teamLevel as ScheduleTeamLevel)
+    : "varsity";
+}
+
+function getTeamLevelLabel(teamLevel: ScheduleTeamLevel) {
+  return (
+    scheduleTeamLevels.find((level) => level.value === teamLevel)?.label ?? "Varsity"
+  );
+}
+
 function opponentInitials(name: string) {
   return name
     .split(/\s+/)
@@ -46,16 +64,32 @@ function opponentInitials(name: string) {
 function OpponentLogo({
   game,
   size = "md",
+  variant = "default",
 }: {
   game: ScheduleGame;
   size?: "md" | "lg";
+  variant?: "default" | "feature";
 }) {
-  const box = size === "lg" ? "h-20 w-20" : "h-16 w-16";
-  const imageSize = size === "lg" ? "80px" : "64px";
+  const box =
+    variant === "feature"
+      ? "h-32 w-32 md:h-40 md:w-40"
+      : size === "lg"
+        ? "h-24 w-24"
+        : "h-20 w-20";
+  const imageSize =
+    variant === "feature"
+      ? "(min-width: 768px) 160px, 128px"
+      : size === "lg"
+        ? "96px"
+        : "80px";
+  const surface =
+    variant === "feature"
+      ? "border-white/20 bg-white shadow-black/30"
+      : "border-white/20 bg-white/[0.12] shadow-black/20";
 
   return (
     <div
-      className={`relative flex ${box} shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/[0.06] shadow-lg shadow-black/20`}
+      className={`relative flex ${box} shrink-0 items-center justify-center overflow-hidden rounded-2xl border ${surface} shadow-lg`}
     >
       {game.opponentLogoUrl ? (
         <Image
@@ -106,7 +140,7 @@ function GameTile({ game }: { game: ScheduleGame }) {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 text-sm text-zinc-300 sm:grid-cols-3">
+      <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 text-sm text-zinc-300 sm:grid-cols-2">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">
             Kickoff
@@ -132,30 +166,46 @@ function GameTile({ game }: { game: ScheduleGame }) {
             </p>
           )}
         </div>
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">
-            Status
-          </p>
-          <p className="mt-1 font-semibold text-white">{game.result ?? "Preview"}</p>
-        </div>
       </div>
     </article>
   );
 }
 
-export default async function SchedulePage() {
-  const games = await getScheduleGames();
+type SchedulePageProps = {
+  searchParams: Promise<{ team?: string | string[] }>;
+};
+
+export default async function SchedulePage({ searchParams }: SchedulePageProps) {
+  const [{ team }, allGames] = await Promise.all([
+    searchParams,
+    getScheduleGames(),
+  ]);
+  const selectedTeamLevel = getSelectedTeamLevel(team);
+  const selectedTeamLabel = getTeamLevelLabel(selectedTeamLevel);
+  const games = allGames.filter((game) => game.teamLevel === selectedTeamLevel);
   const nextGame = games.find((game) => !game.result) ?? games[0];
   const nextGameDate = nextGame ? formatGameDate(nextGame.dateISO) : null;
   const nextGameMapHref = nextGame ? getMapHref(nextGame.address) : undefined;
+  const teamCounts = new Map(
+    scheduleTeamLevels.map((level) => [
+      level.value,
+      allGames.filter((game) => game.teamLevel === level.value).length,
+    ]),
+  );
 
   return (
-    <main className="bg-[var(--tf-black)] text-white">
+    <main className="min-h-screen bg-[var(--tf-black)] text-white">
       <section className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.4fr] lg:items-end">
+        <div
+          className={
+            nextGame
+              ? "grid gap-6 lg:grid-cols-[0.9fr_1.4fr] lg:items-end"
+              : "max-w-3xl"
+          }
+        >
           <div>
             <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
-              2026 Varsity
+              2026 {selectedTeamLabel}
             </p>
             <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] text-white md:text-8xl">
               Schedule
@@ -167,28 +217,28 @@ export default async function SchedulePage() {
           </div>
 
           {nextGame ? (
-            <section className="overflow-hidden rounded-3xl border border-[var(--tf-neon)]/40 bg-[var(--tf-neon)] text-[var(--tf-navy)] shadow-2xl shadow-[var(--tf-neon)]/15">
-              <div className="grid gap-px bg-[var(--tf-navy)]/20 md:grid-cols-[1fr_220px]">
-                <div className="bg-[var(--tf-neon)] p-5 md:p-6">
-                  <p className="text-[10px] font-black uppercase tracking-[0.28em]">
+            <section className="overflow-hidden rounded-3xl border border-[var(--tf-neon)]/35 bg-zinc-950 text-white shadow-2xl shadow-black/25">
+              <div className="grid md:grid-cols-[1fr_220px]">
+                <div className="p-5 md:p-6">
+                  <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                     Next Game
                   </p>
-                  <div className="mt-4 flex items-center gap-4">
-                    <OpponentLogo game={nextGame} size="lg" />
-                    <div>
+                  <div className="mt-4 flex items-center gap-5 md:gap-6">
+                    <OpponentLogo game={nextGame} size="lg" variant="feature" />
+                    <div className="min-w-0">
                       <h2 className="font-display text-4xl font-bold uppercase leading-none md:text-5xl">
                         {nextGame.isHome ? "vs " : "@ "}
                         {nextGame.opponent}
                       </h2>
                       {nextGame.opponentMascot ? (
-                        <p className="mt-1 text-xs font-black uppercase tracking-[0.18em]">
+                        <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-zinc-400">
                           {nextGame.opponentMascot}
                         </p>
                       ) : null}
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 bg-[var(--tf-navy)] text-white md:grid-cols-1">
+                <div className="grid grid-cols-3 border-t border-white/10 bg-white/[0.04] text-white md:grid-cols-1 md:border-l md:border-t-0">
                   <div className="p-4">
                     <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                       Date
@@ -207,7 +257,7 @@ export default async function SchedulePage() {
                   </div>
                   <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
                     <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
-                      Site
+                      Location
                     </p>
                     {nextGameMapHref ? (
                       <a
@@ -231,23 +281,40 @@ export default async function SchedulePage() {
         </div>
 
         {games.length === 0 ? (
-          <div className="mt-10 rounded-3xl border border-dashed border-white/20 bg-white/[0.04] p-10 text-center text-zinc-400">
-            The schedule has not been published yet. Check back soon.
-          </div>
-        ) : (
           <section className="mt-10">
-            <div className="flex items-end justify-between gap-4 border-b border-white/10 pb-4">
+            <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
                   Matchups
                 </p>
                 <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none">
-                  Season Games
+                  {selectedTeamLabel} Games
                 </h2>
               </div>
-              <span className="rounded-full border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-wide text-zinc-300">
-                {games.length} Games
-              </span>
+              <TeamLevelTabs
+                selectedTeamLevel={selectedTeamLevel}
+                teamCounts={teamCounts}
+              />
+            </div>
+            <div className="mt-5 border border-dashed border-white/20 bg-zinc-950/70 px-5 py-6 text-sm text-zinc-400">
+              The {selectedTeamLabel} schedule has not been published yet.
+            </div>
+          </section>
+        ) : (
+          <section className="mt-10">
+            <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+                  Matchups
+                </p>
+                <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none">
+                  {selectedTeamLabel} Games
+                </h2>
+              </div>
+              <TeamLevelTabs
+                selectedTeamLevel={selectedTeamLevel}
+                teamCounts={teamCounts}
+              />
             </div>
             <div className="mt-5 grid gap-4 xl:grid-cols-2">
               {games.map((game) => (
@@ -258,5 +325,39 @@ export default async function SchedulePage() {
         )}
       </section>
     </main>
+  );
+}
+
+function TeamLevelTabs({
+  selectedTeamLevel,
+  teamCounts,
+}: {
+  selectedTeamLevel: ScheduleTeamLevel;
+  teamCounts: Map<ScheduleTeamLevel, number>;
+}) {
+  return (
+    <nav
+      aria-label="Schedule team"
+      className="grid overflow-hidden rounded-lg border border-white/15 bg-white/[0.04] sm:grid-cols-3"
+    >
+      {scheduleTeamLevels.map((level) => {
+        const isSelected = level.value === selectedTeamLevel;
+        return (
+          <Link
+            key={level.value}
+            href={level.value === "varsity" ? "/schedule" : `/schedule?team=${level.value}`}
+            aria-current={isSelected ? "page" : undefined}
+            className={`px-4 py-3 text-center text-xs font-black uppercase tracking-wide transition ${
+              isSelected
+                ? "bg-[var(--tf-neon)] text-[var(--tf-navy)]"
+                : "text-zinc-300 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            {level.label}
+            <span className="ml-2 opacity-70">{teamCounts.get(level.value) ?? 0}</span>
+          </Link>
+        );
+      })}
+    </nav>
   );
 }

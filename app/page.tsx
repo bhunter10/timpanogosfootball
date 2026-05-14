@@ -45,7 +45,8 @@ function getMapHref(address?: string) {
 
 export default async function Home() {
   const settings = await getSiteSettings();
-  const games = await getScheduleGames();
+  const allGames = await getScheduleGames();
+  const games = allGames.filter((game) => game.teamLevel === "varsity");
   const hasSchedule = games.length > 0;
   const nextGame =
     games.find((game) => !game.result) ?? games[0] ?? {
@@ -54,6 +55,7 @@ export default async function Home() {
       dateISO: "",
       location: "Timpanogos High School",
       isHome: true,
+      teamLevel: "varsity" as const,
       sortOrder: 0,
     };
   const upcomingGames = games.slice(0, 4);

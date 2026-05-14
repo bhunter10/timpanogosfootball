@@ -86,6 +86,7 @@ export async function saveSiteSettings(formData: FormData) {
 }
 
 const gameSchema = z.object({
+  teamLevel: z.enum(["varsity", "jv", "freshman"]),
   opponentId: z.string().optional(),
   opponent: z.string().optional(),
   dateISO: z.string().min(1),
@@ -116,6 +117,7 @@ async function parseScheduleGameForm(formData: FormData) {
     : optStr(formData.get("opponent"));
 
   return gameSchema.safeParse({
+    teamLevel: formData.get("teamLevel") || "varsity",
     opponentId,
     opponent,
     dateISO,
@@ -144,6 +146,7 @@ export async function createScheduleGame(formData: FormData) {
 
   const g = parsed.data;
   await getAdminDb().collection("scheduleGames").add({
+    teamLevel: g.teamLevel,
     opponentId: g.opponentId || null,
     opponent: g.opponent,
     dateISO: g.dateISO,
@@ -171,6 +174,7 @@ export async function updateScheduleGame(formData: FormData) {
   const g = parsed.data;
   await getAdminDb().collection("scheduleGames").doc(id).set(
     {
+      teamLevel: g.teamLevel,
       opponentId: g.opponentId || null,
       opponent: g.opponent,
       dateISO: g.dateISO,

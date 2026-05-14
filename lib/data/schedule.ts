@@ -1,7 +1,23 @@
 import type { DocumentData } from "firebase-admin/firestore";
 import { getAdminDb, isFirebaseAdminConfigured } from "@/lib/firebase/admin";
-import type { Opponent, ScheduleGame } from "@/types/firestore";
+import {
+  scheduleTeamLevels,
+  type Opponent,
+  type ScheduleGame,
+  type ScheduleTeamLevel,
+} from "@/types/firestore";
 import { docToOpponent } from "@/lib/data/opponents";
+
+const scheduleTeamLevelValues = new Set<string>(
+  scheduleTeamLevels.map((level) => level.value),
+);
+
+function getScheduleTeamLevel(value: unknown): ScheduleTeamLevel {
+  const teamLevel = String(value ?? "").trim();
+  return scheduleTeamLevelValues.has(teamLevel)
+    ? (teamLevel as ScheduleTeamLevel)
+    : "varsity";
+}
 
 function docToGame(
   id: string,
@@ -10,6 +26,7 @@ function docToGame(
 ): ScheduleGame {
   return {
     id,
+    teamLevel: getScheduleTeamLevel(data.teamLevel),
     opponentId: data.opponentId ? String(data.opponentId) : undefined,
     opponent:
       opponent?.shortName ||
@@ -49,6 +66,11 @@ export async function getScheduleGames(): Promise<ScheduleGame[]> {
     return docToGame(d.id, data, opponentId ? opponents.get(opponentId) : undefined);
   });
   return games.sort((a, b) => {
+    if (a.teamLevel !== b.teamLevel) {
+      const aIndex = scheduleTeamLevels.findIndex((level) => level.value === a.teamLevel);
+      const bIndex = scheduleTeamLevels.findIndex((level) => level.value === b.teamLevel);
+      return aIndex - bIndex;
+    }
     if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder;
     return a.dateISO.localeCompare(b.dateISO);
   });

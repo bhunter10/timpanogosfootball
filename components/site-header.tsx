@@ -3,13 +3,25 @@ import Link from "next/link";
 import { MobileNav } from "@/components/mobile-nav";
 import { TICKETS_URL } from "@/lib/site-links";
 
-type NavItem = { href: string; label: string; external?: boolean };
+type NavItem = {
+  href: string;
+  label: string;
+  external?: boolean;
+  children?: readonly NavItem[];
+};
 
 const nav: readonly NavItem[] = [
   { href: TICKETS_URL, label: "Tickets", external: true },
   { href: "/schedule", label: "Schedule" },
   { href: "/staff", label: "Staff" },
-  { href: "/info", label: "Info" },
+  {
+    href: "/info",
+    label: "Info",
+    children: [
+      { href: "/team-calendar", label: "Team Calendar" },
+      { href: "/records", label: "Records" },
+    ],
+  },
   { href: "/recruiting", label: "Recruiting" },
   { href: "/shop", label: "Shop" },
 ];
@@ -38,7 +50,29 @@ export function SiteHeader() {
         </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((item) =>
-            item.external ? (
+            item.children ? (
+              <div key={item.href} className="group relative">
+                <Link
+                  href={item.href}
+                  className="rounded-sm px-3 py-2 text-sm font-bold uppercase tracking-wide text-white/85 transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] group-focus-within:bg-[var(--tf-neon)] group-focus-within:text-[var(--tf-navy)]"
+                >
+                  {item.label}
+                </Link>
+                <div className="invisible absolute left-0 top-full min-w-44 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                  <div className="border border-[var(--tf-neon)]/25 bg-[var(--tf-black)] p-1 shadow-xl shadow-black/30">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className="block rounded-sm px-3 py-2 text-sm font-bold uppercase tracking-wide text-white/85 transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] focus:bg-[var(--tf-neon)] focus:text-[var(--tf-navy)]"
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : item.external ? (
               <a
                 key={item.href}
                 href={item.href}
