@@ -1,0 +1,49 @@
+import type { Metadata } from "next";
+import { getSiteSettings } from "@/lib/data/site-settings";
+
+export const metadata: Metadata = {
+  title: "Recruiting",
+  description: "Recruiting information and questionnaires for Timpanogos football prospects.",
+};
+
+export default async function RecruitingPage() {
+  const settings = await getSiteSettings();
+
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-12">
+      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+        Recruiting
+      </p>
+      <h1 className="font-display mt-2 text-4xl font-bold text-slate-900">
+        Prospects
+      </h1>
+      <p className="mt-4 text-lg leading-relaxed text-slate-600">
+        {settings.recruitingBlurb ??
+          "Interested student-athletes should work through the athletic office and official school recruiting policies. Questionnaire and camp links will appear here when published."}
+      </p>
+      <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+        {settings.recruitingFormUrl ? (
+          <a
+            href={settings.recruitingFormUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full bg-[var(--tf-navy)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--tf-black)]"
+          >
+            Open recruiting form
+          </a>
+        ) : (
+          <span className="inline-flex items-center justify-center rounded-full border border-dashed border-slate-300 px-6 py-3 text-sm text-slate-500">
+            Recruiting questionnaire link will be posted here.
+          </span>
+        )}
+      </div>
+      <div className="mt-12 rounded-2xl border border-[var(--tf-neon)]/30 bg-[var(--tf-neon)]/10 p-6 text-sm leading-relaxed text-slate-800">
+        <p className="font-semibold">Compliance reminder</p>
+        <p className="mt-2">
+          Follow NCAA, NFHS, and Utah High School Activities Association rules for contact
+          periods and eligibility. This site provides general information only.
+        </p>
+      </div>
+    </main>
+  );
+}
