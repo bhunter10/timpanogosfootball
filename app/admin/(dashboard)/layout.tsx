@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/opponents", label: "Opponents" },
   { href: "/admin/schedule", label: "Schedule" },
   { href: "/admin/staff", label: "Staff" },
+  { href: "/admin/roster", label: "Roster" },
 ] as const;
 
 export default async function AdminDashboardLayout({

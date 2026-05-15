@@ -42,6 +42,15 @@ export default function AdminHomePage() {
           <p className="mt-2 text-xs text-zinc-400">Coaches, roles, photos, and bios.</p>
         </Link>
         <Link
+          href="/admin/roster"
+          className="rounded-2xl border border-white/10 bg-zinc-900/70 p-5 transition hover:border-[var(--tf-neon)]/40"
+        >
+          <p className="text-sm font-semibold text-white">Roster</p>
+          <p className="mt-2 text-xs text-zinc-400">
+            Player profiles, photos, measurables, Hudl links, and prospect status.
+          </p>
+        </Link>
+        <Link
           href="/shop"
           className="rounded-2xl border border-white/10 bg-zinc-900/70 p-5 transition hover:border-[var(--tf-neon)]/40"
         >

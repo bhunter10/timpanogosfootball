@@ -13,6 +13,7 @@ type NavItem = {
 const nav: readonly NavItem[] = [
   { href: TICKETS_URL, label: "Tickets", external: true },
   { href: "/schedule", label: "Schedule" },
+  { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },
   {
     href: "/info",
@@ -22,7 +23,7 @@ const nav: readonly NavItem[] = [
       { href: "/records", label: "Records" },
     ],
   },
-  { href: "/recruiting", label: "Recruiting" },
+  { href: "/prospects", label: "Prospects" },
   { href: "/shop", label: "Shop" },
 ];
 

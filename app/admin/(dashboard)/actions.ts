@@ -207,13 +207,40 @@ const staffSchema = z.object({
   sortOrder: z.coerce.number().int(),
 });
 
+const prospectSchema = z.object({
+  name: z.string().min(1),
+  jerseyNumber: z.string().optional(),
+  classYear: z.string().min(1),
+  positions: z.array(z.string()).min(1),
+  height: z.string().optional(),
+  weight: z.string().optional(),
+  photoUrl: z.string().optional(),
+  hudlUrl: z.string().optional(),
+  xUrl: z.string().optional(),
+  instagramUrl: z.string().optional(),
+  email: z.string().optional(),
+  status: z.enum(["available", "committed"]),
+  honors: z.array(z.string()).optional(),
+  stats: z.array(z.string()).optional(),
+  isProspect: z.boolean(),
+  sortOrder: z.coerce.number().int(),
+});
+
 const MAX_STAFF_PHOTO_BYTES = 5 * 1024 * 1024;
 const allowedStaffPhotoTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+const MAX_PROSPECT_PHOTO_BYTES = 5 * 1024 * 1024;
+const allowedProspectPhotoTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const MAX_OPPONENT_LOGO_BYTES = 2 * 1024 * 1024;
 const OPPONENT_LOGO_MAX_DIMENSION = 400;
 const allowedOpponentLogoTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 function getStaffPhotoFile(formData: FormData): File | undefined {
+  const file = formData.get("photoFile");
+  if (!(file instanceof File) || file.size === 0) return undefined;
+  return file;
+}
+
+function getProspectPhotoFile(formData: FormData): File | undefined {
   const file = formData.get("photoFile");
   if (!(file instanceof File) || file.size === 0) return undefined;
   return file;
@@ -243,6 +270,42 @@ async function uploadStaffPhoto(file: File, name: string): Promise<string> {
   const ext = extensionForContentType(file.type);
   const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   const storagePath = `staff/${safeName || "member"}-${token}.${ext}`;
+  const storageFile = getAdminStorageBucket().file(storagePath);
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  const [bucketExists] = await storageFile.bucket.exists();
+  if (!bucketExists) {
+    throw new Error(
+      `Firebase Storage bucket "${storageFile.bucket.name}" does not exist. Create a Storage bucket in Firebase, or set FIREBASE_STORAGE_BUCKET to the existing bucket name.`,
+    );
+  }
+
+  await storageFile.save(buffer, {
+    contentType: file.type,
+    resumable: false,
+    metadata: {
+      cacheControl: "public, max-age=31536000, immutable",
+      metadata: {
+        firebaseStorageDownloadTokens: token,
+      },
+    },
+  });
+
+  return `https://firebasestorage.googleapis.com/v0/b/${storageFile.bucket.name}/o/${encodeURIComponent(storagePath)}?alt=media&token=${token}`;
+}
+
+async function uploadProspectPhoto(file: File, name: string): Promise<string> {
+  if (!allowedProspectPhotoTypes.has(file.type)) {
+    throw new Error("Prospect photos must be JPG, PNG, or WebP images.");
+  }
+  if (file.size > MAX_PROSPECT_PHOTO_BYTES) {
+    throw new Error("Prospect photos must be smaller than 5 MB.");
+  }
+
+  const token = randomUUID();
+  const ext = extensionForContentType(file.type);
+  const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const storagePath = `prospects/${safeName || "prospect"}-${token}.${ext}`;
   const storageFile = getAdminStorageBucket().file(storagePath);
   const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -362,9 +425,21 @@ function redirectWithStaffUploadError(error: unknown): never {
   redirect(`/admin/staff?staffError=${encodeURIComponent(message)}`);
 }
 
+function redirectWithProspectUploadError(error: unknown): never {
+  const message = error instanceof Error ? error.message : "Roster photo upload failed.";
+  redirect(`/admin/roster?rosterError=${encodeURIComponent(message)}`);
+}
+
 function redirectWithOpponentUploadError(error: unknown): never {
   const message = error instanceof Error ? error.message : "Opponent logo upload failed.";
   redirect(`/admin/opponents?opponentError=${encodeURIComponent(message)}`);
+}
+
+function parseListField(value: FormDataEntryValue | null): string[] {
+  return String(value ?? "")
+    .split(/\r?\n|,/)
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 const opponentSchema = z.object({
@@ -596,4 +671,140 @@ export async function deleteStaffMember(formData: FormData) {
   if (!id) return;
   await getAdminDb().collection("staff").doc(id).delete();
   revalidatePath("/staff");
+}
+
+function refreshRosterViews() {
+  revalidatePath("/roster");
+  revalidatePath("/prospects");
+  revalidatePath("/admin/roster");
+  refresh();
+}
+
+export async function createRosterPlayer(formData: FormData) {
+  await requireAdminSession();
+  const uploadedPhoto = getProspectPhotoFile(formData);
+  const parsed = prospectSchema.safeParse({
+    name: formData.get("name"),
+    jerseyNumber: optStr(formData.get("jerseyNumber")),
+    classYear: formData.get("classYear"),
+    positions: parseListField(formData.get("positions")),
+    height: optStr(formData.get("height")),
+    weight: optStr(formData.get("weight")),
+    photoUrl: optStr(formData.get("photoUrl")),
+    hudlUrl: optStr(formData.get("hudlUrl")),
+    xUrl: optStr(formData.get("xUrl")),
+    instagramUrl: optStr(formData.get("instagramUrl")),
+    email: optStr(formData.get("email")),
+    status: formData.get("status") || "available",
+    honors: parseListField(formData.get("honors")),
+    stats: parseListField(formData.get("stats")),
+    isProspect: formData.get("isProspect") === "on",
+    sortOrder: formData.get("sortOrder") || "0",
+  });
+
+  if (!parsed.success) {
+    return;
+  }
+
+  const prospect = parsed.data;
+  let photoUrl = prospect.photoUrl;
+  if (uploadedPhoto) {
+    try {
+      photoUrl = await uploadProspectPhoto(uploadedPhoto, prospect.name);
+    } catch (error) {
+      redirectWithProspectUploadError(error);
+    }
+  }
+
+  await getAdminDb().collection("roster").add({
+    name: prospect.name,
+    jerseyNumber: prospect.jerseyNumber || null,
+    classYear: prospect.classYear,
+    positions: prospect.positions,
+    height: prospect.height || null,
+    weight: prospect.weight || null,
+    photoUrl: photoUrl || null,
+    hudlUrl: prospect.hudlUrl || null,
+    xUrl: prospect.xUrl || null,
+    instagramUrl: prospect.instagramUrl || null,
+    email: prospect.email || null,
+    status: prospect.status,
+    honors: prospect.honors ?? [],
+    stats: prospect.stats ?? [],
+    isProspect: prospect.isProspect,
+    sortOrder: prospect.sortOrder,
+  });
+
+  refreshRosterViews();
+}
+
+export async function updateRosterPlayer(formData: FormData) {
+  await requireAdminSession();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const uploadedPhoto = getProspectPhotoFile(formData);
+  const parsed = prospectSchema.safeParse({
+    name: formData.get("name"),
+    jerseyNumber: optStr(formData.get("jerseyNumber")),
+    classYear: formData.get("classYear"),
+    positions: parseListField(formData.get("positions")),
+    height: optStr(formData.get("height")),
+    weight: optStr(formData.get("weight")),
+    photoUrl: optStr(formData.get("photoUrl")),
+    hudlUrl: optStr(formData.get("hudlUrl")),
+    xUrl: optStr(formData.get("xUrl")),
+    instagramUrl: optStr(formData.get("instagramUrl")),
+    email: optStr(formData.get("email")),
+    status: formData.get("status") || "available",
+    honors: parseListField(formData.get("honors")),
+    stats: parseListField(formData.get("stats")),
+    isProspect: formData.get("isProspect") === "on",
+    sortOrder: formData.get("sortOrder") || "0",
+  });
+
+  if (!parsed.success) {
+    return;
+  }
+
+  const prospect = parsed.data;
+  let photoUrl = prospect.photoUrl;
+  if (uploadedPhoto) {
+    try {
+      photoUrl = await uploadProspectPhoto(uploadedPhoto, prospect.name);
+    } catch (error) {
+      redirectWithProspectUploadError(error);
+    }
+  }
+
+  await getAdminDb().collection("roster").doc(id).set(
+    {
+      name: prospect.name,
+      jerseyNumber: prospect.jerseyNumber || null,
+      classYear: prospect.classYear,
+      positions: prospect.positions,
+      height: prospect.height || null,
+      weight: prospect.weight || null,
+      photoUrl: photoUrl || null,
+      hudlUrl: prospect.hudlUrl || null,
+      xUrl: prospect.xUrl || null,
+      instagramUrl: prospect.instagramUrl || null,
+      email: prospect.email || null,
+      status: prospect.status,
+      honors: prospect.honors ?? [],
+      stats: prospect.stats ?? [],
+      isProspect: prospect.isProspect,
+      sortOrder: prospect.sortOrder,
+    },
+    { merge: true },
+  );
+
+  refreshRosterViews();
+}
+
+export async function deleteRosterPlayer(formData: FormData) {
+  await requireAdminSession();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  await getAdminDb().collection("roster").doc(id).delete();
+  refreshRosterViews();
 }
