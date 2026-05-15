@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+
+const recordsHeroImage = "/images/records-trophy-hero.png";
 
 type Source = {
   id: string;
@@ -7,7 +10,7 @@ type Source = {
 };
 
 type RecordMark = {
-  side: "offense" | "defense";
+  side: "offense" | "defense" | "specialTeams";
   category: string;
   mark: string;
   player: string;
@@ -39,6 +42,11 @@ const sources: readonly Source[] = [
     href: "https://sports.deseret.com/high-school/school/timpanogos/football/scores-schedule/1997",
   },
   {
+    id: "deseret-1999-leaders",
+    label: "Deseret News 1999 leaders",
+    href: "https://www.deseret.com/1999/10/5/19469025/1999-statistical-leaders-for-utah-high-school-football/",
+  },
+  {
     id: "utah-football-history",
     label: "Utah football historical records",
     href: "https://utah-football.com/f/allteams.htm",
@@ -47,6 +55,16 @@ const sources: readonly Source[] = [
     id: "maxpreps-2025-stats",
     label: "MaxPreps 2025 stats",
     href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/stats/",
+  },
+  {
+    id: "maxpreps-2025-punt-average",
+    label: "MaxPreps 2025 punt average leaders",
+    href: "https://www.maxpreps.com/ut/football/stat-leaders/special-teams/punts/yds-punt/",
+  },
+  {
+    id: "maxpreps-2025-pat",
+    label: "MaxPreps 2025 PAT leaders",
+    href: "https://www.maxpreps.com/ut/football/stat-leaders/special-teams/pat/made/",
   },
   {
     id: "maxpreps-luke-livingston-stats",
@@ -89,6 +107,11 @@ const sources: readonly Source[] = [
     href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/21-22/stats/",
   },
   {
+    id: "maxpreps-carl-pinegar-stats",
+    label: "MaxPreps Carl Pinegar stats",
+    href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/athletes/carl-pinegar/football/stats/?careerid=cakk4h5vl00n7",
+  },
+  {
     id: "maxpreps-2018-stats",
     label: "MaxPreps 2018 stats",
     href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/18-19/stats/",
@@ -104,6 +127,11 @@ const sources: readonly Source[] = [
     href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/16-17/stats/",
   },
   {
+    id: "maxpreps-mote-siufanua-stats",
+    label: "MaxPreps Mote Siufanua stats",
+    href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/athletes/mote-siufanua/football/stats/?careerid=c8g56sgk20rj3",
+  },
+  {
     id: "maxpreps-2013-stats",
     label: "MaxPreps 2013 stats",
     href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/13-14/stats/",
@@ -112,6 +140,11 @@ const sources: readonly Source[] = [
     id: "maxpreps-2007-stats",
     label: "MaxPreps 2007 stats",
     href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/07-08/stats/",
+  },
+  {
+    id: "maxpreps-nash-fowler-stats",
+    label: "MaxPreps Nash Fowler stats",
+    href: "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/athletes/nash-fowler/football/stats/?careerid=2fq5ospd98uue",
   },
   {
     id: "maxpreps-2004-stats",
@@ -288,6 +321,71 @@ const headlineRecords: readonly RecordMark[] = [
     season: "2024 season",
     sourceId: "maxpreps-2024-stats",
     note: "Tied public mark found with Joe Kruger, 17 QB hurries in 2008.",
+  },
+  {
+    side: "specialTeams",
+    category: "Game",
+    mark: "Field goals made",
+    player: "Chris Broadhead",
+    value: "4",
+    season: "1999 game",
+    sourceId: "deseret-1999-leaders",
+    note: "Reported vs. Hillcrest on Sept. 10, 1999.",
+  },
+  {
+    side: "specialTeams",
+    category: "Season",
+    mark: "Kickoff return yards",
+    player: "Mote Siufanua",
+    value: "743",
+    season: "2015 season",
+    sourceId: "maxpreps-mote-siufanua-stats",
+  },
+  {
+    side: "specialTeams",
+    category: "Season",
+    mark: "Longest kickoff return",
+    player: "Carl Pinegar",
+    value: "100",
+    season: "2016 season",
+    sourceId: "maxpreps-carl-pinegar-stats",
+  },
+  {
+    side: "specialTeams",
+    category: "Season",
+    mark: "Punt return yards",
+    player: "Nash Fowler",
+    value: "172",
+    season: "2006 season",
+    sourceId: "maxpreps-nash-fowler-stats",
+  },
+  {
+    side: "specialTeams",
+    category: "Season",
+    mark: "Longest punt return",
+    player: "Nash Fowler",
+    value: "73",
+    season: "2006 season",
+    sourceId: "maxpreps-nash-fowler-stats",
+  },
+  {
+    side: "specialTeams",
+    category: "Season",
+    mark: "Punt average",
+    player: "Andrew Hillstead",
+    value: "43.68",
+    season: "2025 season",
+    sourceId: "maxpreps-2025-punt-average",
+    note: "MaxPreps state punt average leaders list 1,223 yards on 28 punts.",
+  },
+  {
+    side: "specialTeams",
+    category: "Season",
+    mark: "PATs made",
+    player: "Luke Bergin",
+    value: "26",
+    season: "2025 season",
+    sourceId: "maxpreps-2025-pat",
   },
 ];
 
@@ -469,11 +567,24 @@ export const metadata: Metadata = {
 export default function RecordsPage() {
   const offenseRecords = headlineRecords.filter((record) => record.side === "offense");
   const defenseRecords = headlineRecords.filter((record) => record.side === "defense");
+  const specialTeamsRecords = headlineRecords.filter(
+    (record) => record.side === "specialTeams",
+  );
 
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
-      <section className="border-b border-white/10 bg-[var(--tf-navy)]">
-        <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
+      <section className="relative isolate min-h-[500px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] md:min-h-[560px]">
+        <Image
+          src={recordsHeroImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[68%_26%] saturate-110 md:object-[62%_28%]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.86)_0%,rgba(2,9,23,0.5)_52%,rgba(5,7,9,0.9)_100%)] md:bg-[linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.84)_42%,rgba(2,9,23,0.28)_76%,rgba(2,9,23,0.42)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
+        <div className="relative mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
           <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
             Record Book
           </p>
@@ -500,6 +611,12 @@ export default function RecordsPage() {
             title="Defense"
             description="Known public defensive marks from MaxPreps team and player stat pages."
             records={defenseRecords}
+          />
+
+          <RecordsTable
+            title="Special Teams"
+            description="Known public kicking and punting marks from state record and MaxPreps leader pages."
+            records={specialTeamsRecords}
           />
 
           <section>
