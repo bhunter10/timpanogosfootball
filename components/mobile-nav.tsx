@@ -33,13 +33,9 @@ export function MobileNav({ items }: { items: readonly NavItem[] }) {
             {items.map((item) =>
               item.children ? (
                 <div key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="block rounded-sm px-3 py-2 text-sm font-bold uppercase tracking-wide text-white/95 hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
-                    onClick={() => setOpen(false)}
-                  >
+                  <div className="rounded-sm px-3 py-2 text-sm font-bold uppercase tracking-wide text-white/95">
                     {item.label}
-                  </Link>
+                  </div>
                   <div className="ml-3 border-l border-[var(--tf-neon)]/30 pl-2">
                     {item.children.map((child) => (
                       <Link

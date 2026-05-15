@@ -60,7 +60,6 @@ export type SiteSettings = {
   recruitingFormUrl?: string;
   /** Optional rich recruiting intro shown on /recruiting */
   recruitingBlurb?: string;
-  infoHighlights?: string[];
   footerNote?: string;
 };
 

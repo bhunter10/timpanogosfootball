@@ -208,7 +208,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:px-6 lg:grid-cols-[1fr_420px] lg:py-20">
+      <section className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-20">
         <div>
           <div className="flex items-end justify-between gap-4 border-b border-white/15 pb-5">
             <div>
@@ -290,33 +290,16 @@ export default async function Home() {
                       )}
                     </p>
                   </div>
-                  <span className="w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-300">
-                    {game.result ?? "Preview"}
-                  </span>
+                  {game.result ? (
+                    <span className="w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-300">
+                      {game.result}
+                    </span>
+                  ) : null}
                 </div>
               );
             })}
           </div>
         </div>
-
-        <aside className="self-start border-l-4 border-[var(--tf-neon)] bg-white px-6 py-7 text-[var(--tf-navy)]">
-          <p className="text-xs font-black uppercase tracking-[0.26em] text-[var(--tf-green)]">
-            Program
-          </p>
-          <h2 className="font-display mt-3 text-5xl font-bold uppercase leading-none">
-            Built for the season
-          </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-600">
-            Schedules, tickets, staff updates, recruiting information, and team gear are
-            organized around a bold game-day experience.
-          </p>
-          <Link
-            href="/staff"
-            className="mt-6 inline-flex rounded-sm bg-[var(--tf-navy)] px-5 py-3 text-sm font-black uppercase tracking-wide text-white transition hover:bg-[var(--tf-black)]"
-          >
-            Meet the Staff
-          </Link>
-        </aside>
       </section>
     </main>
   );

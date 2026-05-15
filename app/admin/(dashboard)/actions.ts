@@ -43,12 +43,6 @@ function optStr(v: FormDataEntryValue | null): string | undefined {
 
 export async function saveSiteSettings(formData: FormData) {
   await requireAdminSession();
-  const highlightsRaw = String(formData.get("infoHighlights") ?? "");
-  const highlights = highlightsRaw
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
-
   const parsed = settingsSchema.safeParse({
     heroTitle: String(formData.get("heroTitle") ?? ""),
     heroSubtitle: String(formData.get("heroSubtitle") ?? ""),
@@ -73,7 +67,6 @@ export async function saveSiteSettings(formData: FormData) {
     .set(
       {
         ...parsed.data,
-        infoHighlights: highlights.length ? highlights : [],
       },
       { merge: true },
     );
@@ -82,7 +75,6 @@ export async function saveSiteSettings(formData: FormData) {
   revalidatePath("/tickets");
   revalidatePath("/shop");
   revalidatePath("/recruiting");
-  revalidatePath("/info");
 }
 
 const gameSchema = z.object({

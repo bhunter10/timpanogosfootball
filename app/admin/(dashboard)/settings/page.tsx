@@ -124,16 +124,7 @@ export default async function AdminSettingsPage() {
         </section>
 
         <section className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
-          <h2 className="text-sm font-semibold text-white">Info page</h2>
-          <label className="mt-4 block text-xs font-medium text-zinc-400">
-            Highlights (one per line)
-            <textarea
-              name="infoHighlights"
-              rows={6}
-              defaultValue={(s.infoHighlights ?? []).join("\n")}
-              className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-            />
-          </label>
+          <h2 className="text-sm font-semibold text-white">Footer</h2>
           <label className="mt-4 block text-xs font-medium text-zinc-400">
             Footer note (optional)
             <textarea

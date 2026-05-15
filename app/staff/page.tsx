@@ -166,7 +166,6 @@ export default async function StaffPage() {
         <section className="relative isolate overflow-hidden border-t border-white/10 bg-[var(--tf-black)] px-4 py-10 md:px-6 lg:py-14">
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.055)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(57,255,20,0.08),transparent_30%)]" />
-          <div className="absolute inset-x-0 top-0 h-1 bg-[var(--tf-neon)]" />
           <div className="relative mx-auto max-w-7xl">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {staff.map((member) => (

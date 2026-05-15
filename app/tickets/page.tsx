@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getSiteSettings } from "@/lib/data/site-settings";
 
 export const metadata: Metadata = {
@@ -53,9 +52,6 @@ export default async function TicketsPage() {
           Contact the school athletic office for passes, seating questions, and visitor
           policies. Links on this page are managed by the program and open in a new tab.
         </p>
-        <Link href="/info" className="mt-4 inline-block font-medium text-[var(--tf-navy)] hover:underline">
-          Visit Info for facilities and contacts →
-        </Link>
       </div>
     </main>
   );

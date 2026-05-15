@@ -13,9 +13,6 @@ function mergeSettings(data: DocumentData | undefined): SiteSettings {
   return {
     ...defaultSiteSettings,
     ...partial,
-    infoHighlights: Array.isArray(data.infoHighlights)
-      ? (data.infoHighlights as string[])
-      : partial.infoHighlights ?? defaultSiteSettings.infoHighlights,
   };
 }
 

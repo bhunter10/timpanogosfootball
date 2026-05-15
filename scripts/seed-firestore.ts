@@ -29,11 +29,6 @@ async function main() {
     .set(
       {
         ...defaultSiteSettings,
-        infoHighlights: [
-          "Practice and game updates are shared through official school channels.",
-          "Student-athletes stay eligible through the athletic department.",
-          "Add maps and visitor guides here when ready.",
-        ],
       },
       { merge: true },
     );

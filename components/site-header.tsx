@@ -14,7 +14,7 @@ const nav: readonly NavItem[] = [
   { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },
   {
-    href: "/info",
+    href: "info",
     label: "Info",
     children: [
       { href: "/team-calendar", label: "Team Calendar" },
@@ -51,18 +51,23 @@ export function SiteHeader() {
           {nav.map((item) =>
             item.children ? (
               <div key={item.href} className="group relative">
-                <Link
-                  href={item.href}
+                <button
+                  type="button"
                   className="rounded-sm px-3 py-2 text-sm font-bold uppercase tracking-wide text-white/85 transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] group-focus-within:bg-[var(--tf-neon)] group-focus-within:text-[var(--tf-navy)]"
+                  aria-haspopup="menu"
                 >
                   {item.label}
-                </Link>
+                </button>
                 <div className="invisible absolute left-0 top-full min-w-44 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                  <div className="border border-[var(--tf-neon)]/25 bg-[var(--tf-black)] p-1 shadow-xl shadow-black/30">
+                  <div
+                    className="border border-[var(--tf-neon)]/25 bg-[var(--tf-black)] p-1 shadow-xl shadow-black/30"
+                    role="menu"
+                  >
                     {item.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
+                        role="menuitem"
                         className="block rounded-sm px-3 py-2 text-sm font-bold uppercase tracking-wide text-white/85 transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] focus:bg-[var(--tf-neon)] focus:text-[var(--tf-navy)]"
                       >
                         {child.label}
