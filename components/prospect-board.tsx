@@ -42,27 +42,7 @@ function ProspectPhoto({ prospect }: { prospect: Prospect }) {
 
 function ProfileIcon({ type }: { type: "hudl" | "instagram" | "x" }) {
   if (type === "hudl") {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
-        <path
-          d="M8.2 4.7C10.1 3.7 12.4 4 14 5.4c.8.7 1.8 1.1 2.9 1.1 2.2.1 4 1.9 4.1 4.1.1 2-1.1 3.8-2.9 4.5-.9.4-1.7 1-2.2 1.9-1.1 1.9-3.3 2.8-5.4 2.1-1.9-.6-3.2-2.4-3.2-4.4 0-1-.3-1.9-1-2.7-1.4-1.7-1.4-4.2 0-5.9.5-.6 1.1-1.1 1.9-1.4Z"
-          fill="#ff6a00"
-          opacity="0.96"
-        />
-        <path
-          d="M6.7 6.6c2.9-.8 5.8-.2 8.1 1.5-1.6.7-3.1 1.7-4.4 3-1.5 1.5-2.5 3.2-3.2 5-1.9-2.4-2.2-5.7-.5-9.5Z"
-          fill="currentColor"
-        />
-        <path
-          d="M16.9 7.2c1.5 2.5 1.8 5.5.7 8.1-1-1.4-2.3-2.7-3.9-3.7-1.8-1.1-3.7-1.7-5.7-1.8 1.8-2.4 4.8-3.4 8.9-2.6Z"
-          fill="currentColor"
-        />
-        <path
-          d="M17 16.9c-2.9.7-5.8 0-8-1.8 1.6-.6 3.1-1.6 4.4-2.9 1.5-1.4 2.6-3.1 3.3-4.9 1.8 2.5 1.9 5.8.3 9.6Z"
-          fill="currentColor"
-        />
-      </svg>
-    );
+    return <span className="text-[10px] font-black lowercase tracking-tight">hudl</span>;
   }
 
   if (type === "instagram") {
