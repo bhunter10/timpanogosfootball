@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { TICKETS_URL } from "@/lib/site-links";
 
 const socialLinks = [
   {
@@ -96,6 +97,14 @@ export function SiteFooter() {
           <Link href="/staff" className="transition hover:text-white">
             Staff
           </Link>
+          <a
+            href={TICKETS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition hover:text-white"
+          >
+            Tickets
+          </a>
           <Link href="/shop" className="transition hover:text-white">
             Shop
           </Link>

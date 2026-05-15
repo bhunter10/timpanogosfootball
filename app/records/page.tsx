@@ -573,7 +573,7 @@ export default function RecordsPage() {
 
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
-      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] md:min-h-[470px]">
+      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-white/10 bg-[rgb(0,1,10)] md:min-h-[470px]">
         <Image
           src={recordsHeroImage}
           alt=""

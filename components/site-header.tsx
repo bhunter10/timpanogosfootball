@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MobileNav } from "@/components/mobile-nav";
-import { TICKETS_URL } from "@/lib/site-links";
 
 type NavItem = {
   href: string;
@@ -11,7 +10,6 @@ type NavItem = {
 };
 
 const nav: readonly NavItem[] = [
-  { href: TICKETS_URL, label: "Tickets", external: true },
   { href: "/schedule", label: "Schedule" },
   { href: "/roster", label: "Roster" },
   { href: "/staff", label: "Staff" },

@@ -106,6 +106,10 @@ function PlatformIconShell({ children }: { children: ReactNode }) {
   );
 }
 
+function formatTeamLabelForButton(teamLabel: string) {
+  return teamLabel === "JV" ? teamLabel : teamLabel.toLowerCase();
+}
+
 export function ScheduleCalendarModal({
   appleHref,
   downloadHref,
@@ -115,6 +119,7 @@ export function ScheduleCalendarModal({
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const descriptionId = useId();
+  const buttonTeamLabel = formatTeamLabelForButton(teamLabel);
 
   useEffect(() => {
     if (!open) return;
@@ -134,10 +139,10 @@ export function ScheduleCalendarModal({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[var(--tf-neon)] px-4 py-3 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[var(--tf-neon)] focus:ring-offset-2 focus:ring-offset-[var(--tf-black)]"
+        className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-[var(--tf-neon)] px-4 py-3 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-[var(--tf-neon)] focus:ring-offset-2 focus:ring-offset-[var(--tf-black)]"
       >
         <CalendarPlusIcon />
-        Add to calendar
+        Add {buttonTeamLabel} games to calendar
       </button>
 
       {open ? (

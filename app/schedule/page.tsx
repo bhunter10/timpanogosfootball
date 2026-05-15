@@ -231,8 +231,8 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
               Schedule
             </h1>
             <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-400 md:text-base">
-              Game dates and times are maintained by the program. Check back for late
-              changes, results, and matchup details throughout the season.
+              Subscribe to the team calendar once. Schedule changes and game details
+              will update automatically all season.
             </p>
             <ScheduleSubscribePanel
               appleHref={calendarLinks.apple}
