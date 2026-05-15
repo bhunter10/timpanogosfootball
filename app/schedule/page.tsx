@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
+import { ScheduleCalendarModal } from "@/components/schedule-calendar-modal";
+import { getHeadersOrigin } from "@/lib/site-url";
 import { getScheduleGames } from "@/lib/data/schedule";
 import {
   scheduleTeamLevels,
@@ -49,6 +52,18 @@ function getTeamLevelLabel(teamLevel: ScheduleTeamLevel) {
   return (
     scheduleTeamLevels.find((level) => level.value === teamLevel)?.label ?? "Varsity"
   );
+}
+
+function getCalendarSubscribeLinks(teamLevel: ScheduleTeamLevel, origin: string) {
+  const feedPath = `/schedule/${teamLevel}/calendar.ics`;
+  const feedUrl = `${origin}${feedPath}`;
+  const webcalUrl = feedUrl.replace(/^https?:\/\//i, "webcal://");
+
+  return {
+    apple: webcalUrl,
+    download: feedPath,
+    google: `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(feedUrl)}`,
+  };
 }
 
 function opponentInitials(name: string) {
@@ -176,9 +191,10 @@ type SchedulePageProps = {
 };
 
 export default async function SchedulePage({ searchParams }: SchedulePageProps) {
-  const [{ team }, allGames] = await Promise.all([
+  const [{ team }, allGames, headersList] = await Promise.all([
     searchParams,
     getScheduleGames(),
+    headers(),
   ]);
   const selectedTeamLevel = getSelectedTeamLevel(team);
   const selectedTeamLabel = getTeamLevelLabel(selectedTeamLevel);
@@ -186,6 +202,10 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
   const nextGame = games.find((game) => !game.result) ?? games[0];
   const nextGameDate = nextGame ? formatGameDate(nextGame.dateISO) : null;
   const nextGameMapHref = nextGame ? getMapHref(nextGame.address) : undefined;
+  const calendarLinks = getCalendarSubscribeLinks(
+    selectedTeamLevel,
+    getHeadersOrigin(headersList),
+  );
   const teamCounts = new Map(
     scheduleTeamLevels.map((level) => [
       level.value,
@@ -214,6 +234,12 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
               Game dates and times are maintained by the program. Check back for late
               changes, results, and matchup details throughout the season.
             </p>
+            <ScheduleSubscribePanel
+              appleHref={calendarLinks.apple}
+              downloadHref={calendarLinks.download}
+              googleHref={calendarLinks.google}
+              teamLabel={selectedTeamLabel}
+            />
           </div>
 
           {nextGame ? (
@@ -325,6 +351,27 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
         )}
       </section>
     </main>
+  );
+}
+
+function ScheduleSubscribePanel({
+  appleHref,
+  downloadHref,
+  googleHref,
+  teamLabel,
+}: {
+  appleHref: string;
+  downloadHref: string;
+  googleHref: string;
+  teamLabel: string;
+}) {
+  return (
+    <ScheduleCalendarModal
+      appleHref={appleHref}
+      downloadHref={downloadHref}
+      googleHref={googleHref}
+      teamLabel={teamLabel}
+    />
   );
 }
 

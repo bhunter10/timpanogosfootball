@@ -573,18 +573,18 @@ export default function RecordsPage() {
 
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
-      <section className="relative isolate min-h-[500px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] md:min-h-[560px]">
+      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] md:min-h-[470px]">
         <Image
           src={recordsHeroImage}
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[68%_26%] saturate-110 md:object-[62%_28%]"
+          className="object-contain object-right saturate-110"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.86)_0%,rgba(2,9,23,0.5)_52%,rgba(5,7,9,0.9)_100%)] md:bg-[linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.84)_42%,rgba(2,9,23,0.28)_76%,rgba(2,9,23,0.42)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-20 md:px-6 md:py-28">
+        <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-22">
           <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
             Record Book
           </p>
