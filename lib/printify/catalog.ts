@@ -2,8 +2,10 @@ export type PrintifyProductPreview = {
   id: string;
   title: string;
   imageSrc?: string;
-  /** Deep link when available (depends on Printify / connected channel). */
+  /** Public sales-channel link when available (depends on Printify / connected channel). */
   externalUrl?: string;
+  /** Printify dashboard link for local setup/debugging only. */
+  adminUrl: string;
 };
 
 type PrintifyApiProduct = {
@@ -11,7 +13,22 @@ type PrintifyApiProduct = {
   title: string;
   images?: { src?: string; position?: string }[];
   variants?: { id: number }[];
+  external?: { handle?: string } | { handle?: string }[];
 };
+
+function getPublicProductUrl(product: PrintifyApiProduct) {
+  const external = Array.isArray(product.external)
+    ? product.external[0]
+    : product.external;
+  const handle = external?.handle;
+
+  if (!handle) return undefined;
+
+  if (handle.startsWith("http://") || handle.startsWith("https://")) return handle;
+  if (handle.startsWith("/")) return handle;
+
+  return undefined;
+}
 
 export async function getPrintifyCatalog(): Promise<{
   configured: boolean;
@@ -31,6 +48,7 @@ export async function getPrintifyCatalog(): Promise<{
         headers: {
           Authorization: `Bearer ${key}`,
           "Content-Type": "application/json",
+          "User-Agent": "TimpanogosFootballSite",
         },
         next: { revalidate: 300 },
       },
@@ -56,7 +74,8 @@ export async function getPrintifyCatalog(): Promise<{
         id: String(p.id),
         title: p.title,
         imageSrc: src,
-        externalUrl: `https://printify.com/app/products/${p.id}`,
+        externalUrl: getPublicProductUrl(p),
+        adminUrl: `https://printify.com/app/products/${p.id}`,
       };
     });
 

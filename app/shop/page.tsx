@@ -11,60 +11,94 @@ export const metadata: Metadata = {
 export default async function ShopPage() {
   const settings = await getSiteSettings();
   const catalog = await getPrintifyCatalog();
+  const storefrontUrl =
+    settings.shopPrimaryUrl ?? process.env.PRINTIFY_STOREFRONT_URL;
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12">
-      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
-        Shop
-      </p>
-      <h1 className="font-display mt-2 text-4xl font-bold text-slate-900">
-        Team shop
-      </h1>
-      <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-600">
-        {settings.shopMessage}
-      </p>
-
-      <div className="mt-8 flex flex-wrap gap-4">
-        {settings.shopPrimaryUrl ? (
-          <a
-            href={settings.shopPrimaryUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-full bg-[var(--tf-navy)] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--tf-black)]"
-          >
-            Open storefront
-          </a>
-        ) : (
-          <span className="inline-flex items-center justify-center rounded-full border border-dashed border-slate-300 px-6 py-3 text-sm text-slate-500">
-            Storefront link will appear here — configure in admin when ready.
-          </span>
-        )}
-      </div>
-
-      {!catalog.configured ? (
-        <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600 shadow-sm">
-          <p className="font-medium text-slate-900">Catalog preview</p>
-          <p className="mt-2">
-            Connect{" "}
-            <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">
-              PRINTIFY_API_KEY
-            </code>{" "}
-            and{" "}
-            <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">
-              PRINTIFY_SHOP_ID
-            </code>{" "}
-            on Vercel to pull live products from Printify with caching and optimized
-            images.
+    <main className="bg-[var(--tf-black)] text-white">
+      <section className="relative isolate overflow-hidden border-b border-white/10 bg-[var(--tf-navy)]">
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:84px_84px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(57,255,20,0.16),transparent_30%),linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_48%,rgba(2,9,23,0.68)_100%)]" />
+        <div className="relative mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-20">
+          <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
+            Team Gear
           </p>
+          <h1 className="font-display mt-5 max-w-4xl text-6xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-8xl">
+            Shop
+          </h1>
+          <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">
+            {settings.shopMessage}
+          </p>
+
         </div>
-      ) : catalog.error ? (
-        <div className="mt-10 rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-900">
-          <p className="font-semibold">Could not load Printify catalog</p>
-          <p className="mt-2">{catalog.error}</p>
+      </section>
+
+      <section className="relative isolate overflow-hidden px-4 py-12 md:px-6 lg:py-16">
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.055)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(57,255,20,0.08),transparent_32%)]" />
+        <div className="relative mx-auto max-w-7xl">
+          <div className="mb-7 flex items-end justify-between gap-4 border-b border-white/15 pb-5">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+                Catalog
+              </p>
+              <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none text-white md:text-5xl">
+                Timberwolves Gear
+              </h2>
+            </div>
+          </div>
+
+          {!catalog.configured ? (
+            <div className="border border-dashed border-white/20 bg-white/[0.055] p-8 text-sm leading-6 text-zinc-400 md:p-10">
+              <p className="font-display text-3xl font-bold uppercase leading-none text-white">
+                Catalog preview is not connected.
+              </p>
+              <p className="mt-4 max-w-2xl">
+                Connect{" "}
+                <code className="bg-white/10 px-1.5 py-0.5 text-xs text-zinc-200">
+                  PRINTIFY_API_KEY
+                </code>{" "}
+                and{" "}
+                <code className="bg-white/10 px-1.5 py-0.5 text-xs text-zinc-200">
+                  PRINTIFY_SHOP_ID
+                </code>{" "}
+                on Vercel to pull live products from Printify.
+              </p>
+            </div>
+          ) : catalog.error ? (
+            <div className="border border-red-400/40 bg-red-950/40 p-8 text-sm text-red-100 md:p-10">
+              <p className="font-display text-3xl font-bold uppercase leading-none">
+                Could not load Printify catalog.
+              </p>
+              <p className="mt-4">{catalog.error}</p>
+            </div>
+          ) : catalog.products.length > 0 ? (
+            <ShopProductGrid
+              products={catalog.products}
+              storefrontUrl={storefrontUrl}
+            />
+          ) : (
+            <div className="border border-dashed border-white/20 bg-white/[0.055] p-8 md:p-10">
+              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+                Products Coming Soon
+              </p>
+              <h2 className="font-display mt-4 text-4xl font-bold uppercase leading-none text-white">
+                Gear is being published.
+              </h2>
+              {storefrontUrl ? (
+                <a
+                  href={storefrontUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex bg-[var(--tf-neon)] px-5 py-3 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110"
+                >
+                  Open Storefront
+                </a>
+              ) : null}
+            </div>
+          )}
         </div>
-      ) : (
-        <ShopProductGrid products={catalog.products} />
-      )}
+      </section>
     </main>
   );
 }

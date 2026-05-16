@@ -84,49 +84,8 @@ function ProfileCard({ member }: { member: StaffMember }) {
   );
 }
 
-function HeadCoachCard({ member }: { member: StaffMember }) {
-  return (
-    <aside className="border border-white/15 bg-black/50 p-5 shadow-2xl shadow-black/35 backdrop-blur-md">
-      <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
-        Head Coach
-      </p>
-      <div className="mt-5 grid gap-5 sm:grid-cols-[170px_1fr]">
-        <StaffPortrait
-          member={member}
-          className="aspect-[4/5] w-full border border-white/15 bg-white/10"
-          sizes="170px"
-          priority
-        />
-        <div>
-          <h2 className="font-display text-4xl font-bold uppercase leading-none text-white">
-            {member.name}
-          </h2>
-          <p className="mt-2 text-xs font-black uppercase tracking-[0.2em] text-zinc-300">
-            {member.role}
-          </p>
-          {member.bio ? (
-            <p className="mt-4 line-clamp-4 text-sm leading-6 text-zinc-300">
-              {member.bio}
-            </p>
-          ) : null}
-          {member.email ? (
-            <a
-              href={`mailto:${member.email}`}
-              className="mt-4 inline-flex border border-[var(--tf-neon)] bg-[var(--tf-neon)] px-4 py-3 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110"
-            >
-              Contact Coach Nielsen
-            </a>
-          ) : null}
-        </div>
-      </div>
-    </aside>
-  );
-}
-
 export default async function StaffPage() {
   const staff = await getStaffMembers();
-  const headCoach =
-    staff.find((member) => member.name.toLowerCase() === "nolan nielsen") ?? staff[0];
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
@@ -143,21 +102,17 @@ export default async function StaffPage() {
         <div className="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
 
         <div className="relative mx-auto flex min-h-[420px] max-w-7xl flex-col justify-center px-4 py-10 md:min-h-[500px] md:px-6 lg:py-12">
-          <div className="grid gap-8 lg:grid-cols-[1fr_460px] lg:items-center">
-            <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
-                Coaches & Staff
-              </p>
-              <h1 className="font-display mt-4 text-5xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-7xl lg:text-8xl">
-                Staff
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300">
-                The people leading the preparation, culture, and Friday-night standard
-                for Timpanogos football.
-              </p>
-            </div>
-
-            {headCoach ? <HeadCoachCard member={headCoach} /> : null}
+          <div className="max-w-3xl">
+            <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
+              Coaches & Staff
+            </p>
+            <h1 className="font-display mt-4 text-5xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-7xl lg:text-8xl">
+              Staff
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300">
+              The people leading the preparation, culture, and Friday-night standard for
+              Timpanogos football.
+            </p>
           </div>
         </div>
       </section>

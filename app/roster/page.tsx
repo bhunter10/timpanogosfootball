@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getRosterPlayers, type Prospect as RosterPlayer } from "@/lib/data/prospects";
 
+const rosterHeroImage = "/images/roster-helmet-hero.png";
+
 export const metadata: Metadata = {
   title: "Roster",
   description: "Timpanogos football roster.",
@@ -62,9 +64,18 @@ export default async function RosterPage() {
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
-      <section className="relative isolate overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] px-4 py-14 md:px-6 lg:py-20">
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:84px_84px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(57,255,20,0.14),transparent_30%),linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.82)_100%)]" />
+      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] px-4 py-14 md:min-h-[520px] md:px-6 lg:py-20">
+        <Image
+          src={rosterHeroImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[66%_center] md:object-contain md:object-right"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--tf-navy)_0%,rgba(2,9,23,0.98)_28%,rgba(2,9,23,0.84)_46%,rgba(2,9,23,0.34)_72%,rgba(2,9,23,0.08)_100%)]" />
+        <div className="absolute inset-y-0 left-0 w-[68%] bg-[radial-gradient(ellipse_at_left,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_38%,rgba(2,9,23,0)_76%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.16)_0%,rgba(2,9,23,0.02)_54%,rgba(2,9,23,0.72)_100%)]" />
         <div className="relative mx-auto max-w-7xl">
           <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
             Team
