@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-const recordsHeroImage = "/images/records-trophy-hero.png";
+const recordsHeroImage = "/images/records-hero-wide-v2.png";
 
 type Source = {
   id: string;
@@ -580,16 +580,16 @@ export default function RecordsPage() {
           fill
           priority
           sizes="100vw"
-          className="object-contain object-right saturate-110 [mask-image:linear-gradient(90deg,transparent_0%,black_18%,black_100%)]"
+          className="object-cover object-center saturate-110"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.86)_0%,rgba(2,9,23,0.5)_52%,rgba(5,7,9,0.9)_100%)] md:bg-[linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_34%,rgba(2,9,23,0.48)_70%,rgba(2,9,23,0.42)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.78)_0%,rgba(2,9,23,0.42)_52%,rgba(5,7,9,0.82)_100%)] md:bg-[linear-gradient(90deg,rgba(2,9,23,0.96)_0%,rgba(2,9,23,0.82)_34%,rgba(2,9,23,0.36)_70%,rgba(2,9,23,0.3)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
           <p className="text-sm font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
             Record Book
           </p>
           <h1 className="font-display mt-4 max-w-4xl text-5xl font-bold uppercase leading-[0.9] md:text-7xl">
-            School Individual Records
+            School Records
           </h1>
           <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
             Known public all-time Timpanogos football marks from local coverage,

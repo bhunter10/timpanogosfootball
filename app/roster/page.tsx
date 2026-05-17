@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getRosterPlayers, type Prospect as RosterPlayer } from "@/lib/data/prospects";
 
-const rosterHeroImage = "/images/roster-helmet-hero.png";
+const rosterHeroImage = "/images/roster-hero-wide-v2.png";
 
 export const metadata: Metadata = {
   title: "Roster",
@@ -71,11 +71,10 @@ export default async function RosterPage() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[66%_center] [mask-image:linear-gradient(90deg,transparent_0%,black_18%,black_100%)] md:object-contain md:object-right"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--tf-navy)_0%,rgba(2,9,23,0.98)_22%,rgba(2,9,23,0.82)_48%,rgba(2,9,23,0.42)_74%,rgba(2,9,23,0.1)_100%)]" />
-        <div className="absolute inset-y-0 left-0 w-[76%] bg-[radial-gradient(ellipse_at_left,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.82)_48%,rgba(2,9,23,0)_84%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.16)_0%,rgba(2,9,23,0.02)_54%,rgba(2,9,23,0.72)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,9,23,0.96)_0%,rgba(2,9,23,0.82)_34%,rgba(2,9,23,0.42)_70%,rgba(2,9,23,0.12)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.08)_0%,rgba(2,9,23,0.02)_54%,rgba(2,9,23,0.62)_100%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
           <p className="text-sm font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
             Team
