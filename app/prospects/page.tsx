@@ -17,18 +17,18 @@ export default async function ProspectsPage() {
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
-      <section className="relative isolate overflow-hidden border-b border-white/10 bg-[var(--tf-navy)]">
+      <section className="relative isolate min-h-[325px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)]">
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:84px_84px]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(57,255,20,0.16),transparent_30%),linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_48%,rgba(2,9,23,0.68)_100%)]" />
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 md:px-6 lg:grid-cols-[1fr_390px] lg:items-end lg:py-20">
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-6 md:px-6 md:py-8 lg:grid-cols-[1fr_390px] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
+            <p className="text-sm font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
               College Recruiting
             </p>
-            <h1 className="font-display mt-5 max-w-4xl text-6xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-8xl">
+            <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
               Prospects
             </h1>
-            <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">
+            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
               A public recruiting board for college coaches evaluating Timpanogos
               football athletes.
             </p>
@@ -83,7 +83,7 @@ export default async function ProspectsPage() {
             <ProspectBoard prospects={prospects} />
           ) : (
             <div className="border border-dashed border-white/20 bg-white/[0.055] p-8 md:p-10">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Profiles Coming Soon
               </p>
               <h2 className="font-display mt-4 text-4xl font-bold uppercase leading-none text-white">

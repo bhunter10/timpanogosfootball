@@ -71,5 +71,5 @@ export const defaultSiteSettings: SiteSettings = {
     "Game tickets and passes are sold through the school. Links below open official purchasing pages when available.",
   ticketUrl: "https://gofan.co/app/school/UT7313",
   shopMessage:
-    "Team gear will be available through our Printify store. Check back soon or use the link when the store goes live.",
+    "Find official Timpanogos Football apparel and fan gear here. Use the product cards below to choose sizes and colors, or open the storefront when new items are being added.",
 };

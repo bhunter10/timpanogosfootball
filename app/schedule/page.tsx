@@ -215,140 +215,142 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
 
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
-        <div
-          className={
-            nextGame
-              ? "grid gap-6 lg:grid-cols-[0.9fr_1.4fr] lg:items-end"
-              : "max-w-3xl"
-          }
-        >
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
-              2026 {selectedTeamLabel}
-            </p>
-            <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] text-white md:text-8xl">
-              Schedule
-            </h1>
-            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-400 md:text-base">
-              Subscribe to the team calendar once. Schedule changes and game details
-              will update automatically all season.
-            </p>
-            <ScheduleSubscribePanel
-              appleHref={calendarLinks.apple}
-              downloadHref={calendarLinks.download}
-              googleHref={calendarLinks.google}
-              teamLabel={selectedTeamLabel}
-            />
-          </div>
+      <section>
+        <div className="mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-6">
+          <div
+            className={
+              nextGame
+                ? "grid gap-6 lg:grid-cols-[0.9fr_1.4fr] lg:items-start"
+                : "max-w-3xl"
+            }
+          >
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
+                2026 {selectedTeamLabel}
+              </p>
+              <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] text-white md:text-8xl">
+                Schedule
+              </h1>
+              <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-400 md:text-base">
+                Subscribe to the team calendar once. Schedule changes and game details
+                will update automatically all season.
+              </p>
+              <ScheduleSubscribePanel
+                appleHref={calendarLinks.apple}
+                downloadHref={calendarLinks.download}
+                googleHref={calendarLinks.google}
+                teamLabel={selectedTeamLabel}
+              />
+            </div>
 
-          {nextGame ? (
-            <section className="overflow-hidden rounded-3xl border border-[var(--tf-neon)]/35 bg-zinc-950 text-white shadow-2xl shadow-black/25">
-              <div className="grid md:grid-cols-[1fr_220px]">
-                <div className="p-5 md:p-6">
-                  <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
-                    Next Game
-                  </p>
-                  <div className="mt-4 flex items-center gap-5 md:gap-6">
-                    <OpponentLogo game={nextGame} size="lg" variant="feature" />
-                    <div className="min-w-0">
-                      <h2 className="font-display text-4xl font-bold uppercase leading-none md:text-5xl">
-                        {nextGame.isHome ? "vs " : "@ "}
-                        {nextGame.opponent}
-                      </h2>
-                      {nextGame.opponentMascot ? (
-                        <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-zinc-400">
-                          {nextGame.opponentMascot}
+            {nextGame ? (
+              <section className="overflow-hidden rounded-3xl border border-[var(--tf-neon)]/35 bg-zinc-950 text-white shadow-2xl shadow-black/25">
+                <div className="grid md:grid-cols-[1fr_220px]">
+                  <div className="p-5 md:p-6">
+                    <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+                      Next Game
+                    </p>
+                    <div className="mt-4 flex items-center gap-5 md:gap-6">
+                      <OpponentLogo game={nextGame} size="lg" variant="feature" />
+                      <div className="min-w-0">
+                        <h2 className="font-display text-4xl font-bold uppercase leading-none md:text-5xl">
+                          {nextGame.isHome ? "vs " : "@ "}
+                          {nextGame.opponent}
+                        </h2>
+                        {nextGame.opponentMascot ? (
+                          <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-zinc-400">
+                            {nextGame.opponentMascot}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 border-t border-white/10 bg-white/[0.04] text-white md:grid-cols-1 md:border-l md:border-t-0">
+                    <div className="p-4">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                        Date
+                      </p>
+                      <p className="font-display mt-1 text-2xl font-bold md:text-3xl">
+                        {nextGameDate?.month} {nextGameDate?.day}
+                      </p>
+                    </div>
+                    <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                        Time
+                      </p>
+                      <p className="font-display mt-1 text-2xl font-bold md:text-3xl">
+                        {nextGameDate?.time}
+                      </p>
+                    </div>
+                    <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                        Location
+                      </p>
+                      {nextGameMapHref ? (
+                        <a
+                          href={nextGameMapHref}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-1 block truncate text-sm font-bold underline decoration-white/25 underline-offset-4 hover:text-[var(--tf-neon)]"
+                        >
+                          {nextGame.location || "TBD"}
+                        </a>
+                      ) : (
+                        <p className="mt-1 truncate text-sm font-bold">
+                          {nextGame.location || "TBD"}
                         </p>
-                      ) : null}
+                      )}
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 border-t border-white/10 bg-white/[0.04] text-white md:grid-cols-1 md:border-l md:border-t-0">
-                  <div className="p-4">
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
-                      Date
-                    </p>
-                    <p className="font-display mt-1 text-2xl font-bold md:text-3xl">
-                      {nextGameDate?.month} {nextGameDate?.day}
-                    </p>
-                  </div>
-                  <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
-                      Time
-                    </p>
-                    <p className="font-display mt-1 text-2xl font-bold md:text-3xl">
-                      {nextGameDate?.time}
-                    </p>
-                  </div>
-                  <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
-                      Location
-                    </p>
-                    {nextGameMapHref ? (
-                      <a
-                        href={nextGameMapHref}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-1 block truncate text-sm font-bold underline decoration-white/25 underline-offset-4 hover:text-[var(--tf-neon)]"
-                      >
-                        {nextGame.location || "TBD"}
-                      </a>
-                    ) : (
-                      <p className="mt-1 truncate text-sm font-bold">
-                        {nextGame.location || "TBD"}
-                      </p>
-                    )}
-                  </div>
+              </section>
+            ) : null}
+          </div>
+
+          {games.length === 0 ? (
+            <section className="mt-10">
+              <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+                    Matchups
+                  </p>
+                  <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none">
+                    {selectedTeamLabel} Games
+                  </h2>
                 </div>
+                <TeamLevelTabs
+                  selectedTeamLevel={selectedTeamLevel}
+                  teamCounts={teamCounts}
+                />
+              </div>
+              <div className="mt-5 border border-dashed border-white/20 bg-zinc-950/70 px-5 py-6 text-sm text-zinc-400">
+                The {selectedTeamLabel} schedule has not been published yet.
               </div>
             </section>
-          ) : null}
+          ) : (
+            <section className="mt-10">
+              <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="text-sm font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+                    Matchups
+                  </p>
+                  <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none">
+                    {selectedTeamLabel} Games
+                  </h2>
+                </div>
+                <TeamLevelTabs
+                  selectedTeamLevel={selectedTeamLevel}
+                  teamCounts={teamCounts}
+                />
+              </div>
+              <div className="mt-5 grid gap-4 xl:grid-cols-2">
+                {games.map((game) => (
+                  <GameTile key={game.id} game={game} />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
-
-        {games.length === 0 ? (
-          <section className="mt-10">
-            <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
-                  Matchups
-                </p>
-                <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none">
-                  {selectedTeamLabel} Games
-                </h2>
-              </div>
-              <TeamLevelTabs
-                selectedTeamLevel={selectedTeamLevel}
-                teamCounts={teamCounts}
-              />
-            </div>
-            <div className="mt-5 border border-dashed border-white/20 bg-zinc-950/70 px-5 py-6 text-sm text-zinc-400">
-              The {selectedTeamLabel} schedule has not been published yet.
-            </div>
-          </section>
-        ) : (
-          <section className="mt-10">
-            <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
-                  Matchups
-                </p>
-                <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none">
-                  {selectedTeamLabel} Games
-                </h2>
-              </div>
-              <TeamLevelTabs
-                selectedTeamLevel={selectedTeamLevel}
-                teamCounts={teamCounts}
-              />
-            </div>
-            <div className="mt-5 grid gap-4 xl:grid-cols-2">
-              {games.map((game) => (
-                <GameTile key={game.id} game={game} />
-              ))}
-            </div>
-          </section>
-        )}
       </section>
     </main>
   );

@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 export default function TeamCalendarPage() {
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
-      <section className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
-        <div className="max-w-4xl">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
+      <section className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+        <div className="min-h-[325px] max-w-4xl">
+          <p className="text-sm font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
             Program
           </p>
           <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] text-white md:text-8xl">
@@ -49,7 +49,7 @@ export default function TeamCalendarPage() {
         <section className="mt-10 overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl shadow-black/25">
           <div className="flex flex-col gap-4 border-b border-white/10 bg-white/[0.04] p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+              <p className="text-sm font-black uppercase tracking-[0.25em] text-[var(--tf-neon)]">
                 Calendar
               </p>
               <h2 className="font-display mt-1 text-4xl font-bold uppercase leading-none text-white">

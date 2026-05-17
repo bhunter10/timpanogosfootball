@@ -482,7 +482,7 @@ function RecordsTable({
     <section>
       <div className="flex flex-col gap-2 border-b border-white/15 pb-5 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+          <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
             Publicly Sourced
           </p>
           <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none md:text-5xl">
@@ -573,25 +573,25 @@ export default function RecordsPage() {
 
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
-      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-white/10 bg-[rgb(0,1,10)] md:min-h-[470px]">
+      <section className="relative isolate h-[325px] overflow-hidden border-b border-white/10 bg-[rgb(0,1,10)]">
         <Image
           src={recordsHeroImage}
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-contain object-right saturate-110"
+          className="object-contain object-right saturate-110 [mask-image:linear-gradient(90deg,transparent_0%,black_18%,black_100%)]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.86)_0%,rgba(2,9,23,0.5)_52%,rgba(5,7,9,0.9)_100%)] md:bg-[linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.84)_42%,rgba(2,9,23,0.28)_76%,rgba(2,9,23,0.42)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.86)_0%,rgba(2,9,23,0.5)_52%,rgba(5,7,9,0.9)_100%)] md:bg-[linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_34%,rgba(2,9,23,0.48)_70%,rgba(2,9,23,0.42)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-22">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
+        <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+          <p className="text-sm font-black uppercase tracking-[0.35em] text-[var(--tf-neon)]">
             Record Book
           </p>
           <h1 className="font-display mt-4 max-w-4xl text-5xl font-bold uppercase leading-[0.9] md:text-7xl">
             School Individual Records
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300">
+          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
             Known public all-time Timpanogos football marks from local coverage,
             MaxPreps, and Deseret News stat pages. This page is an ongoing public audit,
             starting with the program&apos;s first season in 1996.
@@ -621,7 +621,7 @@ export default function RecordsPage() {
 
           <section>
             <div className="border-b border-white/15 pb-5">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Research Queue
               </p>
               <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none md:text-5xl">
@@ -682,7 +682,7 @@ export default function RecordsPage() {
 
           <section>
             <div className="border-b border-white/15 pb-5">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Audit Status
               </p>
               <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none md:text-5xl">

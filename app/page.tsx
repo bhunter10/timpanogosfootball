@@ -46,9 +46,16 @@ export default async function Home() {
       teamLevel: "varsity" as const,
       sortOrder: 0,
   };
-  const upcomingGames = games.slice(0, 4);
+  const upcomingGames = games.slice(0, 5);
   const nextGameDate = formatGameDate(nextGame.dateISO);
   const nextGameMapHref = getMapHref(nextGame.address);
+  const nextGameAction = !hasSchedule
+    ? { label: "View Schedule", href: "/schedule", external: false }
+    : nextGame.isHome
+      ? { label: "Get Tickets", href: TICKETS_URL, external: true }
+      : nextGameMapHref
+        ? { label: "Get Directions", href: nextGameMapHref, external: true }
+        : { label: "View Schedule", href: "/schedule", external: false };
 
   const quickLinks: readonly QuickLink[] = [
     { title: "Tickets", href: TICKETS_URL, external: true },
@@ -72,13 +79,13 @@ export default async function Home() {
         <div className="absolute inset-x-0 bottom-0 h-36 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
         <div className="relative mx-auto flex min-h-[680px] max-w-7xl flex-col justify-center px-4 py-8 md:min-h-[760px] md:px-6 lg:py-10">
           <div className="max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-[0.38em] text-[var(--tf-neon)]">
+            <p className="text-sm font-black uppercase tracking-[0.38em] text-[var(--tf-neon)]">
               Football
             </p>
-            <h1 className="font-display mt-5 max-w-4xl text-6xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-8xl lg:text-9xl">
+            <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl lg:text-9xl">
               {settings.heroTitle}
             </h1>
-            <p className="mt-6 max-w-[21rem] text-base leading-7 text-zinc-300 md:max-w-2xl md:text-lg">
+            <p className="mt-5 max-w-[21rem] text-base leading-7 text-zinc-300 md:max-w-2xl md:text-lg">
               {settings.heroSubtitle}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -100,72 +107,108 @@ export default async function Home() {
           </div>
 
           <div className="mt-8 flex justify-start">
-            <div className="w-full overflow-hidden border border-[var(--tf-neon)]/70 bg-[var(--tf-neon)] text-[var(--tf-navy)] shadow-2xl shadow-[var(--tf-neon)]/25 sm:max-w-xl">
-              <div className="flex items-center justify-between gap-4 border-b border-[var(--tf-navy)]/15 px-5 py-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.26em]">
+            <div className="w-full overflow-hidden rounded-lg border border-[var(--tf-neon)]/45 bg-[var(--tf-navy-deep)]/90 text-white shadow-2xl shadow-black/35 backdrop-blur sm:max-w-3xl">
+              <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-3">
+                <p className="text-xs font-black uppercase tracking-[0.26em] text-[var(--tf-neon)]">
                   Next Game
                 </p>
-                <p className="font-mono text-xs font-black uppercase">
+                <p className="rounded-sm border border-[var(--tf-neon)]/35 bg-[var(--tf-neon)]/10 px-2.5 py-1 font-mono text-[11px] font-black uppercase text-[var(--tf-neon)]">
                   {hasSchedule ? (nextGame.isHome ? "Home" : "Away") : "TBD"}
                 </p>
               </div>
-              <div className="grid gap-4 px-5 py-5 sm:grid-cols-[72px_1fr] sm:items-center">
-                {nextGame.opponentLogoUrl ? (
-                  <div className="relative h-[72px] w-[72px] overflow-hidden border border-[var(--tf-navy)]/15 bg-white shadow-lg shadow-[var(--tf-navy)]/10">
-                    <Image
-                      src={nextGame.opponentLogoUrl}
-                      alt=""
-                      fill
-                      sizes="72px"
-                      className="object-contain p-2"
-                    />
+              <div className="grid gap-5 p-4 sm:p-5 md:grid-cols-[1fr_230px]">
+                <div className="grid min-w-0 gap-4 sm:flex sm:items-center md:gap-5">
+                  <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-md border border-white/15 bg-white shadow-xl shadow-black/25 sm:h-24 sm:w-24">
+                    {nextGame.opponentLogoUrl ? (
+                      <Image
+                        src={nextGame.opponentLogoUrl}
+                        alt=""
+                        fill
+                        sizes="96px"
+                        className="object-contain p-3"
+                      />
+                    ) : (
+                      <span className="font-display text-3xl font-bold uppercase text-[var(--tf-navy)]">
+                        {hasSchedule ? nextGame.opponent.slice(0, 2) : "TF"}
+                      </span>
+                    )}
                   </div>
-                ) : null}
-                <div className={nextGame.opponentLogoUrl ? "" : "sm:col-span-2"}>
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-navy)]/70">
-                    {hasSchedule
-                      ? nextGame.isHome
-                        ? "Timpanogos vs"
-                        : "Timpanogos at"
-                      : "Season"}
-                  </p>
-                  <p className="font-display mt-1 text-4xl font-bold uppercase leading-none md:text-5xl">
-                    {hasSchedule ? nextGame.opponent : "Schedule Coming Soon"}
-                  </p>
+                  <div className="min-w-0">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
+                      {hasSchedule
+                        ? nextGame.isHome
+                          ? "Timpanogos vs"
+                          : "Timpanogos at"
+                        : "Season"}
+                    </p>
+                    <p className="font-display mt-1 break-words text-3xl font-bold uppercase leading-none text-white sm:text-4xl md:text-5xl">
+                      {hasSchedule ? nextGame.opponent : "Schedule Coming Soon"}
+                    </p>
+                    {nextGame.opponentMascot ? (
+                      <p className="mt-2 text-xs font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                        {nextGame.opponentMascot}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="grid overflow-hidden rounded-md border border-white/10 bg-white/[0.04] text-sm font-black sm:grid-cols-3 md:grid-cols-1">
+                  <div className="p-3.5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                      Date
+                    </p>
+                    <p className="mt-1 text-white">
+                      {nextGameDate.month} {nextGameDate.day || "TBD"}
+                    </p>
+                  </div>
+                  <div className="border-t border-white/10 p-3.5 sm:border-l sm:border-t-0 md:border-l-0 md:border-t">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                      Time
+                    </p>
+                    <p className="mt-1 text-white">{nextGameDate.time}</p>
+                  </div>
+                  <div className="border-t border-white/10 p-3.5 sm:border-l sm:border-t-0 md:border-l-0 md:border-t">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                      Location
+                    </p>
+                    {nextGameMapHref ? (
+                      <a
+                        href={nextGameMapHref}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-1 block break-words text-white underline decoration-white/25 underline-offset-4 hover:text-[var(--tf-neon)] md:truncate"
+                      >
+                        {nextGame.location || "TBD"}
+                      </a>
+                    ) : (
+                      <p className="mt-1 break-words text-white md:truncate">
+                        {nextGame.location || "TBD"}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="grid gap-px bg-[var(--tf-navy)]/15 text-sm font-black sm:grid-cols-3">
-                <div className="bg-[var(--tf-neon)] px-5 py-3">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--tf-navy)]/60">
-                    Date
-                  </p>
-                  <p>
-                    {nextGameDate.month} {nextGameDate.day}
-                  </p>
-                </div>
-                <div className="bg-[var(--tf-neon)] px-5 py-3">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--tf-navy)]/60">
-                    Time
-                  </p>
-                  <p>{nextGameDate.time}</p>
-                </div>
-                <div className="bg-[var(--tf-neon)] px-5 py-3">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--tf-navy)]/60">
-                    Location
-                  </p>
-                  {nextGameMapHref ? (
-                    <a
-                      href={nextGameMapHref}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline decoration-[var(--tf-navy)]/40 underline-offset-4 hover:decoration-[var(--tf-navy)]"
-                    >
-                      {nextGame.location || "TBD"}
-                    </a>
-                  ) : (
-                    <p>{nextGame.location || "TBD"}</p>
-                  )}
-                </div>
+              <div className="flex flex-col gap-3 border-t border-white/10 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">
+                  Varsity Football
+                </p>
+                {nextGameAction.external ? (
+                  <a
+                    href={nextGameAction.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center rounded-sm bg-[var(--tf-neon)] px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110 sm:w-auto"
+                  >
+                    {nextGameAction.label}
+                  </a>
+                ) : (
+                  <Link
+                    href={nextGameAction.href}
+                    className="inline-flex w-full items-center justify-center rounded-sm bg-[var(--tf-neon)] px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110 sm:w-auto"
+                  >
+                    {nextGameAction.label}
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -210,21 +253,15 @@ export default async function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-20">
         <div>
-          <div className="flex items-end justify-between gap-4 border-b border-white/15 pb-5">
+          <div className="border-b border-white/15 pb-5">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Season
               </p>
               <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none text-white md:text-5xl">
                 Schedule Snapshot
               </h2>
             </div>
-            <Link
-              href="/schedule"
-              className="hidden text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white sm:block"
-            >
-              Full Schedule
-            </Link>
           </div>
 
           <div className="divide-y divide-white/10">
@@ -234,9 +271,9 @@ export default async function Home() {
               return (
                 <div
                   key={game.id}
-                  className="grid gap-4 py-5 md:grid-cols-[100px_1fr_auto] md:items-center"
+                  className="grid grid-cols-[48px_1fr] gap-x-3 gap-y-2 py-4 md:grid-cols-[80px_1fr_auto] md:gap-4 md:py-5 md:items-center"
                 >
-                  <div className="flex items-baseline gap-2 md:block">
+                  <div className="grid w-11 shrink-0 gap-0.5 rounded-md border border-white/10 bg-[var(--tf-navy)] px-1 py-2 text-center md:block md:w-14 md:px-1.5 md:py-2">
                     <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
                       {date.month}
                     </p>
@@ -244,8 +281,8 @@ export default async function Home() {
                       {date.day || "--"}
                     </p>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-white/15 bg-white">
+                  <div className="flex min-w-0 items-center gap-3 md:gap-4">
+                    <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-white/15 bg-white md:h-14 md:w-14">
                       {game.opponentLogoUrl ? (
                         <Image
                           src={game.opponentLogoUrl}
@@ -260,20 +297,20 @@ export default async function Home() {
                         </span>
                       )}
                     </div>
-                    <div>
-                      <p className="font-display text-3xl font-bold uppercase leading-none text-white">
+                    <div className="min-w-0">
+                      <p className="font-display break-words text-2xl font-bold uppercase leading-none text-white md:text-3xl">
                         {game.isHome ? "vs " : "@ "}
                         {game.opponent}
                       </p>
                       {game.opponentMascot ? (
-                        <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                        <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--tf-neon)] md:text-xs md:tracking-[0.18em]">
                           {game.opponentMascot}
                         </p>
                       ) : null}
                     </div>
                   </div>
-                  <div className="md:col-start-2">
-                    <p className="mt-2 text-sm text-zinc-400">
+                  <div className="col-span-2 md:col-span-1 md:col-start-2">
+                    <p className="text-sm text-zinc-400 md:mt-2">
                       {date.weekday ? `${date.weekday} / ` : ""}
                       {date.time} /{" "}
                       {mapHref ? (
@@ -298,6 +335,14 @@ export default async function Home() {
                 </div>
               );
             })}
+          </div>
+          <div className="border-t border-white/10 pt-5">
+            <Link
+              href="/schedule"
+              className="text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
+            >
+              View full schedule
+            </Link>
           </div>
         </div>
       </section>

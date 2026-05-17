@@ -10,14 +10,14 @@ export default async function RecruitingPage() {
   const settings = await getSiteSettings();
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12">
-      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+    <main className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+      <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
         Recruiting
       </p>
-      <h1 className="font-display mt-2 text-4xl font-bold text-slate-900">
+      <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold leading-[0.88] text-slate-900 md:text-8xl">
         Prospects
       </h1>
-      <p className="mt-4 text-lg leading-relaxed text-slate-600">
+      <p className="mt-5 max-w-xl text-sm leading-6 text-slate-600 md:text-base">
         {settings.recruitingBlurb ??
           "Interested student-athletes should work through the athletic office and official school recruiting policies. Questionnaire and camp links will appear here when published."}
       </p>

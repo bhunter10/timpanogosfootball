@@ -10,14 +10,14 @@ export default async function TicketsPage() {
   const settings = await getSiteSettings();
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12">
-      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+    <main className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+      <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
         Tickets
       </p>
-      <h1 className="font-display mt-2 text-4xl font-bold text-slate-900">
+      <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold leading-[0.88] text-slate-900 md:text-8xl">
         Game tickets
       </h1>
-      <p className="mt-4 text-lg leading-relaxed text-slate-600">
+      <p className="mt-5 max-w-xl text-sm leading-6 text-slate-600 md:text-base">
         {settings.ticketBlurb}
       </p>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row">

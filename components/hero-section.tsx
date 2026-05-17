@@ -8,7 +8,7 @@ type HeroSectionProps = {
 
 export function HeroSection({ title, subtitle, imageUrl }: HeroSectionProps) {
   return (
-    <section className="relative isolate min-h-[360px] overflow-hidden bg-[#070f22]">
+    <section className="relative isolate h-[325px] overflow-hidden bg-[#070f22]">
       <div className="absolute inset-0 opacity-40">
         {imageUrl ? (
           <div className="relative h-full min-h-[360px] w-full">
@@ -26,14 +26,14 @@ export function HeroSection({ title, subtitle, imageUrl }: HeroSectionProps) {
         )}
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-[#050914]/95 via-[#050914]/80 to-transparent" />
-      <div className="relative mx-auto max-w-6xl px-4 py-16 md:py-24 lg:py-28">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--tf-neon)]">
+      <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--tf-neon)]">
           Home of the Thunderbirds
         </p>
-        <h1 className="font-display mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white md:text-5xl">
+        <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold leading-[0.88] tracking-tight text-white md:text-8xl">
           {title}
         </h1>
-        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-zinc-300">
+        <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
           {subtitle}
         </p>
       </div>

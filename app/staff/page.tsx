@@ -89,7 +89,7 @@ export default async function StaffPage() {
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
-      <section className="relative isolate min-h-[420px] overflow-hidden bg-[var(--tf-black)] text-white md:min-h-[500px]">
+      <section className="relative isolate h-[325px] overflow-hidden bg-[var(--tf-black)] text-white">
         <Image
           src="/images/staff-playbook-hero.png"
           alt=""
@@ -101,15 +101,15 @@ export default async function StaffPage() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,9,23,0.96)_0%,rgba(2,9,23,0.78)_42%,rgba(2,9,23,0.42)_100%)]" />
         <div className="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(0deg,var(--tf-black),transparent)]" />
 
-        <div className="relative mx-auto flex min-h-[420px] max-w-7xl flex-col justify-center px-4 py-10 md:min-h-[500px] md:px-6 lg:py-12">
+        <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
           <div className="max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
+            <p className="text-sm font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
               Coaches & Staff
             </p>
-            <h1 className="font-display mt-4 text-5xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-7xl lg:text-8xl">
+            <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
               Staff
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-300">
+            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
               The people leading the preparation, culture, and Friday-night standard for
               Timpanogos football.
             </p>

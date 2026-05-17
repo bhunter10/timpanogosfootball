@@ -214,7 +214,7 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
     <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
       <aside className="self-start border border-white/10 bg-white/[0.055] p-5">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+          <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
             Filters
           </p>
           <button

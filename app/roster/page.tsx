@@ -64,26 +64,26 @@ export default async function RosterPage() {
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
-      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)] px-4 py-14 md:min-h-[520px] md:px-6 lg:py-20">
+      <section className="relative isolate h-[325px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)]">
         <Image
           src={rosterHeroImage}
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[66%_center] md:object-contain md:object-right"
+          className="object-cover object-[66%_center] [mask-image:linear-gradient(90deg,transparent_0%,black_18%,black_100%)] md:object-contain md:object-right"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--tf-navy)_0%,rgba(2,9,23,0.98)_28%,rgba(2,9,23,0.84)_46%,rgba(2,9,23,0.34)_72%,rgba(2,9,23,0.08)_100%)]" />
-        <div className="absolute inset-y-0 left-0 w-[68%] bg-[radial-gradient(ellipse_at_left,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_38%,rgba(2,9,23,0)_76%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--tf-navy)_0%,rgba(2,9,23,0.98)_22%,rgba(2,9,23,0.82)_48%,rgba(2,9,23,0.42)_74%,rgba(2,9,23,0.1)_100%)]" />
+        <div className="absolute inset-y-0 left-0 w-[76%] bg-[radial-gradient(ellipse_at_left,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.82)_48%,rgba(2,9,23,0)_84%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,9,23,0.16)_0%,rgba(2,9,23,0.02)_54%,rgba(2,9,23,0.72)_100%)]" />
-        <div className="relative mx-auto max-w-7xl">
-          <p className="text-xs font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
+        <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+          <p className="text-sm font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
             Team
           </p>
-          <h1 className="font-display mt-5 max-w-4xl text-6xl font-bold uppercase leading-[0.86] tracking-tight text-white md:text-8xl">
+          <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
             Roster
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-300 md:text-lg">
+          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
             Player profiles for the Timpanogos football program.
           </p>
         </div>
@@ -101,7 +101,7 @@ export default async function RosterPage() {
             </div>
           ) : (
             <div className="border border-dashed border-white/20 bg-white/[0.055] p-8 md:p-10">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Roster Coming Soon
               </p>
               <h2 className="font-display mt-4 text-4xl font-bold uppercase leading-none text-white">
