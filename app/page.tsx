@@ -82,7 +82,7 @@ export default async function Home() {
             <p className="text-sm font-black uppercase tracking-[0.38em] text-[var(--tf-neon)]">
               Football
             </p>
-            <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl lg:text-9xl">
+            <h1 className="font-display mt-4 max-w-4xl text-5xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-7xl lg:text-8xl">
               {settings.heroTitle}
             </h1>
             <p className="mt-5 max-w-[21rem] text-base leading-7 text-zinc-300 md:max-w-2xl md:text-lg">

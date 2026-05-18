@@ -9,8 +9,8 @@
   --tf-neon: #39ff14;
   --tf-green: var(--tf-neon);
   --tf-gold: var(--tf-neon);
-  --background: #e8ecef;
-  --foreground: #07111f;
+  --background: var(--tf-black);
+  --foreground: #ffffff;
 }
 
 @theme inline {

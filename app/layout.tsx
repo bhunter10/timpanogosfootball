@@ -38,7 +38,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${display.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[var(--background)] font-sans text-slate-900">
+      <body className="flex min-h-full flex-col bg-[var(--tf-black)] font-sans text-white">
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
