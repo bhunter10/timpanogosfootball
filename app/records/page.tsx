@@ -334,6 +334,16 @@ const headlineRecords: readonly RecordMark[] = [
   },
   {
     side: "specialTeams",
+    category: "Game",
+    mark: "Longest field goal",
+    player: "Chris Broadhead",
+    value: "51",
+    season: "1999 game",
+    sourceId: "deseret-1999-leaders",
+    note: "Reported vs. Hillcrest on Sept. 10, 1999.",
+  },
+  {
+    side: "specialTeams",
     category: "Season",
     mark: "Kickoff return yards",
     player: "Mote Siufanua",
@@ -507,47 +517,45 @@ function RecordsTable({
             return (
               <article
                 key={`${record.side}-${record.category}-${record.mark}-${record.player}-${record.season}`}
-                className="grid gap-3 px-4 py-4 md:grid-cols-[110px_1.2fr_1fr_100px_90px] md:items-center"
+                className="grid grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] gap-x-3 gap-y-2 px-3 py-3 md:grid-cols-[110px_1.2fr_1fr_100px_90px] md:items-center md:gap-4 md:px-4 md:py-4"
               >
-                <span className="w-fit rounded-sm bg-[var(--tf-neon)] px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[var(--tf-navy)]">
-                  {record.category}
-                </span>
-                <div>
-                  <h3 className="text-base font-bold text-white">{record.mark}</h3>
-                  {record.note ? (
-                    <p className="mt-1 text-xs leading-5 text-zinc-400">
-                      {record.note}
-                    </p>
-                  ) : null}
-                  {source ? (
-                    <a
-                      href={source.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 inline-block text-xs font-semibold text-[var(--tf-neon)] underline decoration-[var(--tf-neon)]/40 underline-offset-4 hover:decoration-[var(--tf-neon)] md:hidden"
-                    >
-                      {source.label}
-                    </a>
-                  ) : null}
+                <div className="min-w-0 md:contents">
+                  <span className="w-fit rounded-sm bg-[var(--tf-neon)] px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-[var(--tf-navy)] md:px-2.5 md:py-1 md:text-[10px]">
+                    {record.category}
+                  </span>
+                  <div className="mt-2 min-w-0 md:mt-0">
+                    <h3 className="text-sm font-bold leading-tight text-white md:text-base">
+                      {record.mark}
+                    </h3>
+                    {record.note ? (
+                      <p className="mt-0.5 text-[11px] leading-4 text-zinc-400 md:mt-1 md:text-xs md:leading-5">
+                        {record.note}
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
-                <p className="font-display text-2xl font-bold uppercase leading-none">
-                  {record.player}
-                </p>
-                <p className="font-display text-4xl font-bold leading-none text-[var(--tf-neon)]">
-                  {record.value}
-                </p>
-                <div>
-                  <p className="text-sm font-semibold text-zinc-300">{record.season}</p>
-                  {source ? (
-                    <a
-                      href={source.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hidden text-xs font-semibold text-[var(--tf-neon)] underline decoration-[var(--tf-neon)]/40 underline-offset-4 hover:decoration-[var(--tf-neon)] md:inline-block"
-                    >
-                      Source
-                    </a>
-                  ) : null}
+                <div className="min-w-0 self-start md:contents">
+                  <p className="font-display min-w-0 text-base font-bold uppercase leading-none md:text-2xl">
+                    {record.player}
+                  </p>
+                  <p className="font-display mt-1 text-3xl font-bold leading-none text-[var(--tf-neon)] md:mt-0 md:text-4xl">
+                    {record.value}
+                  </p>
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 md:mt-0 md:block">
+                    <p className="text-xs font-semibold text-zinc-300 md:text-sm">
+                      {record.season}
+                    </p>
+                    {source ? (
+                      <a
+                        href={source.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-semibold text-[var(--tf-neon)] underline decoration-[var(--tf-neon)]/40 underline-offset-4 hover:decoration-[var(--tf-neon)]"
+                      >
+                        Source
+                      </a>
+                    ) : null}
+                  </div>
                 </div>
               </article>
             );
