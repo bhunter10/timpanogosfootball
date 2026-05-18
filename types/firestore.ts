@@ -66,7 +66,6 @@ export type SiteSettings = {
 export const defaultSiteSettings: SiteSettings = {
   heroTitle: "Timpanogos Football",
   heroSubtitle: "Utah high school football — schedule, staff, and team news.",
-  heroImageUrl: undefined,
   ticketBlurb:
     "Game tickets and passes are sold through the school. Links below open official purchasing pages when available.",
   ticketUrl: "https://gofan.co/app/school/UT7313",

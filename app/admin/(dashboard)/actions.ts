@@ -3,6 +3,7 @@
 import { refresh, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { randomUUID } from "node:crypto";
+import { FieldValue } from "firebase-admin/firestore";
 import sharp from "sharp";
 import { z } from "zod";
 import { verifyAdminSession } from "@/lib/auth/session";
@@ -37,12 +38,46 @@ const settingsSchema = z.object({
   footerNote: z.string().optional(),
 });
 
+const optionalSettingFields = [
+  "heroImageUrl",
+  "ticketUrl",
+  "ticketSecondaryUrl",
+  "ticketBlurb",
+  "shopPrimaryUrl",
+  "shopMessage",
+  "recruitingFormUrl",
+  "recruitingBlurb",
+  "footerNote",
+] as const;
+
+export type SaveSiteSettingsState = {
+  status: "idle" | "success" | "error";
+  message: string;
+  savedAt?: string;
+};
+
 function optStr(v: FormDataEntryValue | null): string | undefined {
   const s = String(v ?? "").trim();
   return s === "" ? undefined : s;
 }
 
-export async function saveSiteSettings(formData: FormData) {
+function siteSettingsWriteData(settings: z.infer<typeof settingsSchema>) {
+  const data: Record<string, unknown> = {
+    heroTitle: settings.heroTitle,
+    heroSubtitle: settings.heroSubtitle,
+  };
+
+  for (const field of optionalSettingFields) {
+    data[field] = settings[field] ?? FieldValue.delete();
+  }
+
+  return data;
+}
+
+export async function saveSiteSettings(
+  _prevState: SaveSiteSettingsState,
+  formData: FormData,
+): Promise<SaveSiteSettingsState> {
   await requireAdminSession();
   const parsed = settingsSchema.safeParse({
     heroTitle: String(formData.get("heroTitle") ?? ""),
@@ -59,23 +94,27 @@ export async function saveSiteSettings(formData: FormData) {
   });
 
   if (!parsed.success) {
-    return;
+    return {
+      status: "error",
+      message: "Could not save. Hero title and subtitle are required.",
+    };
   }
 
   await getAdminDb()
     .collection("siteSettings")
     .doc("main")
-    .set(
-      {
-        ...parsed.data,
-      },
-      { merge: true },
-    );
+    .set(siteSettingsWriteData(parsed.data), { merge: true });
 
   revalidatePath("/");
   revalidatePath("/tickets");
   revalidatePath("/shop");
   revalidatePath("/recruiting");
+
+  return {
+    status: "success",
+    message: "Settings saved.",
+    savedAt: new Date().toISOString(),
+  };
 }
 
 const gameSchema = z.object({
