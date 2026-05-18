@@ -11,6 +11,7 @@ import {
   getAdminStorageBucket,
   isFirebaseAdminConfigured,
 } from "@/lib/firebase/admin";
+import { scheduleDatetimeLocalToIso } from "@/lib/date/schedule-time";
 
 async function requireAdminSession() {
   if (!isFirebaseAdminConfigured()) {
@@ -98,11 +99,9 @@ async function getOpponentName(opponentId: string): Promise<string | undefined> 
 
 async function parseScheduleGameForm(formData: FormData) {
   const kickoffLocal = String(formData.get("kickoffLocal") ?? "");
-  const parsedKickoff = kickoffLocal ? new Date(kickoffLocal) : null;
-  const dateISO =
-    parsedKickoff && !Number.isNaN(parsedKickoff.getTime())
-      ? parsedKickoff.toISOString()
-      : String(formData.get("dateISO") ?? "");
+  const dateISO = kickoffLocal
+    ? scheduleDatetimeLocalToIso(kickoffLocal)
+    : String(formData.get("dateISO") ?? "");
   const opponentId = optStr(formData.get("opponentId"));
   const opponent = opponentId
     ? await getOpponentName(opponentId)

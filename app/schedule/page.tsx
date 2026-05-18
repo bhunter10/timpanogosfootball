@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { ScheduleCalendarModal } from "@/components/schedule-calendar-modal";
 import { getHeadersOrigin } from "@/lib/site-url";
 import { getScheduleGames } from "@/lib/data/schedule";
+import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import {
   scheduleTeamLevels,
   type ScheduleGame,
@@ -15,26 +16,6 @@ export const metadata: Metadata = {
   title: "Schedule",
   description: "Timpanogos football schedule, opponents, and locations.",
 };
-
-function formatGameDate(iso: string) {
-  try {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) {
-      return { month: "TBD", day: "--", weekday: "", time: "Time TBD" };
-    }
-    return {
-      month: new Intl.DateTimeFormat("en-US", { month: "short" }).format(d),
-      day: new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(d),
-      weekday: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(d),
-      time: new Intl.DateTimeFormat("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      }).format(d),
-    };
-  } catch {
-    return { month: "TBD", day: "--", weekday: "", time: iso || "Time TBD" };
-  }
-}
 
 function getMapHref(address?: string) {
   if (!address) return undefined;
@@ -124,24 +105,24 @@ function OpponentLogo({
 }
 
 function GameTile({ game }: { game: ScheduleGame }) {
-  const date = formatGameDate(game.dateISO);
+  const date = formatScheduleGameDate(game.dateISO, "--");
   const mapHref = getMapHref(game.address);
 
   return (
-    <article className="group rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-white shadow-lg shadow-black/10 backdrop-blur transition hover:border-[var(--tf-neon)]/50 hover:bg-white/[0.09]">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-4">
+    <article className="group max-w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-white shadow-lg shadow-black/10 backdrop-blur transition hover:border-[var(--tf-neon)]/50 hover:bg-white/[0.09]">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-3">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
           <OpponentLogo game={game} />
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
               {game.isHome ? "Home" : "Away"}
             </p>
-            <h2 className="font-display mt-1 truncate text-3xl font-bold uppercase leading-none">
+            <h2 className="font-display mt-1 break-words text-2xl font-bold uppercase leading-none [overflow-wrap:anywhere] sm:text-3xl">
               {game.isHome ? "vs " : "@ "}
               {game.opponent}
             </h2>
             {game.opponentMascot ? (
-              <p className="mt-1 truncate text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400">
+              <p className="mt-1 break-words text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400 [overflow-wrap:anywhere]">
                 {game.opponentMascot}
               </p>
             ) : null}
@@ -171,7 +152,7 @@ function GameTile({ game }: { game: ScheduleGame }) {
               href={mapHref}
               target="_blank"
               rel="noreferrer"
-              className="mt-1 block font-semibold text-white underline decoration-white/25 underline-offset-4 hover:text-[var(--tf-neon)]"
+              className="mt-1 block break-words font-semibold text-white underline decoration-white/25 underline-offset-4 [overflow-wrap:anywhere] hover:text-[var(--tf-neon)]"
             >
               {game.location || "Location TBD"}
             </a>
@@ -200,7 +181,9 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
   const selectedTeamLabel = getTeamLevelLabel(selectedTeamLevel);
   const games = allGames.filter((game) => game.teamLevel === selectedTeamLevel);
   const nextGame = games.find((game) => !game.result) ?? games[0];
-  const nextGameDate = nextGame ? formatGameDate(nextGame.dateISO) : null;
+  const nextGameDate = nextGame
+    ? formatScheduleGameDate(nextGame.dateISO, "--")
+    : null;
   const nextGameMapHref = nextGame ? getMapHref(nextGame.address) : undefined;
   const calendarLinks = getCalendarSubscribeLinks(
     selectedTeamLevel,

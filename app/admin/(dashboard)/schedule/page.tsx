@@ -11,6 +11,10 @@ import {
   type ScheduleGame,
   type ScheduleTeamLevel,
 } from "@/types/firestore";
+import {
+  formatScheduleAdminDate,
+  toScheduleDatetimeLocalValue,
+} from "@/lib/date/schedule-time";
 
 export const dynamic = "force-dynamic";
 
@@ -18,25 +22,11 @@ const fieldClass =
   "mt-1 w-full rounded-lg border border-white/15 bg-black px-3 py-2 text-sm text-white outline-none ring-[var(--tf-neon)] focus:ring-2";
 
 function toDatetimeLocalValue(iso: string) {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "";
-  const pad = (value: number) => String(value).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  return toScheduleDatetimeLocalValue(iso);
 }
 
 function formatAdminGameDate(iso: string) {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "Date TBD";
-  const datePart = new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(date);
-  const timePart = new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
-  return `${datePart} at ${timePart}`;
+  return formatScheduleAdminDate(iso);
 }
 
 function getTeamLevelLabel(teamLevel: ScheduleTeamLevel) {

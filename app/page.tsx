@@ -1,30 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getScheduleGames } from "@/lib/data/schedule";
+import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { TICKETS_URL } from "@/lib/site-links";
 
 const heroImage = "/images/timpanogos-football-hero-option1.jpg";
 
 type QuickLink = { title: string; href: string; external?: boolean };
-
-function formatGameDate(iso: string) {
-  try {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) return { month: "TBD", day: "", time: "Time TBD" };
-    return {
-      month: new Intl.DateTimeFormat("en-US", { month: "short" }).format(d),
-      day: new Intl.DateTimeFormat("en-US", { day: "numeric" }).format(d),
-      weekday: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(d),
-      time: new Intl.DateTimeFormat("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      }).format(d),
-    };
-  } catch {
-    return { month: "TBD", day: "", weekday: "", time: iso || "Time TBD" };
-  }
-}
 
 function getMapHref(address?: string) {
   if (!address) return undefined;
@@ -47,7 +30,7 @@ export default async function Home() {
       sortOrder: 0,
   };
   const upcomingGames = games.slice(0, 5);
-  const nextGameDate = formatGameDate(nextGame.dateISO);
+  const nextGameDate = formatScheduleGameDate(nextGame.dateISO);
   const nextGameMapHref = getMapHref(nextGame.address);
   const nextGameAction = !hasSchedule
     ? { label: "View Schedule", href: "/schedule", external: false }
@@ -266,7 +249,7 @@ export default async function Home() {
 
           <div className="mt-5 grid gap-3 md:mt-0 md:block md:divide-y md:divide-white/10">
             {(upcomingGames.length ? upcomingGames : [nextGame]).map((game) => {
-              const date = formatGameDate(game.dateISO);
+              const date = formatScheduleGameDate(game.dateISO);
               const mapHref = getMapHref(game.address);
               return (
                 <div
