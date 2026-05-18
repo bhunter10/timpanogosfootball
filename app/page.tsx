@@ -271,7 +271,7 @@ export default async function Home() {
               return (
                 <div
                   key={game.id}
-                  className="grid grid-cols-[48px_1fr] gap-x-3 gap-y-2 py-4 md:grid-cols-[80px_1fr_auto] md:gap-4 md:py-5 md:items-center"
+                  className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 gap-y-2 overflow-hidden py-4 md:grid-cols-[80px_1fr_auto] md:items-center md:gap-4 md:py-5"
                 >
                   <div className="grid w-11 shrink-0 gap-0.5 rounded-md border border-white/10 bg-[var(--tf-navy)] px-1 py-2 text-center md:block md:w-14 md:px-1.5 md:py-2">
                     <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
@@ -281,7 +281,7 @@ export default async function Home() {
                       {date.day || "--"}
                     </p>
                   </div>
-                  <div className="flex min-w-0 items-center gap-3 md:gap-4">
+                  <div className="flex min-w-0 items-center gap-3 overflow-hidden md:gap-4">
                     <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-sm border border-white/15 bg-white md:h-14 md:w-14">
                       {game.opponentLogoUrl ? (
                         <Image
@@ -298,7 +298,7 @@ export default async function Home() {
                       )}
                     </div>
                     <div className="min-w-0">
-                      <p className="font-display break-words text-2xl font-bold uppercase leading-none text-white md:text-3xl">
+                      <p className="font-display break-words text-2xl font-bold uppercase leading-none text-white [overflow-wrap:anywhere] md:text-3xl">
                         {game.isHome ? "vs " : "@ "}
                         {game.opponent}
                       </p>
@@ -309,8 +309,8 @@ export default async function Home() {
                       ) : null}
                     </div>
                   </div>
-                  <div className="col-span-2 md:col-span-1 md:col-start-2">
-                    <p className="text-sm text-zinc-400 md:mt-2">
+                  <div className="col-start-2 min-w-0 md:col-span-1 md:col-start-2">
+                    <p className="break-words text-sm text-zinc-400 [overflow-wrap:anywhere] md:mt-2">
                       {date.weekday ? `${date.weekday} / ` : ""}
                       {date.time} /{" "}
                       {mapHref ? (
@@ -328,7 +328,7 @@ export default async function Home() {
                     </p>
                   </div>
                   {game.result ? (
-                    <span className="w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-300">
+                    <span className="col-start-2 w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-300 md:col-start-auto">
                       {game.result}
                     </span>
                   ) : null}
