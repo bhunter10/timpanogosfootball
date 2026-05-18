@@ -264,14 +264,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="divide-y divide-white/10">
+          <div className="mt-5 grid gap-3 md:mt-0 md:block md:divide-y md:divide-white/10">
             {(upcomingGames.length ? upcomingGames : [nextGame]).map((game) => {
               const date = formatGameDate(game.dateISO);
               const mapHref = getMapHref(game.address);
               return (
                 <div
                   key={game.id}
-                  className="grid grid-cols-[44px_minmax(0,1fr)] gap-x-3 gap-y-2 overflow-hidden py-4 md:grid-cols-[80px_1fr_auto] md:items-center md:gap-4 md:py-5"
+                  className="grid max-w-full grid-cols-[44px_minmax(0,1fr)] gap-x-3 gap-y-2 overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] px-3 py-4 md:grid-cols-[80px_1fr_auto] md:items-center md:gap-4 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-5"
                 >
                   <div className="grid w-11 shrink-0 gap-0.5 rounded-md border border-white/10 bg-[var(--tf-navy)] px-1 py-2 text-center md:block md:w-14 md:px-1.5 md:py-2">
                     <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
