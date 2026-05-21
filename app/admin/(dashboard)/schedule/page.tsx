@@ -15,11 +15,14 @@ import {
   formatScheduleAdminDate,
   toScheduleDatetimeLocalValue,
 } from "@/lib/date/schedule-time";
+import { AdminDateInput } from "@/components/admin-date-input";
 
 export const dynamic = "force-dynamic";
 
 const fieldClass =
-  "mt-1 w-full rounded-lg border border-white/15 bg-black px-3 py-2 text-sm text-white outline-none ring-[var(--tf-neon)] focus:ring-2";
+  "mt-1 w-full rounded-lg border border-white/15 bg-black px-3 py-2 text-sm text-white [color-scheme:dark] outline-none ring-[var(--tf-neon)] focus:ring-2";
+const dateFieldClass =
+  "admin-date-input w-full rounded-lg border border-white/15 bg-black px-3 py-2 pr-11 text-sm text-white [color-scheme:dark] outline-none ring-[var(--tf-neon)] focus:ring-2";
 
 function toDatetimeLocalValue(iso: string) {
   return toScheduleDatetimeLocalValue(iso);
@@ -91,12 +94,12 @@ function ScheduleGameFields({
       </label>
       <label className="text-xs font-medium text-zinc-400">
         Kickoff date & time
-        <input
+        <AdminDateInput
           name="kickoffLocal"
           type="datetime-local"
           required
           defaultValue={game ? toDatetimeLocalValue(game.dateISO) : ""}
-          className={fieldClass}
+          className={dateFieldClass}
         />
       </label>
       <label className="text-xs font-medium text-zinc-400 md:col-span-2">

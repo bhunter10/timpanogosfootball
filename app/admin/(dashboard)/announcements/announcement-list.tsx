@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import type { DragEvent } from "react";
 import type { Announcement } from "@/types/firestore";
+import { AdminDateInput } from "@/components/admin-date-input";
 import {
   deleteAnnouncement,
   reorderAnnouncements,
@@ -10,7 +11,9 @@ import {
 } from "../actions";
 
 const inputClass =
-  "mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white";
+  "mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white [color-scheme:dark]";
+const dateInputClass =
+  "admin-date-input w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 pr-11 text-sm text-white [color-scheme:dark]";
 
 type AnnouncementListProps = {
   announcements: Announcement[];
@@ -203,11 +206,11 @@ export function AnnouncementFields({
       </label>
       <label className="text-xs font-medium text-zinc-400">
         Date
-        <input
+        <AdminDateInput
           name="dateISO"
           type="date"
           defaultValue={announcement?.dateISO ?? ""}
-          className={inputClass}
+          className={dateInputClass}
         />
       </label>
       <label className="text-xs font-medium text-zinc-400">

@@ -30,3 +30,9 @@ body {
 .font-display {
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
 }
+
+.admin-date-input::-webkit-calendar-picker-indicator {
+  display: none;
+  opacity: 0;
+  -webkit-appearance: none;
+}
