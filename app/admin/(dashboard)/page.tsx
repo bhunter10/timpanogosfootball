@@ -28,6 +28,15 @@ export default function AdminHomePage() {
           </p>
         </Link>
         <Link
+          href="/admin/announcements"
+          className="rounded-2xl border border-white/10 bg-zinc-900/70 p-5 transition hover:border-[var(--tf-neon)]/40"
+        >
+          <p className="text-sm font-semibold text-white">Announcements</p>
+          <p className="mt-2 text-xs text-zinc-400">
+            Home page news, reminders, links, and pinned updates.
+          </p>
+        </Link>
+        <Link
           href="/admin/schedule"
           className="rounded-2xl border border-white/10 bg-zinc-900/70 p-5 transition hover:border-[var(--tf-neon)]/40"
         >

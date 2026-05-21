@@ -166,6 +166,116 @@ function refreshScheduleViews() {
   refresh();
 }
 
+const announcementSchema = z.object({
+  title: z.string().min(1),
+  body: z.string().min(1),
+  label: z.string().optional(),
+  dateISO: z.string().optional(),
+  href: z.string().optional(),
+  linkLabel: z.string().optional(),
+  isPinned: z.boolean(),
+  isPublished: z.boolean(),
+  sortOrder: z.coerce.number().int(),
+});
+
+function parseAnnouncementForm(formData: FormData) {
+  return announcementSchema.safeParse({
+    title: formData.get("title"),
+    body: formData.get("body"),
+    label: optStr(formData.get("label")),
+    dateISO: optStr(formData.get("dateISO")),
+    href: optStr(formData.get("href")),
+    linkLabel: optStr(formData.get("linkLabel")),
+    isPinned: formData.get("isPinned") === "on",
+    isPublished: formData.get("isPublished") === "on",
+    sortOrder: formData.get("sortOrder") || "0",
+  });
+}
+
+function refreshAnnouncementViews() {
+  revalidatePath("/");
+  revalidatePath("/admin/announcements");
+  refresh();
+}
+
+export async function createAnnouncement(formData: FormData) {
+  await requireAdminSession();
+  const parsed = parseAnnouncementForm(formData);
+
+  if (!parsed.success) {
+    return;
+  }
+
+  const announcement = parsed.data;
+  await getAdminDb().collection("announcements").add({
+    title: announcement.title,
+    body: announcement.body,
+    label: announcement.label || null,
+    dateISO: announcement.dateISO || null,
+    href: announcement.href || null,
+    linkLabel: announcement.linkLabel || null,
+    isPinned: announcement.isPinned,
+    isPublished: announcement.isPublished,
+    sortOrder: announcement.sortOrder,
+  });
+
+  refreshAnnouncementViews();
+}
+
+export async function updateAnnouncement(formData: FormData) {
+  await requireAdminSession();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  const parsed = parseAnnouncementForm(formData);
+
+  if (!parsed.success) {
+    return;
+  }
+
+  const announcement = parsed.data;
+  await getAdminDb().collection("announcements").doc(id).set(
+    {
+      title: announcement.title,
+      body: announcement.body,
+      label: announcement.label || null,
+      dateISO: announcement.dateISO || null,
+      href: announcement.href || null,
+      linkLabel: announcement.linkLabel || null,
+      isPinned: announcement.isPinned,
+      isPublished: announcement.isPublished,
+      sortOrder: announcement.sortOrder,
+    },
+    { merge: true },
+  );
+
+  refreshAnnouncementViews();
+}
+
+export async function deleteAnnouncement(formData: FormData) {
+  await requireAdminSession();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  await getAdminDb().collection("announcements").doc(id).delete();
+  refreshAnnouncementViews();
+}
+
+export async function reorderAnnouncements(ids: string[]) {
+  await requireAdminSession();
+  const parsed = idOrderSchema.safeParse(ids);
+  if (!parsed.success) return;
+
+  const batch = getAdminDb().batch();
+  parsed.data.forEach((id, index) => {
+    batch.update(getAdminDb().collection("announcements").doc(id), {
+      sortOrder: index,
+    });
+  });
+
+  await batch.commit();
+  refreshAnnouncementViews();
+}
+
 export async function createScheduleGame(formData: FormData) {
   await requireAdminSession();
   const parsed = await parseScheduleGameForm(formData);
@@ -237,7 +347,7 @@ const staffSchema = z.object({
   sortOrder: z.coerce.number().int().optional(),
 });
 
-const staffOrderSchema = z.array(z.string().min(1));
+const idOrderSchema = z.array(z.string().min(1));
 
 const prospectSchema = z.object({
   name: z.string().min(1),
@@ -721,7 +831,7 @@ export async function deleteStaffMember(formData: FormData) {
 
 export async function reorderStaffMembers(ids: string[]) {
   await requireAdminSession();
-  const parsed = staffOrderSchema.safeParse(ids);
+  const parsed = idOrderSchema.safeParse(ids);
   if (!parsed.success) return;
 
   const batch = getAdminDb().batch();
@@ -867,5 +977,21 @@ export async function deleteRosterPlayer(formData: FormData) {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   await getAdminDb().collection("roster").doc(id).delete();
+  refreshRosterViews();
+}
+
+export async function reorderRosterPlayers(ids: string[]) {
+  await requireAdminSession();
+  const parsed = idOrderSchema.safeParse(ids);
+  if (!parsed.success) return;
+
+  const batch = getAdminDb().batch();
+  parsed.data.forEach((id, index) => {
+    batch.update(getAdminDb().collection("roster").doc(id), {
+      sortOrder: index,
+    });
+  });
+
+  await batch.commit();
   refreshRosterViews();
 }

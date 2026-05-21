@@ -48,6 +48,19 @@ export type StaffMember = {
   sortOrder: number;
 };
 
+export type Announcement = {
+  id: string;
+  title: string;
+  body: string;
+  label?: string;
+  dateISO?: string;
+  href?: string;
+  linkLabel?: string;
+  isPinned: boolean;
+  isPublished: boolean;
+  sortOrder: number;
+};
+
 export type SiteSettings = {
   heroTitle: string;
   heroSubtitle: string;

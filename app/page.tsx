@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getAnnouncements } from "@/lib/data/announcements";
 import { getScheduleGames } from "@/lib/data/schedule";
 import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { getSiteSettings } from "@/lib/data/site-settings";
@@ -14,9 +15,26 @@ function getMapHref(address?: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+function formatAnnouncementDate(dateISO?: string) {
+  if (!dateISO) return undefined;
+  const date = new Date(`${dateISO}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return undefined;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(date);
+}
+
+function isInternalHref(href: string) {
+  return href.startsWith("/");
+}
+
 export default async function Home() {
-  const settings = await getSiteSettings();
-  const allGames = await getScheduleGames();
+  const [settings, allGames, announcements] = await Promise.all([
+    getSiteSettings(),
+    getScheduleGames(),
+    getAnnouncements({ limit: 3 }),
+  ]);
   const games = allGames.filter((game) => game.teamLevel === "varsity");
   const hasSchedule = games.length > 0;
   const nextGame =
@@ -235,6 +253,78 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-20">
+        <div className="border-b border-white/15 pb-5">
+          <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+            Team Notes
+          </p>
+          <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none text-white md:text-5xl">
+            Announcements
+          </h2>
+        </div>
+
+        {announcements.length > 0 ? (
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {announcements.map((announcement) => {
+              const date = formatAnnouncementDate(announcement.dateISO);
+              const meta = [announcement.label, date].filter(Boolean).join(" / ");
+              const href = announcement.href;
+              const linkLabel = announcement.linkLabel || "Read More";
+
+              return (
+                <article
+                  key={announcement.id}
+                  className="flex min-h-[230px] flex-col border border-white/10 bg-white/[0.045] p-5 transition hover:border-[var(--tf-neon)]/40 hover:bg-white/[0.065]"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
+                      {meta || "Update"}
+                    </p>
+                    {announcement.isPinned ? (
+                      <span className="rounded-sm border border-[var(--tf-neon)]/35 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-[var(--tf-neon)]">
+                        Pinned
+                      </span>
+                    ) : null}
+                  </div>
+                  <h3 className="font-display mt-4 text-3xl font-bold uppercase leading-none text-white">
+                    {announcement.title}
+                  </h3>
+                  <p className="mt-4 flex-1 text-sm leading-6 text-zinc-400">
+                    {announcement.body}
+                  </p>
+                  {href ? (
+                    isInternalHref(href) ? (
+                      <Link
+                        href={href}
+                        className="mt-6 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
+                      >
+                        {linkLabel}
+                      </Link>
+                    ) : (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-6 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
+                      >
+                        {linkLabel}
+                      </a>
+                    )
+                  ) : null}
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mt-6 border border-dashed border-white/15 bg-white/[0.035] p-6">
+            <p className="text-sm leading-6 text-zinc-400">
+              Team announcements, parent reminders, and game week updates will appear
+              here when they are posted.
+            </p>
+          </div>
+        )}
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-14 md:px-6 lg:pb-20">
         <div>
           <div className="border-b border-white/15 pb-5">
             <div>
