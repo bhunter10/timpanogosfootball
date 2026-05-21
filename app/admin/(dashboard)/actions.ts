@@ -234,8 +234,10 @@ const staffSchema = z.object({
   bio: z.string().optional(),
   photoUrl: z.string().optional(),
   email: z.string().optional(),
-  sortOrder: z.coerce.number().int(),
+  sortOrder: z.coerce.number().int().optional(),
 });
+
+const staffOrderSchema = z.array(z.string().min(1));
 
 const prospectSchema = z.object({
   name: z.string().min(1),
@@ -620,7 +622,7 @@ export async function createStaffMember(formData: FormData) {
     bio: formData.get("bio") || undefined,
     photoUrl: formData.get("photoUrl") || undefined,
     email: formData.get("email") || undefined,
-    sortOrder: formData.get("sortOrder") || "0",
+    sortOrder: formData.get("sortOrder") || undefined,
   });
 
   if (!parsed.success) {
@@ -628,6 +630,17 @@ export async function createStaffMember(formData: FormData) {
   }
 
   const s = parsed.data;
+  const sortOrder =
+    s.sortOrder ??
+    (await getAdminDb()
+      .collection("staff")
+      .get()
+      .then((snap) =>
+        snap.docs.reduce((max, doc) => {
+          const value = doc.data().sortOrder;
+          return typeof value === "number" ? Math.max(max, value) : max;
+        }, -1),
+      )) + 1;
   let photoUrl = s.photoUrl;
   if (uploadedPhoto) {
     try {
@@ -643,7 +656,7 @@ export async function createStaffMember(formData: FormData) {
     bio: s.bio || null,
     photoUrl: photoUrl || null,
     email: s.email || null,
-    sortOrder: s.sortOrder,
+    sortOrder,
   });
 
   revalidatePath("/staff");
@@ -662,7 +675,7 @@ export async function updateStaffMember(formData: FormData) {
     bio: formData.get("bio") || undefined,
     photoUrl: formData.get("photoUrl") || undefined,
     email: formData.get("email") || undefined,
-    sortOrder: formData.get("sortOrder") || "0",
+    sortOrder: formData.get("sortOrder") || undefined,
   });
 
   if (!parsed.success) {
@@ -670,6 +683,8 @@ export async function updateStaffMember(formData: FormData) {
   }
 
   const s = parsed.data;
+  const existingSnap = await getAdminDb().collection("staff").doc(id).get();
+  const existingSortOrder = existingSnap.data()?.sortOrder;
   let photoUrl = s.photoUrl;
   if (uploadedPhoto) {
     try {
@@ -686,7 +701,7 @@ export async function updateStaffMember(formData: FormData) {
       bio: s.bio || null,
       photoUrl: photoUrl || null,
       email: s.email || null,
-      sortOrder: s.sortOrder,
+      sortOrder: s.sortOrder ?? (typeof existingSortOrder === "number" ? existingSortOrder : 0),
     },
     { merge: true },
   );
@@ -701,6 +716,22 @@ export async function deleteStaffMember(formData: FormData) {
   if (!id) return;
   await getAdminDb().collection("staff").doc(id).delete();
   revalidatePath("/staff");
+  revalidatePath("/admin/staff");
+}
+
+export async function reorderStaffMembers(ids: string[]) {
+  await requireAdminSession();
+  const parsed = staffOrderSchema.safeParse(ids);
+  if (!parsed.success) return;
+
+  const batch = getAdminDb().batch();
+  parsed.data.forEach((id, index) => {
+    batch.update(getAdminDb().collection("staff").doc(id), { sortOrder: index });
+  });
+
+  await batch.commit();
+  revalidatePath("/staff");
+  revalidatePath("/admin/staff");
 }
 
 function refreshRosterViews() {

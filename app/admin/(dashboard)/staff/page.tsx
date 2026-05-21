@@ -1,5 +1,6 @@
 import { getStaffMembers } from "@/lib/data/staff";
-import { createStaffMember, deleteStaffMember, updateStaffMember } from "../actions";
+import { createStaffMember } from "../actions";
+import { StaffDirectory } from "./staff-directory";
 
 type AdminStaffPageProps = {
   searchParams: Promise<{ staffError?: string | string[] }>;
@@ -77,15 +78,6 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="text-xs font-medium text-zinc-400">
-            Sort order
-            <input
-              name="sortOrder"
-              type="number"
-              defaultValue={0}
-              className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-            />
-          </label>
           <div className="md:col-span-2">
             <button
               type="submit"
@@ -99,118 +91,10 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
 
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-white">Directory</h2>
-        {staff.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">No staff yet.</p>
-        ) : (
-          <ul className="mt-4 space-y-3">
-            {staff.map((m) => (
-              <li
-                key={m.id}
-                className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 text-sm text-zinc-200"
-              >
-                <div className="flex items-start gap-2">
-                  <details className="min-w-0 flex-1">
-                    <summary className="grid cursor-pointer list-none grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-                      <span className="min-w-0">
-                        <span className="block truncate font-medium text-white">
-                          {m.name}
-                        </span>
-                        <span className="block truncate text-xs text-zinc-500">
-                          {m.role}
-                        </span>
-                      </span>
-                      <span className="rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold text-zinc-200 hover:bg-white/10">
-                        Edit
-                      </span>
-                    </summary>
-                    <form action={updateStaffMember} className="mt-4 grid gap-3 md:grid-cols-2">
-                      <input type="hidden" name="id" value={m.id} />
-                      <label className="text-xs font-medium text-zinc-400">
-                        Name
-                        <input
-                          name="name"
-                          defaultValue={m.name}
-                          required
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-                        />
-                      </label>
-                      <label className="text-xs font-medium text-zinc-400">
-                        Role
-                        <input
-                          name="role"
-                          defaultValue={m.role}
-                          required
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-                        />
-                      </label>
-                      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
-                        Bio
-                        <textarea
-                          name="bio"
-                          rows={2}
-                          defaultValue={m.bio ?? ""}
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-                        />
-                      </label>
-                      <label className="text-xs font-medium text-zinc-400">
-                        New photo upload
-                        <input
-                          name="photoFile"
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white/15"
-                        />
-                      </label>
-                      <label className="text-xs font-medium text-zinc-400">
-                        Photo URL override
-                        <input
-                          name="photoUrl"
-                          defaultValue={m.photoUrl ?? ""}
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-                        />
-                      </label>
-                      <label className="text-xs font-medium text-zinc-400">
-                        Email
-                        <input
-                          name="email"
-                          type="email"
-                          defaultValue={m.email ?? ""}
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-                        />
-                      </label>
-                      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
-                        Sort order
-                        <input
-                          name="sortOrder"
-                          type="number"
-                          defaultValue={m.sortOrder}
-                          className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
-                        />
-                      </label>
-                      <div className="md:col-span-2">
-                        <button
-                          type="submit"
-                          className="rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold text-white hover:bg-white/15"
-                        >
-                          Save changes
-                        </button>
-                      </div>
-                    </form>
-                  </details>
-                  <form action={deleteStaffMember} className="shrink-0">
-                    <input type="hidden" name="id" value={m.id} />
-                    <button
-                      type="submit"
-                      className="rounded-full border border-red-500/40 px-4 py-1.5 text-xs font-semibold text-red-200 hover:bg-red-950/40"
-                    >
-                      Delete
-                    </button>
-                  </form>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <StaffDirectory
+          key={staff.map((member) => `${member.id}:${member.sortOrder}`).join("|")}
+          staff={staff}
+        />
       </section>
     </div>
   );
