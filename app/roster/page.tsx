@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getRosterPlayers, type Prospect as RosterPlayer } from "@/lib/data/prospects";
 
-const rosterHeroImage = "/images/roster-hero-wide-v2.png";
+const rosterHeroImage = "/images/roster-hero-wide-v2.webp";
 
 export const metadata: Metadata = {
   title: "Roster",

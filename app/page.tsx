@@ -6,7 +6,7 @@ import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { TICKETS_URL } from "@/lib/site-links";
 
-const heroImage = "/images/timpanogos-football-hero-option1.jpg";
+const heroImage = "/images/timpanogos-football-hero-option1.webp";
 
 type QuickLink = { title: string; href: string; external?: boolean };
 

@@ -91,7 +91,7 @@ export default async function StaffPage() {
     <main className="bg-[var(--tf-black)] text-white">
       <section className="relative isolate h-[325px] overflow-hidden bg-[var(--tf-black)] text-white">
         <Image
-          src="/images/staff-playbook-hero.png"
+          src="/images/staff-playbook-hero.webp"
           alt=""
           fill
           priority

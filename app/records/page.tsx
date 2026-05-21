@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-const recordsHeroImage = "/images/records-hero-wide-v2.png";
+const recordsHeroImage = "/images/records-hero-wide-v2.webp";
 
 type Source = {
   id: string;
