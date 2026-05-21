@@ -25,10 +25,11 @@ export function ShopProductGrid({
 
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {products.map((p) => {
+      {products.map((p, index) => {
         const publicHref = resolveProductHref(p.externalUrl, storefrontUrl);
         const href = publicHref ?? (showAdminFallback ? p.adminUrl : undefined);
         const label = publicHref ? "View Details" : "Manage in Printify";
+        const isAboveFoldProduct = index < 3;
         const content = (
           <>
             <div className="relative aspect-square w-full bg-white/5">
@@ -37,6 +38,7 @@ export function ShopProductGrid({
                   src={p.imageSrc}
                   alt={p.title}
                   fill
+                  loading={isAboveFoldProduct ? "eager" : "lazy"}
                   unoptimized
                   sizes="(max-width:768px) 100vw, 33vw"
                   className="object-cover transition duration-500 group-hover:scale-105"
