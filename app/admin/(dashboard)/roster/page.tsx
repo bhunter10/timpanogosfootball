@@ -14,7 +14,7 @@ export default async function AdminRosterPage({ searchParams }: AdminRosterPageP
   return (
     <div>
       <h1 className="font-display text-3xl font-bold text-white">Roster</h1>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-300">
         Manage player profiles. Check “Show on prospects page” to publish a player to the
         college recruiting board.
       </p>

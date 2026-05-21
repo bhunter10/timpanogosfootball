@@ -33,7 +33,7 @@ export function HeroSection({ title, subtitle, imageUrl }: HeroSectionProps) {
         <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold leading-[0.88] tracking-tight text-white md:text-8xl">
           {title}
         </h1>
-        <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
+        <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
           {subtitle}
         </p>
       </div>

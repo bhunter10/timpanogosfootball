@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { createPageMetadata } from "@/lib/seo";
 
 const recordsHeroImage = "/images/records-hero-wide-v2.webp";
 
@@ -28,6 +29,17 @@ type WatchlistMark = {
   season: string;
   sourceId?: string;
   note?: string;
+};
+
+type ActiveWatchMark = {
+  category: string;
+  player: string;
+  classYear: string;
+  current: string;
+  record: string;
+  needed: string;
+  sourceId: string;
+  note: string;
 };
 
 const sources: readonly Source[] = [
@@ -474,6 +486,49 @@ const publicLeaderWatchlist: readonly WatchlistMark[] = [
   },
 ];
 
+const activePlayerWatchlist: readonly ActiveWatchMark[] = [
+  {
+    category: "Rushing touchdowns",
+    player: "Logan Holloway",
+    classYear: "Sophomore in 2025",
+    current: "6",
+    record: "17",
+    needed: "12",
+    sourceId: "maxpreps-2025-stats",
+    note: "Needs 12 rushing TDs in a future season to pass Easton Bretzing's public season mark.",
+  },
+  {
+    category: "Total touchdowns",
+    player: "Logan Holloway",
+    classYear: "Sophomore in 2025",
+    current: "7",
+    record: "24",
+    needed: "18",
+    sourceId: "maxpreps-2025-stats",
+    note: "Needs 18 total TDs in a future season to pass Luke Livingston's public season mark.",
+  },
+  {
+    category: "Receiving touchdowns",
+    player: "Tevita Mounga",
+    classYear: "Junior in 2025",
+    current: "6",
+    record: "23",
+    needed: "18",
+    sourceId: "maxpreps-2025-stats",
+    note: "Tied for the 2025 team lead; needs 18 receiving TDs to pass Luke Livingston's public season mark.",
+  },
+  {
+    category: "Receiving touchdowns",
+    player: "Shane Eaquinto",
+    classYear: "Junior in 2025",
+    current: "4",
+    record: "23",
+    needed: "20",
+    sourceId: "maxpreps-2025-stats",
+    note: "Returning 2025 varsity receiving TD leader candidate to keep an eye on.",
+  },
+];
+
 function getSource(sourceId?: string) {
   if (!sourceId) return undefined;
   return sources.find((source) => source.id === sourceId);
@@ -499,11 +554,11 @@ function RecordsTable({
             {title}
           </h2>
         </div>
-        <p className="max-w-xl text-sm leading-6 text-zinc-400">{description}</p>
+        <p className="max-w-xl text-sm leading-6 text-zinc-300">{description}</p>
       </div>
 
       <div className="mt-6 overflow-hidden border border-white/10 bg-white/[0.06]">
-        <div className="hidden grid-cols-[110px_1.2fr_1fr_100px_90px] gap-4 border-b border-white/10 px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 md:grid">
+        <div className="hidden grid-cols-[110px_1.2fr_1fr_100px_90px] gap-4 border-b border-white/10 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-zinc-400 md:grid">
           <span>Type</span>
           <span>Record</span>
           <span>Player</span>
@@ -520,7 +575,7 @@ function RecordsTable({
                 className="grid grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] gap-x-3 gap-y-2 px-3 py-3 md:grid-cols-[110px_1.2fr_1fr_100px_90px] md:items-center md:gap-4 md:px-4 md:py-4"
               >
                 <div className="min-w-0 md:contents">
-                  <span className="w-fit rounded-sm bg-[var(--tf-neon)] px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-[var(--tf-navy)] md:px-2.5 md:py-1 md:text-[10px]">
+                  <span className="w-fit rounded-sm bg-[var(--tf-neon)] px-2 py-0.5 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] md:px-2.5 md:py-1 md:text-xs">
                     {record.category}
                   </span>
                   <div className="mt-2 min-w-0 md:mt-0">
@@ -528,7 +583,7 @@ function RecordsTable({
                       {record.mark}
                     </h3>
                     {record.note ? (
-                      <p className="mt-0.5 text-[11px] leading-4 text-zinc-400 md:mt-1 md:text-xs md:leading-5">
+                      <p className="mt-0.5 text-xs leading-4 text-zinc-300 md:mt-1 md:text-xs md:leading-5">
                         {record.note}
                       </p>
                     ) : null}
@@ -542,7 +597,7 @@ function RecordsTable({
                     {record.value}
                   </p>
                   <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 md:mt-0 md:block">
-                    <p className="text-xs font-semibold text-zinc-300 md:text-sm">
+                    <p className="text-xs font-semibold text-zinc-200 md:text-sm">
                       {record.season}
                     </p>
                     {source ? (
@@ -567,9 +622,13 @@ function RecordsTable({
 }
 
 export const metadata: Metadata = {
-  title: "Records",
-  description:
-    "Known public all-time Timpanogos football individual records and stat leaders.",
+  ...createPageMetadata({
+    title: "Records",
+    description:
+      "Timpanogos football school records, public stat leaders, record watch, and historical audit notes for the Timberwolves.",
+    path: "/records",
+    image: recordsHeroImage,
+  }),
 };
 
 export default function RecordsPage() {
@@ -599,7 +658,7 @@ export default function RecordsPage() {
           <h1 className="font-display mt-4 max-w-4xl text-5xl font-bold uppercase leading-[0.9] md:text-7xl">
             School Records
           </h1>
-          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
+          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
             Known public all-time Timpanogos football marks from local coverage,
             MaxPreps, and Deseret News stat pages. This page is an ongoing public audit,
             starting with the program&apos;s first season in 1996.
@@ -630,12 +689,79 @@ export default function RecordsPage() {
           <section>
             <div className="border-b border-white/15 pb-5">
               <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+                Record Watch
+              </p>
+              <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none md:text-5xl">
+                Returning Players
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
+                Current public stat leaders who could climb the record book in future
+                seasons. These are watch-list targets, not official records yet.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {activePlayerWatchlist.map((item) => {
+                const source = getSource(item.sourceId);
+
+                return (
+                  <article
+                    key={`${item.category}-${item.player}`}
+                    className="border border-white/10 bg-white/[0.06] p-4"
+                  >
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
+                      {item.category}
+                    </p>
+                    <p className="font-display mt-3 text-3xl font-bold uppercase leading-none">
+                      {item.player}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">
+                      {item.classYear}
+                    </p>
+
+                    <div className="mt-4 grid grid-cols-3 gap-px overflow-hidden bg-white/10 text-center">
+                      {[
+                        ["Current", item.current],
+                        ["Record", item.record],
+                        ["Needed", item.needed],
+                      ].map(([label, value]) => (
+                        <div key={label} className="bg-[var(--tf-black)] px-2 py-3">
+                          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-zinc-400">
+                            {label}
+                          </p>
+                          <p className="font-display mt-1 text-3xl font-bold leading-none text-white">
+                            {value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <p className="mt-4 text-xs leading-5 text-zinc-300">{item.note}</p>
+                    {source ? (
+                      <a
+                        href={source.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-block text-xs font-semibold text-[var(--tf-neon)] underline decoration-[var(--tf-neon)]/40 underline-offset-4 hover:decoration-[var(--tf-neon)]"
+                      >
+                        Source
+                      </a>
+                    ) : null}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <section>
+            <div className="border-b border-white/15 pb-5">
+              <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Research Queue
               </p>
               <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none md:text-5xl">
                 Recent Public Leaders
               </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
                 These are not listed as records yet. They are useful candidates to check
                 against older stat pages, archived programs, and Hudl exports.
               </p>
@@ -650,7 +776,7 @@ export default function RecordsPage() {
                     key={`${item.stat}-${item.player}-${item.season}`}
                     className="border border-white/10 bg-white/[0.06] p-4"
                   >
-                    <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
+                    <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
                       {item.category}
                     </p>
                     <h3 className="mt-2 text-sm font-bold text-white">{item.stat}</h3>
@@ -658,7 +784,7 @@ export default function RecordsPage() {
                       {item.player}
                     </p>
                     {item.note ? (
-                      <p className="mt-3 text-xs leading-5 text-zinc-400">
+                      <p className="mt-3 text-xs leading-5 text-zinc-300">
                         {item.note}
                       </p>
                     ) : null}
@@ -667,7 +793,7 @@ export default function RecordsPage() {
                         <p className="font-display text-4xl font-bold leading-none text-[var(--tf-neon)]">
                           {item.value}
                         </p>
-                        <p className="mt-1 text-xs font-semibold text-zinc-500">
+                        <p className="mt-1 text-xs font-semibold text-zinc-400">
                           {item.season}
                         </p>
                       </div>
@@ -676,7 +802,7 @@ export default function RecordsPage() {
                           href={source.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs font-semibold text-zinc-400 underline decoration-zinc-600 underline-offset-4 hover:text-[var(--tf-neon)]"
+                          className="text-xs font-semibold text-zinc-300 underline decoration-zinc-600 underline-offset-4 hover:text-[var(--tf-neon)]"
                         >
                           Source
                         </a>
@@ -696,7 +822,7 @@ export default function RecordsPage() {
               <h2 className="font-display mt-2 text-4xl font-bold uppercase leading-none md:text-5xl">
                 Coverage
               </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">
                 The public audit now starts with Timpanogos&apos; first football season in
                 1996. Public sources confirm schedules and team history for the early
                 years, but usable individual stat leader tables begin later and are
@@ -723,13 +849,13 @@ export default function RecordsPage() {
                 ],
               ].map(([label, years, note]) => (
                 <article key={label} className="border border-white/10 bg-white/[0.06] p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
                     {label}
                   </p>
                   <p className="font-display mt-2 text-3xl font-bold uppercase leading-none">
                     {years}
                   </p>
-                  <p className="mt-3 text-xs leading-5 text-zinc-400">{note}</p>
+                  <p className="mt-3 text-xs leading-5 text-zinc-300">{note}</p>
                 </article>
               ))}
             </div>

@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getRosterPlayers, type Prospect as RosterPlayer } from "@/lib/data/prospects";
+import { createPageMetadata } from "@/lib/seo";
 
 const rosterHeroImage = "/images/roster-hero-wide-v2.webp";
 
 export const metadata: Metadata = {
-  title: "Roster",
-  description: "Timpanogos football roster.",
+  ...createPageMetadata({
+    title: "Roster",
+    description:
+      "Timpanogos High School football roster with Timberwolves player profiles, jersey numbers, positions, and class years.",
+    path: "/roster",
+    image: rosterHeroImage,
+  }),
 };
 
 function getInitials(name: string) {
@@ -46,11 +52,11 @@ function PlayerCard({ player }: { player: RosterPlayer }) {
         <h2 className="font-display text-2xl font-bold uppercase leading-none text-white">
           {player.name}
         </h2>
-        <p className="mt-2 text-[11px] font-black uppercase tracking-[0.16em] text-[var(--tf-neon)]">
+        <p className="mt-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--tf-neon)]">
           {player.positions.join(" / ")} · Class of {player.classYear}
         </p>
         {measurables ? (
-          <p className="mt-3 font-mono text-xs font-bold uppercase text-zinc-300">
+          <p className="mt-3 font-mono text-xs font-bold uppercase text-zinc-200">
             {measurables}
           </p>
         ) : null}
@@ -82,7 +88,7 @@ export default async function RosterPage() {
           <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
             Roster
           </h1>
-          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
+          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
             Player profiles for the Timpanogos football program.
           </p>
         </div>

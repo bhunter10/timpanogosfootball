@@ -44,7 +44,7 @@ function TeamLevelSelect({
   defaultValue?: ScheduleTeamLevel;
 }) {
   return (
-    <label className="text-xs font-medium text-zinc-400">
+    <label className="text-xs font-medium text-zinc-300">
       Team
       <select name="teamLevel" defaultValue={defaultValue} className={fieldClass}>
         {scheduleTeamLevels.map((level) => (
@@ -67,7 +67,7 @@ function ScheduleGameFields({
   return (
     <>
       <TeamLevelSelect defaultValue={game?.teamLevel ?? "varsity"} />
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Opponent from master list
         <select
           name="opponentId"
@@ -83,7 +83,7 @@ function ScheduleGameFields({
           ))}
         </select>
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Manual opponent fallback
         <input
           name="opponent"
@@ -92,7 +92,7 @@ function ScheduleGameFields({
           className={fieldClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Kickoff date & time
         <AdminDateInput
           name="kickoffLocal"
@@ -102,7 +102,7 @@ function ScheduleGameFields({
           className={dateFieldClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Location
         <input
           name="location"
@@ -112,7 +112,7 @@ function ScheduleGameFields({
           className={fieldClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Home / Away
         <select
           name="isHome"
@@ -123,7 +123,7 @@ function ScheduleGameFields({
           <option value="false">Away</option>
         </select>
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Sort order
         <input
           name="sortOrder"
@@ -132,7 +132,7 @@ function ScheduleGameFields({
           className={fieldClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Result (optional)
         <input
           name="result"
@@ -141,7 +141,7 @@ function ScheduleGameFields({
           className={fieldClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Notes (optional)
         <input
           name="notes"
@@ -159,7 +159,7 @@ export default async function AdminSchedulePage() {
   return (
     <div>
       <h1 className="font-display text-3xl font-bold text-white">Schedule</h1>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-300">
         Store ISO timestamps for kickoff (local time). The public site formats them for
         readers. Opponent addresses are managed on the opponents page.
       </p>
@@ -182,7 +182,7 @@ export default async function AdminSchedulePage() {
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-white">Season games</h2>
         {games.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">No games yet.</p>
+          <p className="mt-4 text-sm text-zinc-400">No games yet.</p>
         ) : (
           <div className="mt-4 space-y-8">
             {scheduleTeamLevels.map((level) => {
@@ -193,13 +193,13 @@ export default async function AdminSchedulePage() {
                     <h3 className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
                       {level.label}
                     </h3>
-                    <span className="text-xs font-semibold text-zinc-500">
+                    <span className="text-xs font-semibold text-zinc-400">
                       {levelGames.length} {levelGames.length === 1 ? "game" : "games"}
                     </span>
                   </div>
 
                   {levelGames.length === 0 ? (
-                    <p className="mt-3 text-sm text-zinc-500">
+                    <p className="mt-3 text-sm text-zinc-400">
                       No {level.label} games yet.
                     </p>
                   ) : (
@@ -207,17 +207,17 @@ export default async function AdminSchedulePage() {
                       {levelGames.map((game) => (
                         <li
                           key={game.id}
-                          className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 text-sm text-zinc-200"
+                          className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 text-sm text-zinc-100"
                         >
                           <div className="grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-center">
                             <div className="md:col-start-1 md:row-start-1">
                               <p className="font-medium text-white">
-                                <span className="mr-2 rounded-full border border-white/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-zinc-400">
+                                <span className="mr-2 rounded-full border border-white/15 px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-zinc-300">
                                   {getTeamLevelLabel(game.teamLevel)}
                                 </span>
                                 {game.isHome ? "vs" : "@"} {game.opponent}
                               </p>
-                              <p className="mt-1 text-sm text-zinc-400">
+                              <p className="mt-1 text-sm text-zinc-300">
                                 {formatAdminGameDate(game.dateISO)} · {game.location}
                               </p>
                             </div>

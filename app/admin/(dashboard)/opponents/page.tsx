@@ -21,7 +21,7 @@ export default async function AdminOpponentsPage({
   return (
     <div>
       <h1 className="font-display text-3xl font-bold text-white">Opponents</h1>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-300">
         Maintain school logos and opponent details once, then select them when creating
         schedule games. Logos can be JPG, PNG, or WebP up to 2 MB; uploads are resized
         to fit within 400x400 and saved as WebP.
@@ -51,13 +51,13 @@ export default async function AdminOpponentsPage({
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-white">Master list</h2>
         {opponents.length === 0 ? (
-          <p className="mt-4 text-sm text-zinc-500">No opponents yet.</p>
+          <p className="mt-4 text-sm text-zinc-400">No opponents yet.</p>
         ) : (
           <ul className="mt-4 space-y-3">
             {opponents.map((opponent) => (
               <li
                 key={opponent.id}
-                className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 text-sm text-zinc-200"
+                className="rounded-xl border border-white/10 bg-zinc-900/40 p-4 text-sm text-zinc-100"
               >
                 <div className="flex items-start gap-3">
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white">
@@ -71,7 +71,7 @@ export default async function AdminOpponentsPage({
                         className="object-contain p-1.5"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xs font-bold text-zinc-500">
+                      <div className="flex h-full items-center justify-center text-xs font-bold text-zinc-400">
                         Logo
                       </div>
                     )}
@@ -82,7 +82,7 @@ export default async function AdminOpponentsPage({
                         <span className="block truncate font-medium text-white">
                           {opponent.schoolName}
                         </span>
-                        <span className="block truncate text-xs text-zinc-500">
+                        <span className="block truncate text-xs text-zinc-400">
                           {[opponent.mascot, opponent.address, opponent.city, opponent.state]
                             .filter(Boolean)
                             .join(" · ") || "No extra details"}
@@ -131,7 +131,7 @@ function OpponentFields({
 }) {
   return (
     <>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         School name
         <input
           name="schoolName"
@@ -141,7 +141,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Short name
         <input
           name="shortName"
@@ -150,7 +150,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Mascot
         <input
           name="mascot"
@@ -159,7 +159,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Sort order
         <input
           name="sortOrder"
@@ -168,7 +168,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Primary color
         <input
           name="primaryColor"
@@ -177,7 +177,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Secondary color
         <input
           name="secondaryColor"
@@ -186,7 +186,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Address
         <input
           name="address"
@@ -195,7 +195,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         City
         <input
           name="city"
@@ -204,7 +204,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         State
         <input
           name="state"
@@ -212,7 +212,7 @@ function OpponentFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Logo upload
         <input
           name="logoFile"
@@ -221,7 +221,7 @@ function OpponentFields({
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white/15"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Logo URL override
         <input
           name="logoUrl"

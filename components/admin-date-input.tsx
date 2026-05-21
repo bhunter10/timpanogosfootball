@@ -36,7 +36,7 @@ export function AdminDateInput({
         type="button"
         aria-label="Open date picker"
         onClick={openPicker}
-        className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-zinc-100 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[var(--tf-neon)]"
+        className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-zinc-50 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[var(--tf-neon)]"
       >
         <svg
           aria-hidden="true"

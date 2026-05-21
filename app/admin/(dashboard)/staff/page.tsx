@@ -14,7 +14,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
   return (
     <div>
       <h1 className="font-display text-3xl font-bold text-white">Staff</h1>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-300">
         Upload JPG, PNG, or WebP staff photos up to 5 MB. Uploaded photos are stored in
         Firebase Storage and optimized by the frontend image pipeline.
       </p>
@@ -28,7 +28,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
       <section className="mt-10 rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
         <h2 className="text-sm font-semibold text-white">Add staff member</h2>
         <form action={createStaffMember} className="mt-4 grid gap-4 md:grid-cols-2">
-          <label className="text-xs font-medium text-zinc-400">
+          <label className="text-xs font-medium text-zinc-300">
             Name
             <input
               name="name"
@@ -36,7 +36,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="text-xs font-medium text-zinc-400">
+          <label className="text-xs font-medium text-zinc-300">
             Role
             <input
               name="role"
@@ -45,7 +45,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+          <label className="text-xs font-medium text-zinc-300 md:col-span-2">
             Bio
             <textarea
               name="bio"
@@ -53,7 +53,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+          <label className="text-xs font-medium text-zinc-300 md:col-span-2">
             Photo upload
             <input
               name="photoFile"
@@ -62,7 +62,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white/15"
             />
           </label>
-          <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+          <label className="text-xs font-medium text-zinc-300 md:col-span-2">
             Photo URL override
             <input
               name="photoUrl"
@@ -70,7 +70,7 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="text-xs font-medium text-zinc-400">
+          <label className="text-xs font-medium text-zinc-300">
             Email
             <input
               name="email"

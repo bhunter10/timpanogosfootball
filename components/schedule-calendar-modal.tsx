@@ -161,7 +161,7 @@ export function ScheduleCalendarModal({
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
                   Schedule Sync
                 </p>
                 <h2
@@ -174,14 +174,14 @@ export function ScheduleCalendarModal({
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-white/15 text-xl leading-none text-zinc-300 transition hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-white/15 text-xl leading-none text-zinc-200 transition hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
                 aria-label="Close calendar options"
               >
                 &times;
               </button>
             </div>
 
-            <p id={descriptionId} className="mt-4 text-sm leading-6 text-zinc-300">
+            <p id={descriptionId} className="mt-4 text-sm leading-6 text-zinc-200">
               Subscribe to the Timpanogos {teamLabel} football schedule. Game dates,
               kickoff times, locations, and future schedule changes will update in
               your calendar app from this team feed.
@@ -199,7 +199,7 @@ export function ScheduleCalendarModal({
                   <span className="text-sm font-black uppercase tracking-wide text-white">
                     Apple Calendar
                   </span>
-                  <span className="mt-1 block text-sm leading-6 text-zinc-400">
+                  <span className="mt-1 block text-sm leading-6 text-zinc-300">
                     Best for iPhone, iPad, and Mac. Opens a calendar subscription prompt.
                   </span>
                 </span>
@@ -217,7 +217,7 @@ export function ScheduleCalendarModal({
                   <span className="text-sm font-black uppercase tracking-wide text-white">
                     Android / Google
                   </span>
-                  <span className="mt-1 block text-sm leading-6 text-zinc-400">
+                  <span className="mt-1 block text-sm leading-6 text-zinc-300">
                     Best for Android phones and Google Calendar accounts.
                   </span>
                 </span>
@@ -233,7 +233,7 @@ export function ScheduleCalendarModal({
                   <span className="text-sm font-black uppercase tracking-wide text-white">
                     Other Calendar App
                   </span>
-                  <span className="mt-1 block text-sm leading-6 text-zinc-400">
+                  <span className="mt-1 block text-sm leading-6 text-zinc-300">
                     Download or open the ICS feed for Outlook and other calendar apps.
                   </span>
                 </span>

@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import { ShopProductGrid } from "@/components/shop-product-grid";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { getPrintifyCatalog } from "@/lib/printify/catalog";
+import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Shop",
-  description: "Official Timpanogos football apparel and fan gear.",
+  ...createPageMetadata({
+    title: "Shop",
+    description:
+      "Shop Timpanogos Football apparel, fan gear, and Timberwolves team merchandise.",
+    path: "/shop",
+  }),
 };
 
 export default async function ShopPage() {
@@ -26,7 +31,7 @@ export default async function ShopPage() {
           <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
             Shop
           </h1>
-          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
+          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
             {settings.shopMessage}
           </p>
 
@@ -49,17 +54,17 @@ export default async function ShopPage() {
           </div>
 
           {!catalog.configured ? (
-            <div className="border border-dashed border-white/20 bg-white/[0.055] p-8 text-sm leading-6 text-zinc-400 md:p-10">
+            <div className="border border-dashed border-white/20 bg-white/[0.055] p-8 text-sm leading-6 text-zinc-300 md:p-10">
               <p className="font-display text-3xl font-bold uppercase leading-none text-white">
                 Catalog preview is not connected.
               </p>
               <p className="mt-4 max-w-2xl">
                 Connect{" "}
-                <code className="bg-white/10 px-1.5 py-0.5 text-xs text-zinc-200">
+                <code className="bg-white/10 px-1.5 py-0.5 text-xs text-zinc-100">
                   PRINTIFY_API_KEY
                 </code>{" "}
                 and{" "}
-                <code className="bg-white/10 px-1.5 py-0.5 text-xs text-zinc-200">
+                <code className="bg-white/10 px-1.5 py-0.5 text-xs text-zinc-100">
                   PRINTIFY_SHOP_ID
                 </code>{" "}
                 on Vercel to pull live products from Printify.

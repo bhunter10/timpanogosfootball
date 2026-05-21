@@ -45,7 +45,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
       <section className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
         <h2 className="text-sm font-semibold text-white">Home hero</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Title
             <input
               name="heroTitle"
@@ -54,7 +54,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="block text-xs font-medium text-zinc-400 md:col-span-2">
+          <label className="block text-xs font-medium text-zinc-300 md:col-span-2">
             Subtitle
             <input
               name="heroSubtitle"
@@ -63,7 +63,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="block text-xs font-medium text-zinc-400 md:col-span-2">
+          <label className="block text-xs font-medium text-zinc-300 md:col-span-2">
             Hero image URL (Firebase Storage or HTTPS CDN)
             <input
               name="heroImageUrl"
@@ -78,7 +78,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
       <section className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
         <h2 className="text-sm font-semibold text-white">Tickets</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <label className="block text-xs font-medium text-zinc-400 md:col-span-2">
+          <label className="block text-xs font-medium text-zinc-300 md:col-span-2">
             Ticket blurb
             <textarea
               name="ticketBlurb"
@@ -87,7 +87,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Primary ticket URL
             <input
               name="ticketUrl"
@@ -95,7 +95,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Secondary URL (optional)
             <input
               name="ticketSecondaryUrl"
@@ -109,7 +109,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
       <section className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
         <h2 className="text-sm font-semibold text-white">Shop</h2>
         <div className="mt-4 grid gap-4">
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Shop message
             <textarea
               name="shopMessage"
@@ -118,7 +118,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Primary storefront URL (Printify or school store)
             <input
               name="shopPrimaryUrl"
@@ -132,7 +132,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
       <section className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
         <h2 className="text-sm font-semibold text-white">Recruiting</h2>
         <div className="mt-4 grid gap-4">
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Recruiting blurb
             <textarea
               name="recruitingBlurb"
@@ -141,7 +141,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
             />
           </label>
-          <label className="block text-xs font-medium text-zinc-400">
+          <label className="block text-xs font-medium text-zinc-300">
             Recruiting form URL
             <input
               name="recruitingFormUrl"
@@ -154,7 +154,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
 
       <section className="rounded-2xl border border-white/10 bg-zinc-900/60 p-6">
         <h2 className="text-sm font-semibold text-white">Footer</h2>
-        <label className="mt-4 block text-xs font-medium text-zinc-400">
+        <label className="mt-4 block text-xs font-medium text-zinc-300">
           Footer note (optional)
           <textarea
             name="footerNote"
@@ -173,7 +173,7 @@ export function SettingsForm({ settings: s }: { settings: SiteSettings }) {
               ? "text-sm font-medium text-red-300"
               : state.status === "success"
                 ? "text-sm font-medium text-[var(--tf-neon)]"
-                : "text-sm text-zinc-400"
+                : "text-sm text-zinc-300"
           }
         >
           {pending

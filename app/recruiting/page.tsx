@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Recruiting",
-  description: "Recruiting information and questionnaires for Timpanogos football prospects.",
+  ...createPageMetadata({
+    title: "Recruiting",
+    description:
+      "Recruiting information, questionnaire links, and prospect resources for Timpanogos High School football players.",
+    path: "/recruiting",
+  }),
 };
 
 export default async function RecruitingPage() {

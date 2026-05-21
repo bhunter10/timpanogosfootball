@@ -58,12 +58,12 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
   }
 
   if (items.length === 0) {
-    return <p className="mt-4 text-sm text-zinc-500">No announcements yet.</p>;
+    return <p className="mt-4 text-sm text-zinc-400">No announcements yet.</p>;
   }
 
   return (
     <>
-      <div className="mt-3 flex items-center justify-between gap-3 text-xs text-zinc-500">
+      <div className="mt-3 flex items-center justify-between gap-3 text-xs text-zinc-400">
         <p>Drag announcement cards to change the home page display order.</p>
         {isPending ? <p className="shrink-0 text-[var(--tf-neon)]">Saving order...</p> : null}
       </div>
@@ -95,7 +95,7 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
               }
             }}
             onDrop={(event) => handleDrop(event, announcement.id)}
-            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-200 transition active:cursor-grabbing ${
+            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-100 transition active:cursor-grabbing ${
               draggedId === announcement.id
                 ? "border-[var(--tf-neon)]/70 opacity-60"
                 : "border-white/10"
@@ -110,7 +110,7 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
             <div className="flex items-start gap-2">
               <span
                 aria-hidden="true"
-                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-500 transition hover:text-[var(--tf-neon)]"
+                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-400 transition hover:text-[var(--tf-neon)]"
               >
                 <span className="h-0.5 w-4 rounded-full bg-current" />
                 <span className="h-0.5 w-4 rounded-full bg-current" />
@@ -122,7 +122,7 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
                     <span className="block truncate font-medium text-white">
                       {announcement.title}
                     </span>
-                    <span className="block truncate text-xs text-zinc-500">
+                    <span className="block truncate text-xs text-zinc-400">
                       {[
                         announcement.isPinned ? "Pinned" : undefined,
                         announcement.isPublished ? "Published" : "Draft",
@@ -174,7 +174,7 @@ export function AnnouncementFields({
 }) {
   return (
     <>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Title
         <input
           name="title"
@@ -184,7 +184,7 @@ export function AnnouncementFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Body
         <textarea
           name="body"
@@ -195,7 +195,7 @@ export function AnnouncementFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Label
         <input
           name="label"
@@ -204,7 +204,7 @@ export function AnnouncementFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Date
         <AdminDateInput
           name="dateISO"
@@ -213,7 +213,7 @@ export function AnnouncementFields({
           className={dateInputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Link URL
         <input
           name="href"
@@ -222,7 +222,7 @@ export function AnnouncementFields({
           className={inputClass}
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Link label
         <input
           name="linkLabel"
@@ -233,7 +233,7 @@ export function AnnouncementFields({
       </label>
       <input name="sortOrder" type="hidden" defaultValue={announcement?.sortOrder ?? 0} />
       <div className="grid content-end gap-3 sm:grid-cols-2">
-        <label className="flex items-center gap-2 text-xs font-medium text-zinc-300">
+        <label className="flex items-center gap-2 text-xs font-medium text-zinc-200">
           <input
             name="isPinned"
             type="checkbox"
@@ -242,7 +242,7 @@ export function AnnouncementFields({
           />
           Pin first
         </label>
-        <label className="flex items-center gap-2 text-xs font-medium text-zinc-300">
+        <label className="flex items-center gap-2 text-xs font-medium text-zinc-200">
           <input
             name="isPublished"
             type="checkbox"

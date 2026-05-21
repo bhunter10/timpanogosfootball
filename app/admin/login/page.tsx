@@ -24,12 +24,12 @@ export default async function AdminLoginPage() {
       <h1 className="font-display mt-6 text-center text-3xl font-bold text-white">
         Admin sign-in
       </h1>
-      <p className="mt-3 text-center text-sm text-zinc-400">
+      <p className="mt-3 text-center text-sm text-zinc-300">
         Coaches and authorized staff can manage schedule, staff, and site content.
       </p>
 
       {!isFirebaseAdminConfigured() ? (
-        <div className="mt-8 rounded-xl border border-[var(--tf-neon)]/30 bg-[var(--tf-neon)]/10 p-4 text-sm text-zinc-100">
+        <div className="mt-8 rounded-xl border border-[var(--tf-neon)]/30 bg-[var(--tf-neon)]/10 p-4 text-sm text-zinc-50">
           Set{" "}
           <code className="rounded bg-black/30 px-1 py-0.5 text-xs">
             FIREBASE_SERVICE_ACCOUNT
@@ -40,7 +40,7 @@ export default async function AdminLoginPage() {
       ) : null}
 
       {!isFirebaseClientConfigured() ? (
-        <div className="mt-6 rounded-xl border border-white/15 bg-zinc-900/80 p-4 text-sm text-zinc-300">
+        <div className="mt-6 rounded-xl border border-white/15 bg-zinc-900/80 p-4 text-sm text-zinc-200">
           Client Firebase keys are missing — add{" "}
           <code className="rounded bg-black/30 px-1 py-0.5 text-xs">
             NEXT_PUBLIC_FIREBASE_*{" "}

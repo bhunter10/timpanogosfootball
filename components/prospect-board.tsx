@@ -33,7 +33,7 @@ function ProspectPhoto({ prospect }: { prospect: Prospect }) {
         </div>
       )}
       <div className="absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(0deg,rgba(2,9,23,0.86),transparent)]" />
-      <p className="absolute bottom-4 left-4 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--tf-neon)]">
+      <p className="absolute bottom-4 left-4 text-xs font-black uppercase tracking-[0.2em] text-[var(--tf-neon)]">
         Class of {prospect.classYear}
       </p>
     </div>
@@ -42,7 +42,7 @@ function ProspectPhoto({ prospect }: { prospect: Prospect }) {
 
 function ProfileIcon({ type }: { type: "hudl" | "instagram" | "x" }) {
   if (type === "hudl") {
-    return <span className="text-[10px] font-black lowercase tracking-tight">hudl</span>;
+    return <span className="text-xs font-black lowercase tracking-tight">hudl</span>;
   }
 
   if (type === "instagram") {
@@ -127,13 +127,13 @@ function ProspectCard({ prospect }: { prospect: Prospect }) {
               {prospect.positions.join(" / ")}
             </p>
           </div>
-          <span className="border border-white/15 px-3 py-2 text-[10px] font-black uppercase tracking-wide text-zinc-300">
+          <span className="border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-200">
             {prospect.status}
           </span>
         </div>
 
         {measurables ? (
-          <p className="mt-4 font-mono text-sm font-bold uppercase text-zinc-300">
+          <p className="mt-4 font-mono text-sm font-bold uppercase text-zinc-200">
             {measurables}
           </p>
         ) : null}
@@ -153,7 +153,7 @@ function ProspectCard({ prospect }: { prospect: Prospect }) {
             {prospect.honors.map((honor) => (
               <span
                 key={honor}
-                className="bg-white/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-zinc-300"
+                className="bg-white/10 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-zinc-200"
               >
                 {honor}
               </span>
@@ -220,13 +220,13 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
           <button
             type="button"
             onClick={clearFilters}
-            className="text-[10px] font-black uppercase tracking-wide text-zinc-400 transition hover:text-[var(--tf-neon)]"
+            className="text-xs font-black uppercase tracking-wide text-zinc-300 transition hover:text-[var(--tf-neon)]"
           >
             Reset
           </button>
         </div>
         <div className="mt-5">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
             Class
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -240,7 +240,7 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
                   className={`border px-3 py-2 text-xs font-black uppercase transition ${
                     active
                       ? "border-[var(--tf-neon)] bg-[var(--tf-neon)] text-[var(--tf-navy)]"
-                      : "border-white/10 bg-black/25 text-zinc-300 hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
+                      : "border-white/10 bg-black/25 text-zinc-200 hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
                   }`}
                 >
                   {classYear === "all" ? "All" : classYear}
@@ -250,7 +250,7 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
           </div>
         </div>
         <div className="mt-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
             Position
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -264,7 +264,7 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
                   className={`border px-3 py-2 text-xs font-black uppercase transition ${
                     active
                       ? "border-[var(--tf-neon)] bg-[var(--tf-neon)] text-[var(--tf-navy)]"
-                      : "border-white/10 bg-black/25 text-zinc-300 hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
+                      : "border-white/10 bg-black/25 text-zinc-200 hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
                   }`}
                 >
                   {position === "all" ? "All" : position}
@@ -273,7 +273,7 @@ export function ProspectBoard({ prospects }: { prospects: Prospect[] }) {
             })}
           </div>
         </div>
-        <div className="mt-8 border-t border-white/10 pt-5 text-sm leading-6 text-zinc-400">
+        <div className="mt-8 border-t border-white/10 pt-5 text-sm leading-6 text-zinc-300">
           Showing {filteredProspects.length} of {prospects.length} prospects. College
           coaches can use Hudl links and profile contact buttons when available.
         </div>

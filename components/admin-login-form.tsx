@@ -51,7 +51,7 @@ export function AdminLoginForm() {
   return (
     <form onSubmit={onSubmit} className="mt-8 space-y-4">
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
+        <label htmlFor="email" className="block text-sm font-medium text-zinc-200">
           Email
         </label>
         <input
@@ -64,7 +64,7 @@ export function AdminLoginForm() {
         />
       </div>
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-zinc-300">
+        <label htmlFor="password" className="block text-sm font-medium text-zinc-200">
           Password
         </label>
         <input

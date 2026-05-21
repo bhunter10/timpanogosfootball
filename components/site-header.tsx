@@ -39,7 +39,7 @@ export function SiteHeader() {
             priority
           />
           <span className="flex flex-col">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
               Timpanogos
             </span>
             <span className="font-display text-xl font-bold uppercase tracking-tight md:text-xl">

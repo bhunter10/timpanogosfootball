@@ -44,7 +44,7 @@ export function ShopProductGrid({
                   className="object-cover transition duration-500 group-hover:scale-105"
                 />
               ) : (
-                <div className="flex h-full items-center justify-center text-sm text-zinc-500">
+                <div className="flex h-full items-center justify-center text-sm text-zinc-400">
                   Image unavailable
                 </div>
               )}
@@ -58,7 +58,7 @@ export function ShopProductGrid({
                   {label}
                 </span>
               ) : (
-                <p className="mt-auto text-sm font-medium text-zinc-500">
+                <p className="mt-auto text-sm font-medium text-zinc-400">
                   Add the storefront URL in admin to enable shopping.
                 </p>
               )}

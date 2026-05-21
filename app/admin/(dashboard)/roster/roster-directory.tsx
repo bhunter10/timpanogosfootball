@@ -52,12 +52,12 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
   }
 
   if (items.length === 0) {
-    return <p className="mt-4 text-sm text-zinc-500">No players yet.</p>;
+    return <p className="mt-4 text-sm text-zinc-400">No players yet.</p>;
   }
 
   return (
     <>
-      <div className="mt-3 flex items-center justify-between gap-3 text-xs text-zinc-500">
+      <div className="mt-3 flex items-center justify-between gap-3 text-xs text-zinc-400">
         <p>Drag player cards to change the roster and prospects display order.</p>
         {isPending ? <p className="shrink-0 text-[var(--tf-neon)]">Saving order...</p> : null}
       </div>
@@ -89,7 +89,7 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
               }
             }}
             onDrop={(event) => handleDrop(event, player.id)}
-            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-200 transition active:cursor-grabbing ${
+            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-100 transition active:cursor-grabbing ${
               draggedId === player.id ? "border-[var(--tf-neon)]/70 opacity-60" : "border-white/10"
             }`}
           >
@@ -102,7 +102,7 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
             <div className="flex items-start gap-2">
               <span
                 aria-hidden="true"
-                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-500 transition hover:text-[var(--tf-neon)]"
+                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-400 transition hover:text-[var(--tf-neon)]"
               >
                 <span className="h-0.5 w-4 rounded-full bg-current" />
                 <span className="h-0.5 w-4 rounded-full bg-current" />
@@ -115,12 +115,12 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
                       {player.jerseyNumber ? `#${player.jerseyNumber} ` : ""}
                       {player.name}
                     </span>
-                    <span className="block truncate text-xs text-zinc-500">
+                    <span className="block truncate text-xs text-zinc-400">
                       Class of {player.classYear} - {player.positions.join(" / ")}
                       {player.isProspect ? " - prospect" : ""}
                     </span>
                   </span>
-                  <span className="rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold text-zinc-200 hover:bg-white/10">
+                  <span className="rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold text-zinc-100 hover:bg-white/10">
                     Edit
                   </span>
                 </summary>
@@ -159,7 +159,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
 
   return (
     <>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Name
         <input
           name="name"
@@ -168,7 +168,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Jersey number
         <input
           name="jerseyNumber"
@@ -177,7 +177,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Class year
         <input
           name="classYear"
@@ -187,7 +187,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Positions
         <input
           name="positions"
@@ -197,7 +197,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Height
         <input
           name="height"
@@ -206,7 +206,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Weight
         <input
           name="weight"
@@ -215,7 +215,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Photo upload
         <input
           name="photoFile"
@@ -224,7 +224,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white/15"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Photo URL override
         <input
           name="photoUrl"
@@ -233,7 +233,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Hudl URL
         <input
           name="hudlUrl"
@@ -242,7 +242,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         X profile URL
         <input
           name="xUrl"
@@ -251,7 +251,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Instagram profile URL
         <input
           name="instagramUrl"
@@ -260,7 +260,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Public contact email
         <input
           name="email"
@@ -269,7 +269,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400">
+      <label className="text-xs font-medium text-zinc-300">
         Recruiting status
         <select
           name="status"
@@ -283,7 +283,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
       <div className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-3 md:col-span-2">
         <label
           htmlFor={prospectFieldId}
-          className="flex w-fit items-center gap-3 text-xs font-medium text-zinc-300"
+          className="flex w-fit items-center gap-3 text-xs font-medium text-zinc-200"
         >
           <input
             id={prospectFieldId}
@@ -294,11 +294,11 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           />
           Show on prospects page
         </label>
-        <p className="mt-2 text-xs leading-5 text-zinc-500">
+        <p className="mt-2 text-xs leading-5 text-zinc-400">
           Adds this player to the public recruiting board.
         </p>
       </div>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Honors
         <textarea
           name="honors"
@@ -308,7 +308,7 @@ export function PlayerFields({ player }: { player?: Prospect }) {
           className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
         />
       </label>
-      <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+      <label className="text-xs font-medium text-zinc-300 md:col-span-2">
         Stats
         <textarea
           name="stats"

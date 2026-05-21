@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Tickets",
-  description: "Purchase tickets and learn about game-day policies for Timpanogos football.",
+  ...createPageMetadata({
+    title: "Tickets",
+    description:
+      "Buy Timpanogos High School football tickets and find game-day ticket links for Timberwolves home games.",
+    path: "/tickets",
+  }),
 };
 
 export default async function TicketsPage() {

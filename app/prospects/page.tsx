@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProspectBoard } from "@/components/prospect-board";
 import { getProspects } from "@/lib/data/prospects";
+import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Prospects",
-  description:
-    "Timpanogos football prospect profiles for college coaches and recruiters.",
+  ...createPageMetadata({
+    title: "Prospects",
+    description:
+      "Timpanogos football prospect profiles, recruiting board, player classes, and college coach resources.",
+    path: "/prospects",
+  }),
 };
 
 const classes = ["2027", "2028", "2029", "2030"];
@@ -28,7 +32,7 @@ export default async function ProspectsPage() {
             <h1 className="font-display mt-4 max-w-4xl text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
               Prospects
             </h1>
-            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
+            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
               A public recruiting board for college coaches evaluating Timpanogos
               football athletes.
             </p>
@@ -49,7 +53,7 @@ export default async function ProspectsPage() {
           </div>
 
           <aside className="border border-white/10 bg-black/35 p-5 shadow-2xl shadow-black/25 backdrop-blur">
-            <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
               Board Snapshot
             </p>
             <div className="mt-5 grid gap-px bg-white/10">
@@ -59,7 +63,7 @@ export default async function ProspectsPage() {
                 ["Classes", classes.join(" / ")],
               ].map(([label, value]) => (
                 <div key={label} className="bg-[var(--tf-black)] px-4 py-3">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
                     {label}
                   </p>
                   <p className="font-display mt-1 text-2xl font-bold uppercase text-white">
@@ -89,7 +93,7 @@ export default async function ProspectsPage() {
               <h2 className="font-display mt-4 text-4xl font-bold uppercase leading-none text-white">
                 Prospect board is being prepared.
               </h2>
-              <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-400">
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-300">
                 This page is ready for player profiles with photos, class year,
                 positions, measurables, Hudl links, honors, stats, and public contact
                 links. GPA and coach evaluation quotes are intentionally excluded.

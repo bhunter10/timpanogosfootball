@@ -44,12 +44,12 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
   }
 
   if (items.length === 0) {
-    return <p className="mt-4 text-sm text-zinc-500">No staff yet.</p>;
+    return <p className="mt-4 text-sm text-zinc-400">No staff yet.</p>;
   }
 
   return (
     <>
-      <div className="mt-3 flex items-center justify-between gap-3 text-xs text-zinc-500">
+      <div className="mt-3 flex items-center justify-between gap-3 text-xs text-zinc-400">
         <p>Drag staff cards to change the public display order.</p>
         {isPending ? <p className="shrink-0 text-[var(--tf-neon)]">Saving order...</p> : null}
       </div>
@@ -81,7 +81,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
               }
             }}
             onDrop={(event) => handleDrop(event, m.id)}
-            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-200 transition active:cursor-grabbing ${
+            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-100 transition active:cursor-grabbing ${
               draggedId === m.id
                 ? "border-[var(--tf-neon)]/70 opacity-60"
                 : dropTargetId === m.id
@@ -98,7 +98,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
             <div className="flex items-start gap-2">
               <span
                 aria-hidden="true"
-                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-500 transition hover:text-[var(--tf-neon)]"
+                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-400 transition hover:text-[var(--tf-neon)]"
               >
                 <span className="h-0.5 w-4 rounded-full bg-current" />
                 <span className="h-0.5 w-4 rounded-full bg-current" />
@@ -108,16 +108,16 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
                 <summary className="grid cursor-pointer list-none grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
                   <span className="min-w-0">
                     <span className="block truncate font-medium text-white">{m.name}</span>
-                    <span className="block truncate text-xs text-zinc-500">{m.role}</span>
+                    <span className="block truncate text-xs text-zinc-400">{m.role}</span>
                   </span>
-                  <span className="rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold text-zinc-200 hover:bg-white/10">
+                  <span className="rounded-full border border-white/20 px-4 py-1.5 text-xs font-semibold text-zinc-100 hover:bg-white/10">
                     Edit
                   </span>
                 </summary>
                 <form action={updateStaffMember} className="mt-4 grid gap-3 md:grid-cols-2">
                   <input type="hidden" name="id" value={m.id} />
                   <input type="hidden" name="sortOrder" value={m.sortOrder} />
-                  <label className="text-xs font-medium text-zinc-400">
+                  <label className="text-xs font-medium text-zinc-300">
                     Name
                     <input
                       name="name"
@@ -126,7 +126,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
                       className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
                     />
                   </label>
-                  <label className="text-xs font-medium text-zinc-400">
+                  <label className="text-xs font-medium text-zinc-300">
                     Role
                     <input
                       name="role"
@@ -135,7 +135,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
                       className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
                     />
                   </label>
-                  <label className="text-xs font-medium text-zinc-400 md:col-span-2">
+                  <label className="text-xs font-medium text-zinc-300 md:col-span-2">
                     Bio
                     <textarea
                       name="bio"
@@ -144,7 +144,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
                       className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
                     />
                   </label>
-                  <label className="text-xs font-medium text-zinc-400">
+                  <label className="text-xs font-medium text-zinc-300">
                     New photo upload
                     <input
                       name="photoFile"
@@ -153,7 +153,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
                       className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-white hover:file:bg-white/15"
                     />
                   </label>
-                  <label className="text-xs font-medium text-zinc-400">
+                  <label className="text-xs font-medium text-zinc-300">
                     Photo URL override
                     <input
                       name="photoUrl"
@@ -161,7 +161,7 @@ export function StaffDirectory({ staff }: StaffDirectoryProps) {
                       className="mt-1 w-full rounded-lg border border-white/15 bg-zinc-950 px-3 py-2 text-sm text-white"
                     />
                   </label>
-                  <label className="text-xs font-medium text-zinc-400">
+                  <label className="text-xs font-medium text-zinc-300">
                     Email
                     <input
                       name="email"

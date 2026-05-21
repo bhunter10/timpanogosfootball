@@ -6,6 +6,7 @@ import { ScheduleCalendarModal } from "@/components/schedule-calendar-modal";
 import { getHeadersOrigin } from "@/lib/site-url";
 import { getScheduleGames } from "@/lib/data/schedule";
 import { formatScheduleGameDate } from "@/lib/date/schedule-time";
+import { createPageMetadata, getSiteUrl, JsonLd } from "@/lib/seo";
 import {
   scheduleTeamLevels,
   type ScheduleGame,
@@ -13,8 +14,12 @@ import {
 } from "@/types/firestore";
 
 export const metadata: Metadata = {
-  title: "Schedule",
-  description: "Timpanogos football schedule, opponents, and locations.",
+  ...createPageMetadata({
+    title: "Schedule",
+    description:
+      "Timpanogos High School football schedule with varsity, JV, and freshman game dates, kickoff times, locations, and calendar links.",
+    path: "/schedule",
+  }),
 };
 
 function getMapHref(address?: string) {
@@ -55,6 +60,41 @@ function opponentInitials(name: string) {
     .map((part) => part[0])
     .join("")
     .toUpperCase();
+}
+
+function getSchedulePath(teamLevel: ScheduleTeamLevel) {
+  return teamLevel === "varsity" ? "/schedule" : `/schedule?team=${teamLevel}`;
+}
+
+function getGameEventJsonLd(game: ScheduleGame, teamLabel: string) {
+  const startDate = new Date(game.dateISO);
+  if (Number.isNaN(startDate.getTime())) return undefined;
+  const homeName = game.isHome ? "Timpanogos Timberwolves" : game.opponent;
+  const awayName = game.isHome ? game.opponent : "Timpanogos Timberwolves";
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SportsEvent",
+    name: `${teamLabel} Football: ${game.isHome ? "Timpanogos vs. " : "Timpanogos at "}${game.opponent}`,
+    sport: "American Football",
+    startDate: startDate.toISOString(),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    url: getSiteUrl(getSchedulePath(game.teamLevel)).toString(),
+    homeTeam: {
+      "@type": "SportsTeam",
+      name: homeName,
+    },
+    awayTeam: {
+      "@type": "SportsTeam",
+      name: awayName,
+    },
+    location: {
+      "@type": "Place",
+      name: game.location || "Location TBD",
+      address: game.address || game.location || "Location TBD",
+    },
+  };
 }
 
 function OpponentLogo({
@@ -114,7 +154,7 @@ function GameTile({ game }: { game: ScheduleGame }) {
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
           <OpponentLogo game={game} />
           <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
               {game.isHome ? "Home" : "Away"}
             </p>
             <h2 className="font-display mt-1 break-words text-2xl font-bold uppercase leading-none [overflow-wrap:anywhere] sm:text-3xl">
@@ -122,29 +162,29 @@ function GameTile({ game }: { game: ScheduleGame }) {
               {game.opponent}
             </h2>
             {game.opponentMascot ? (
-              <p className="mt-1 break-words text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400 [overflow-wrap:anywhere]">
+              <p className="mt-1 break-words text-xs font-semibold uppercase tracking-[0.14em] text-zinc-300 [overflow-wrap:anywhere]">
                 {game.opponentMascot}
               </p>
             ) : null}
           </div>
         </div>
         <div className="rounded-xl bg-[var(--tf-neon)] px-3 py-2 text-center text-[var(--tf-navy)]">
-          <p className="text-[10px] font-black uppercase tracking-widest">
+          <p className="text-xs font-black uppercase tracking-widest">
             {date.month}
           </p>
           <p className="font-display text-3xl font-bold leading-none">{date.day}</p>
         </div>
       </div>
 
-      <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 text-sm text-zinc-300 sm:grid-cols-2">
+      <div className="mt-5 grid gap-3 border-t border-white/10 pt-4 text-sm text-zinc-200 sm:grid-cols-2">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">
             Kickoff
           </p>
           <p className="mt-1 font-semibold text-white">{date.time}</p>
         </div>
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-zinc-500">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">
             Location
           </p>
           {mapHref ? (
@@ -195,9 +235,13 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
       allGames.filter((game) => game.teamLevel === level.value).length,
     ]),
   );
+  const eventJsonLd = games
+    .map((game) => getGameEventJsonLd(game, selectedTeamLabel))
+    .filter(Boolean);
 
   return (
     <main className="min-h-screen bg-[var(--tf-black)] text-white">
+      {eventJsonLd.length > 0 ? <JsonLd data={eventJsonLd} /> : null}
       <section>
         <div className="mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-6">
           <div
@@ -214,7 +258,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
               <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] text-white md:text-8xl">
                 Schedule
               </h1>
-              <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-400 md:text-base">
+              <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
                 Subscribe to the team calendar once. Schedule changes and game details
                 will update automatically all season.
               </p>
@@ -241,7 +285,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
                           {nextGame.opponent}
                         </h2>
                         {nextGame.opponentMascot ? (
-                          <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-zinc-400">
+                          <p className="mt-1 text-xs font-black uppercase tracking-[0.18em] text-zinc-300">
                             {nextGame.opponentMascot}
                           </p>
                         ) : null}
@@ -250,7 +294,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
                   </div>
                   <div className="grid grid-cols-3 border-t border-white/10 bg-white/[0.04] text-white md:grid-cols-1 md:border-l md:border-t-0">
                     <div className="p-4">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                         Date
                       </p>
                       <p className="font-display mt-1 text-2xl font-bold md:text-3xl">
@@ -258,7 +302,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
                       </p>
                     </div>
                     <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                         Time
                       </p>
                       <p className="font-display mt-1 text-2xl font-bold md:text-3xl">
@@ -266,7 +310,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
                       </p>
                     </div>
                     <div className="border-l border-white/10 p-4 md:border-l-0 md:border-t">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                         Location
                       </p>
                       {nextGameMapHref ? (
@@ -306,7 +350,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
                   teamCounts={teamCounts}
                 />
               </div>
-              <div className="mt-5 border border-dashed border-white/20 bg-zinc-950/70 px-5 py-6 text-sm text-zinc-400">
+              <div className="mt-5 border border-dashed border-white/20 bg-zinc-950/70 px-5 py-6 text-sm text-zinc-300">
                 The {selectedTeamLabel} schedule has not been published yet.
               </div>
             </section>
@@ -377,12 +421,12 @@ function TeamLevelTabs({
         return (
           <Link
             key={level.value}
-            href={level.value === "varsity" ? "/schedule" : `/schedule?team=${level.value}`}
+            href={getSchedulePath(level.value)}
             aria-current={isSelected ? "page" : undefined}
             className={`px-4 py-3 text-center text-xs font-black uppercase tracking-wide transition ${
               isSelected
                 ? "bg-[var(--tf-neon)] text-[var(--tf-navy)]"
-                : "text-zinc-300 hover:bg-white/10 hover:text-white"
+                : "text-zinc-200 hover:bg-white/10 hover:text-white"
             }`}
           >
             {level.label}

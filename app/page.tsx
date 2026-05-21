@@ -1,12 +1,24 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getAnnouncements } from "@/lib/data/announcements";
 import { getScheduleGames } from "@/lib/data/schedule";
 import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { createPageMetadata, getSiteUrl, JsonLd } from "@/lib/seo";
 import { TICKETS_URL } from "@/lib/site-links";
 
 const heroImage = "/images/timpanogos-football-hero-option1.webp";
+
+export const metadata: Metadata = {
+  ...createPageMetadata({
+    title: "Timpanogos Football",
+    description:
+      "Timpanogos High School Timberwolves football in Orem, Utah: varsity schedule, tickets, roster, staff, recruiting, records, and team gear.",
+    path: "/",
+    image: heroImage,
+  }),
+};
 
 type QuickLink = { title: string; href: string; external?: boolean };
 
@@ -64,9 +76,38 @@ export default async function Home() {
     { title: "Roster", href: "/roster" },
     { title: "Staff", href: "/staff" },
   ];
+  const teamJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SportsTeam",
+    name: "Timpanogos Football",
+    alternateName: "Timpanogos Timberwolves Football",
+    sport: "American Football",
+    url: getSiteUrl("/").toString(),
+    logo: getSiteUrl("/images/twolves-wolf.svg").toString(),
+    image: getSiteUrl(heroImage).toString(),
+    memberOf: {
+      "@type": "SportsOrganization",
+      name: "Utah High School Activities Association",
+    },
+    location: {
+      "@type": "Place",
+      name: "Timpanogos High School",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Orem",
+        addressRegion: "UT",
+        addressCountry: "US",
+      },
+    },
+    sameAs: [
+      "https://www.instagram.com/timpanogosfootball/",
+      "https://www.maxpreps.com/ut/orem/timpanogos-timberwolves/football/",
+    ],
+  };
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
+      <JsonLd data={teamJsonLd} />
       <section className="relative isolate min-h-[680px] overflow-hidden md:min-h-[760px]">
         <Image
           src={heroImage}
@@ -86,7 +127,7 @@ export default async function Home() {
             <h1 className="font-display mt-4 max-w-4xl text-5xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-7xl lg:text-8xl">
               {settings.heroTitle}
             </h1>
-            <p className="mt-5 max-w-[21rem] text-base leading-7 text-zinc-300 md:max-w-2xl md:text-lg">
+            <p className="mt-5 max-w-[21rem] text-base leading-7 text-zinc-200 md:max-w-2xl md:text-lg">
               {settings.heroSubtitle}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -113,7 +154,7 @@ export default async function Home() {
                 <p className="text-xs font-black uppercase tracking-[0.26em] text-[var(--tf-neon)]">
                   Next Game
                 </p>
-                <p className="rounded-sm border border-[var(--tf-neon)]/35 bg-[var(--tf-neon)]/10 px-2.5 py-1 font-mono text-[11px] font-black uppercase text-[var(--tf-neon)]">
+                <p className="rounded-sm border border-[var(--tf-neon)]/35 bg-[var(--tf-neon)]/10 px-2.5 py-1 font-mono text-xs font-black uppercase text-[var(--tf-neon)]">
                   {hasSchedule ? (nextGame.isHome ? "Home" : "Away") : "TBD"}
                 </p>
               </div>
@@ -135,7 +176,7 @@ export default async function Home() {
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-300">
                       {hasSchedule
                         ? nextGame.isHome
                           ? "Timpanogos vs"
@@ -155,7 +196,7 @@ export default async function Home() {
 
                 <div className="grid overflow-hidden rounded-md border border-white/10 bg-white/[0.04] text-sm font-black sm:grid-cols-3 md:grid-cols-1">
                   <div className="p-3.5">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                       Date
                     </p>
                     <p className="mt-1 text-white">
@@ -163,13 +204,13 @@ export default async function Home() {
                     </p>
                   </div>
                   <div className="border-t border-white/10 p-3.5 sm:border-l sm:border-t-0 md:border-l-0 md:border-t">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                       Time
                     </p>
                     <p className="mt-1 text-white">{nextGameDate.time}</p>
                   </div>
                   <div className="border-t border-white/10 p-3.5 sm:border-l sm:border-t-0 md:border-l-0 md:border-t">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-[var(--tf-neon)]">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--tf-neon)]">
                       Location
                     </p>
                     {nextGameMapHref ? (
@@ -190,7 +231,7 @@ export default async function Home() {
                 </div>
               </div>
               <div className="flex flex-col gap-3 border-t border-white/10 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-300">
                   Varsity Football
                 </p>
                 {nextGameAction.external ? (
@@ -276,11 +317,11 @@ export default async function Home() {
                   className="flex min-h-[230px] flex-col border border-white/10 bg-white/[0.045] p-5 transition hover:border-[var(--tf-neon)]/40 hover:bg-white/[0.065]"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
+                    <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--tf-neon)]">
                       {meta || "Update"}
                     </p>
                     {announcement.isPinned ? (
-                      <span className="rounded-sm border border-[var(--tf-neon)]/35 px-2 py-1 text-[10px] font-black uppercase tracking-wide text-[var(--tf-neon)]">
+                      <span className="rounded-sm border border-[var(--tf-neon)]/35 px-2 py-1 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)]">
                         Pinned
                       </span>
                     ) : null}
@@ -288,7 +329,7 @@ export default async function Home() {
                   <h3 className="font-display mt-4 text-3xl font-bold uppercase leading-none text-white">
                     {announcement.title}
                   </h3>
-                  <p className="mt-4 flex-1 text-sm leading-6 text-zinc-400">
+                  <p className="mt-4 flex-1 text-sm leading-6 text-zinc-300">
                     {announcement.body}
                   </p>
                   {href ? (
@@ -316,7 +357,7 @@ export default async function Home() {
           </div>
         ) : (
           <div className="mt-6 border border-dashed border-white/15 bg-white/[0.035] p-6">
-            <p className="text-sm leading-6 text-zinc-400">
+            <p className="text-sm leading-6 text-zinc-300">
               Team announcements, parent reminders, and game week updates will appear
               here when they are posted.
             </p>
@@ -376,14 +417,14 @@ export default async function Home() {
                         {game.opponent}
                       </p>
                       {game.opponentMascot ? (
-                        <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--tf-neon)] md:text-xs md:tracking-[0.18em]">
+                        <p className="mt-1 text-xs font-bold uppercase tracking-[0.16em] text-[var(--tf-neon)] md:text-xs md:tracking-[0.18em]">
                           {game.opponentMascot}
                         </p>
                       ) : null}
                     </div>
                   </div>
                   <div className="col-start-2 min-w-0 md:col-span-1 md:col-start-2">
-                    <p className="break-words text-sm text-zinc-400 [overflow-wrap:anywhere] md:mt-2">
+                    <p className="break-words text-sm text-zinc-300 [overflow-wrap:anywhere] md:mt-2">
                       {date.weekday ? `${date.weekday} / ` : ""}
                       {date.time} /{" "}
                       {mapHref ? (
@@ -401,7 +442,7 @@ export default async function Home() {
                     </p>
                   </div>
                   {game.result ? (
-                    <span className="col-start-2 w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-300 md:col-start-auto">
+                    <span className="col-start-2 w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-200 md:col-start-auto">
                       {game.result}
                     </span>
                   ) : null}

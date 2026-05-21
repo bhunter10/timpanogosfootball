@@ -8,7 +8,7 @@ export default async function AdminAnnouncementsPage() {
   return (
     <div>
       <h1 className="font-display text-3xl font-bold text-white">Announcements</h1>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-zinc-300">
         Publish short home page updates for camp dates, parent meetings, fundraisers,
         schedule notes, and game week reminders. Pinned items stay first.
       </p>

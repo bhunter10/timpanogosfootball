@@ -43,7 +43,7 @@ const socialLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-auto overflow-hidden border-t border-[var(--tf-neon)]/30 bg-[var(--tf-black)] text-zinc-400">
+    <footer className="relative mt-auto overflow-hidden border-t border-[var(--tf-neon)]/30 bg-[var(--tf-black)] text-zinc-300">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_0%,color-mix(in_srgb,var(--tf-neon)_26%,transparent),transparent_28%),linear-gradient(135deg,rgba(6,24,58,0.92),rgba(5,7,9,0.88)_48%,rgba(45,52,59,0.55))]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--tf-neon)] to-transparent" />
 
@@ -72,7 +72,7 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Follow Timpanogos Football on ${item.label}`}
-                  className="group relative grid size-11 place-items-center overflow-hidden rounded-sm border border-white/10 bg-white/[0.06] text-zinc-200 shadow-lg shadow-black/25 outline-none transition duration-300 hover:-translate-y-1 hover:border-[var(--tf-neon)] hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] hover:shadow-[0_0_24px_rgba(57,255,20,0.32)] focus-visible:border-[var(--tf-neon)] focus-visible:ring-2 focus-visible:ring-[var(--tf-neon)]/60"
+                  className="group relative grid size-11 place-items-center overflow-hidden rounded-sm border border-white/10 bg-white/[0.06] text-zinc-100 shadow-lg shadow-black/25 outline-none transition duration-300 hover:-translate-y-1 hover:border-[var(--tf-neon)] hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] hover:shadow-[0_0_24px_rgba(57,255,20,0.32)] focus-visible:border-[var(--tf-neon)] focus-visible:ring-2 focus-visible:ring-[var(--tf-neon)]/60"
                 >
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/35 to-transparent transition duration-700 group-hover:translate-x-full" />
                   <span className="relative transition duration-300 group-hover:scale-110">
@@ -110,7 +110,7 @@ export function SiteFooter() {
           </Link>
           <Link
             href="/admin/login"
-            className="text-zinc-500 transition hover:text-zinc-300"
+            className="text-zinc-400 transition hover:text-zinc-200"
           >
             Admin
           </Link>
@@ -118,7 +118,7 @@ export function SiteFooter() {
 
       </div>
 
-      <div className="relative border-t border-white/10 bg-black/25 py-4 text-center text-xs text-zinc-500">
+      <div className="relative border-t border-white/10 bg-black/25 py-4 text-center text-xs text-zinc-400">
         © {new Date().getFullYear()} Timpanogos Football. All rights reserved.
       </div>
     </footer>

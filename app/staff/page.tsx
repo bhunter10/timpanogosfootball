@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getStaffMembers } from "@/lib/data/staff";
+import { createPageMetadata } from "@/lib/seo";
 import type { StaffMember } from "@/types/firestore";
 
 export const metadata: Metadata = {
-  title: "Staff",
-  description: "Coaching staff and program leadership for Timpanogos football.",
+  ...createPageMetadata({
+    title: "Staff",
+    description:
+      "Meet the Timpanogos High School football coaching staff and program leadership in Orem, Utah.",
+    path: "/staff",
+  }),
 };
 
 function getInitials(name: string) {
@@ -63,21 +68,21 @@ function ProfileCard({ member }: { member: StaffMember }) {
             <h2 className="font-display text-2xl font-bold uppercase leading-none text-white">
               {member.name}
             </h2>
-            <p className="mt-2 text-[11px] font-black uppercase tracking-[0.16em] text-[var(--tf-neon)]">
+            <p className="mt-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--tf-neon)]">
               {member.role}
             </p>
           </div>
           {member.email ? (
             <a
               href={`mailto:${member.email}`}
-              className="shrink-0 border border-white/25 bg-black/35 px-3 py-2 text-[10px] font-black uppercase tracking-wide text-white backdrop-blur transition hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
+              className="shrink-0 border border-white/25 bg-black/35 px-3 py-2 text-xs font-black uppercase tracking-wide text-white backdrop-blur transition hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
             >
               Email
             </a>
           ) : null}
         </div>
         {member.bio ? (
-          <p className="mt-4 line-clamp-2 text-sm leading-6 text-zinc-300">{member.bio}</p>
+          <p className="mt-4 line-clamp-2 text-sm leading-6 text-zinc-200">{member.bio}</p>
         ) : null}
       </div>
     </article>
@@ -109,7 +114,7 @@ export default async function StaffPage() {
             <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] tracking-tight text-white md:text-8xl">
               Staff
             </h1>
-            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
+            <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
               The people leading the preparation, culture, and Friday-night standard for
               Timpanogos football.
             </p>

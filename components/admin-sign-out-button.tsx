@@ -33,7 +33,7 @@ export function AdminSignOutButton() {
       type="button"
       onClick={() => void handleSignOut()}
       disabled={pending}
-      className="w-full rounded-md border border-white/15 px-3 py-2 text-left text-sm text-zinc-200 transition hover:bg-white/10 disabled:opacity-50"
+      className="w-full rounded-md border border-white/15 px-3 py-2 text-left text-sm text-zinc-100 transition hover:bg-white/10 disabled:opacity-50"
     >
       {pending ? "Signing out…" : "Sign out"}
     </button>

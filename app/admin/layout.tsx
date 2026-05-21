@@ -18,7 +18,7 @@ export default function AdminRootLayout({
             priority
           />
           <div className="leading-tight">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--tf-neon)]">
               Timpanogos Football
             </p>
             <p className="font-display text-xl font-bold uppercase text-white">

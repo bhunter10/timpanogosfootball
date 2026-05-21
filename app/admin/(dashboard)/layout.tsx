@@ -25,7 +25,7 @@ export default async function AdminDashboardLayout({
         <h1 className="font-display text-2xl font-semibold text-white">
           Admin is not configured
         </h1>
-        <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+        <p className="mt-4 text-sm leading-relaxed text-zinc-300">
           Add <code className="rounded bg-zinc-900 px-1 py-0.5">FIREBASE_SERVICE_ACCOUNT</code>{" "}
           and Firebase web keys to <code className="rounded bg-zinc-900 px-1 py-0.5">.env.local</code>{" "}
           (and Vercel), then redeploy. See <code className="rounded bg-zinc-900 px-1 py-0.5">.env.example</code>.
@@ -43,7 +43,7 @@ export default async function AdminDashboardLayout({
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-6 px-4 py-8 md:flex-row md:py-12">
       <aside className="md:w-56 md:shrink-0">
         <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+          <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
             Admin
           </p>
           <nav className="mt-4 flex flex-col gap-1">
@@ -51,7 +51,7 @@ export default async function AdminDashboardLayout({
               <Link
                 key={l.href}
                 href={l.href}
-                className="rounded-md px-3 py-2 text-sm text-zinc-200 hover:bg-white/10"
+                className="rounded-md px-3 py-2 text-sm text-zinc-100 hover:bg-white/10"
               >
                 {l.label}
               </Link>

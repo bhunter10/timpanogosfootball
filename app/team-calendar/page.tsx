@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
 const teamCalendarUrl =
   "https://calendar.google.com/calendar/embed?src=69a70935116452d15372c1e271b7d5a8fbfb6c44ffebe572d49bfe2f0cdc0969%40group.calendar.google.com&ctz=America%2FDenver";
@@ -6,8 +7,12 @@ const teamCalendarUrl =
 const teamCalendarAgendaUrl = `${teamCalendarUrl}&mode=AGENDA&showTitle=0&showPrint=0&showTabs=0&showCalendars=0`;
 
 export const metadata: Metadata = {
-  title: "Team Calendar",
-  description: "Timpanogos football practice, event, and team calendar.",
+  ...createPageMetadata({
+    title: "Team Calendar",
+    description:
+      "Timpanogos football team calendar for practices, program events, and Timberwolves football updates.",
+    path: "/team-calendar",
+  }),
 };
 
 export default function TeamCalendarPage() {
@@ -21,7 +26,7 @@ export default function TeamCalendarPage() {
           <h1 className="font-display mt-4 text-6xl font-bold uppercase leading-[0.88] text-white md:text-8xl">
             Team Calendar
           </h1>
-          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-400 md:text-base">
+          <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-300 md:text-base">
             Practice, team events, and program updates live here. Times may change,
             so open the full calendar for Google Calendar options and automatic
             updates.
@@ -56,7 +61,7 @@ export default function TeamCalendarPage() {
                 Timpanogos Football
               </h2>
             </div>
-            <p className="max-w-sm text-sm leading-6 text-zinc-400 sm:text-right">
+            <p className="max-w-sm text-sm leading-6 text-zinc-300 sm:text-right">
               Embedded agenda view for quick scanning. Use the buttons above for Google
               Calendar controls.
             </p>
