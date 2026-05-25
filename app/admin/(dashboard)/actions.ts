@@ -391,6 +391,7 @@ const prospectSchema = z.object({
 });
 
 const MAX_STAFF_PHOTO_BYTES = 5 * 1024 * 1024;
+const STAFF_PHOTO_MAX_DIMENSION = 1600;
 const allowedStaffPhotoTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const MAX_PROSPECT_PHOTO_BYTES = 5 * 1024 * 1024;
 const allowedProspectPhotoTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -431,11 +432,20 @@ async function uploadStaffPhoto(file: File, name: string): Promise<string> {
   }
 
   const token = randomUUID();
-  const ext = extensionForContentType(file.type);
   const safeName = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-  const storagePath = `staff/${safeName || "member"}-${token}.${ext}`;
+  const storagePath = `staff/${safeName || "member"}-${token}.webp`;
   const storageFile = getAdminStorageBucket().file(storagePath);
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const sourceBuffer = Buffer.from(await file.arrayBuffer());
+  const optimizedPhoto = await sharp(sourceBuffer, { animated: false })
+    .rotate()
+    .resize({
+      width: STAFF_PHOTO_MAX_DIMENSION,
+      height: STAFF_PHOTO_MAX_DIMENSION,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .webp({ quality: 84, effort: 5 })
+    .toBuffer();
 
   const [bucketExists] = await storageFile.bucket.exists();
   if (!bucketExists) {
@@ -444,8 +454,8 @@ async function uploadStaffPhoto(file: File, name: string): Promise<string> {
     );
   }
 
-  await storageFile.save(buffer, {
-    contentType: file.type,
+  await storageFile.save(optimizedPhoto, {
+    contentType: "image/webp",
     resumable: false,
     metadata: {
       cacheControl: "public, max-age=31536000, immutable",
@@ -540,17 +550,21 @@ async function uploadOpponentLogo(file: File, schoolName: string): Promise<strin
   return `https://firebasestorage.googleapis.com/v0/b/${storageFile.bucket.name}/o/${encodeURIComponent(storagePath)}?alt=media&token=${token}`;
 }
 
-function getStoragePathFromDownloadUrl(url: string): string | undefined {
+function getStoragePathFromDownloadUrl(
+  url: string,
+  allowedFolder: "opponents" | "staff",
+): string | undefined {
   try {
     const parsed = new URL(url);
     const bucket = getAdminStorageBucket();
+    const allowedPrefix = `${allowedFolder}/`;
 
     if (parsed.hostname === "firebasestorage.googleapis.com") {
       const match = parsed.pathname.match(/^\/v0\/b\/([^/]+)\/o\/(.+)$/);
       if (!match) return undefined;
       const [, bucketName, encodedPath] = match;
       const storagePath = decodeURIComponent(encodedPath);
-      if (bucketName !== bucket.name || !storagePath.startsWith("opponents/")) {
+      if (bucketName !== bucket.name || !storagePath.startsWith(allowedPrefix)) {
         return undefined;
       }
       return storagePath;
@@ -560,7 +574,7 @@ function getStoragePathFromDownloadUrl(url: string): string | undefined {
       const parts = parsed.pathname.split("/").filter(Boolean);
       const [bucketName, ...pathParts] = parts;
       const storagePath = pathParts.map(decodeURIComponent).join("/");
-      if (bucketName !== bucket.name || !storagePath.startsWith("opponents/")) {
+      if (bucketName !== bucket.name || !storagePath.startsWith(allowedPrefix)) {
         return undefined;
       }
       return storagePath;
@@ -572,16 +586,28 @@ function getStoragePathFromDownloadUrl(url: string): string | undefined {
   return undefined;
 }
 
-async function deleteOpponentLogoByUrl(url?: string | null) {
+async function deleteStorageFileByUrl(
+  url: string | null | undefined,
+  allowedFolder: "opponents" | "staff",
+  label: string,
+) {
   if (!url) return;
-  const storagePath = getStoragePathFromDownloadUrl(url);
+  const storagePath = getStoragePathFromDownloadUrl(url, allowedFolder);
   if (!storagePath) return;
 
   try {
     await getAdminStorageBucket().file(storagePath).delete({ ignoreNotFound: true });
   } catch (error) {
-    console.warn("Could not delete old opponent logo", { storagePath, error });
+    console.warn(`Could not delete ${label}`, { storagePath, error });
   }
+}
+
+async function deleteOpponentLogoByUrl(url?: string | null) {
+  await deleteStorageFileByUrl(url, "opponents", "old opponent logo");
+}
+
+async function deleteStaffPhotoByUrl(url?: string | null) {
+  await deleteStorageFileByUrl(url, "staff", "old staff photo");
 }
 
 function redirectWithStaffUploadError(error: unknown): never {
@@ -826,13 +852,20 @@ export async function updateStaffMember(formData: FormData) {
   const s = parsed.data;
   const existingSnap = await getAdminDb().collection("staff").doc(id).get();
   const existingSortOrder = existingSnap.data()?.sortOrder;
+  const existingPhotoUrl = existingSnap.data()?.photoUrl
+    ? String(existingSnap.data()?.photoUrl)
+    : undefined;
   let photoUrl = s.photoUrl;
+  let oldPhotoUrlToDelete: string | undefined;
   if (uploadedPhoto) {
     try {
       photoUrl = await uploadStaffPhoto(uploadedPhoto, s.name);
+      oldPhotoUrlToDelete = existingPhotoUrl;
     } catch (error) {
       redirectWithStaffUploadError(error);
     }
+  } else if (existingPhotoUrl && existingPhotoUrl !== photoUrl) {
+    oldPhotoUrlToDelete = existingPhotoUrl;
   }
 
   await getAdminDb().collection("staff").doc(id).set(
@@ -849,6 +882,7 @@ export async function updateStaffMember(formData: FormData) {
     },
     { merge: true },
   );
+  await deleteStaffPhotoByUrl(oldPhotoUrlToDelete);
 
   revalidatePath("/staff");
   revalidatePath("/admin/staff");
@@ -858,7 +892,10 @@ export async function deleteStaffMember(formData: FormData) {
   await requireAdminSession();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
+  const snap = await getAdminDb().collection("staff").doc(id).get();
+  const photoUrl = snap.data()?.photoUrl ? String(snap.data()?.photoUrl) : undefined;
   await getAdminDb().collection("staff").doc(id).delete();
+  await deleteStaffPhotoByUrl(photoUrl);
   revalidatePath("/staff");
   revalidatePath("/admin/staff");
 }
