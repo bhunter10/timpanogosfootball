@@ -43,6 +43,11 @@ function StaffPortrait({
           priority={priority}
           sizes={sizes}
           className="object-cover"
+          style={{
+            objectPosition: `${member.photoFocusX}% ${member.photoFocusY}%`,
+            transform: `scale(${member.photoZoom})`,
+            transformOrigin: `${member.photoFocusX}% ${member.photoFocusY}%`,
+          }}
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,var(--tf-navy),#101827)] font-display text-3xl font-bold text-white">

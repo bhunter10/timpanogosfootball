@@ -44,6 +44,9 @@ export type StaffMember = {
   role: string;
   bio?: string;
   photoUrl?: string;
+  photoFocusX: number;
+  photoFocusY: number;
+  photoZoom: number;
   email?: string;
   sortOrder: number;
 };
@@ -54,6 +57,9 @@ export type Announcement = {
   body: string;
   label?: string;
   dateISO?: string;
+  dateStartISO?: string;
+  dateEndISO?: string;
+  dateISOs?: string[];
   href?: string;
   linkLabel?: string;
   isPinned: boolean;

@@ -12,6 +12,11 @@ export function StaffCard({ member }: { member: StaffMember }) {
             fill
             sizes="(max-width:768px) 100vw, 33vw"
             className="object-cover"
+            style={{
+              objectPosition: `${member.photoFocusX}% ${member.photoFocusY}%`,
+              transform: `scale(${member.photoZoom})`,
+              transformOrigin: `${member.photoFocusX}% ${member.photoFocusY}%`,
+            }}
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 font-display text-4xl font-bold text-slate-400">

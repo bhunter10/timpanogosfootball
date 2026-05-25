@@ -32,7 +32,23 @@ export default async function AdminAnnouncementsPage() {
         <h2 className="text-sm font-semibold text-white">Current updates</h2>
         <AnnouncementList
           key={announcements
-            .map((announcement) => `${announcement.id}:${announcement.sortOrder}`)
+            .map((announcement) =>
+              [
+                announcement.id,
+                announcement.sortOrder,
+                announcement.title,
+                announcement.body,
+                announcement.label,
+                announcement.dateISO,
+                announcement.dateStartISO,
+                announcement.dateEndISO,
+                announcement.dateISOs?.join(","),
+                announcement.href,
+                announcement.linkLabel,
+                announcement.isPinned,
+                announcement.isPublished,
+              ].join(":"),
+            )
             .join("|")}
           announcements={announcements}
         />

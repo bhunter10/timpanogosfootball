@@ -9,6 +9,9 @@ function docToStaff(id: string, data: DocumentData): StaffMember {
     role: String(data.role ?? ""),
     bio: data.bio ? String(data.bio) : undefined,
     photoUrl: data.photoUrl ? String(data.photoUrl) : undefined,
+    photoFocusX: typeof data.photoFocusX === "number" ? data.photoFocusX : 50,
+    photoFocusY: typeof data.photoFocusY === "number" ? data.photoFocusY : 50,
+    photoZoom: typeof data.photoZoom === "number" ? data.photoZoom : 1,
     email: data.email ? String(data.email) : undefined,
     sortOrder: typeof data.sortOrder === "number" ? data.sortOrder : 0,
   };

@@ -171,6 +171,9 @@ const announcementSchema = z.object({
   body: z.string().min(1),
   label: z.string().optional(),
   dateISO: z.string().optional(),
+  dateStartISO: z.string().optional(),
+  dateEndISO: z.string().optional(),
+  dateISOs: z.array(z.string()).optional(),
   href: z.string().optional(),
   linkLabel: z.string().optional(),
   isPinned: z.boolean(),
@@ -179,11 +182,21 @@ const announcementSchema = z.object({
 });
 
 function parseAnnouncementForm(formData: FormData) {
+  const dateISOs = formData
+    .getAll("dateISOs")
+    .map((date) => String(date).trim())
+    .filter(Boolean);
+  const firstDateISO =
+    dateISOs[0] ?? optStr(formData.get("dateStartISO")) ?? optStr(formData.get("dateISO"));
+
   return announcementSchema.safeParse({
     title: formData.get("title"),
     body: formData.get("body"),
     label: optStr(formData.get("label")),
-    dateISO: optStr(formData.get("dateISO")),
+    dateISO: firstDateISO,
+    dateStartISO: firstDateISO,
+    dateEndISO: undefined,
+    dateISOs,
     href: optStr(formData.get("href")),
     linkLabel: optStr(formData.get("linkLabel")),
     isPinned: formData.get("isPinned") === "on",
@@ -212,6 +225,9 @@ export async function createAnnouncement(formData: FormData) {
     body: announcement.body,
     label: announcement.label || null,
     dateISO: announcement.dateISO || null,
+    dateStartISO: announcement.dateStartISO || null,
+    dateEndISO: null,
+    dateISOs: announcement.dateISOs ?? [],
     href: announcement.href || null,
     linkLabel: announcement.linkLabel || null,
     isPinned: announcement.isPinned,
@@ -240,6 +256,9 @@ export async function updateAnnouncement(formData: FormData) {
       body: announcement.body,
       label: announcement.label || null,
       dateISO: announcement.dateISO || null,
+      dateStartISO: announcement.dateStartISO || null,
+      dateEndISO: null,
+      dateISOs: announcement.dateISOs ?? [],
       href: announcement.href || null,
       linkLabel: announcement.linkLabel || null,
       isPinned: announcement.isPinned,
@@ -343,6 +362,9 @@ const staffSchema = z.object({
   role: z.string().min(1),
   bio: z.string().optional(),
   photoUrl: z.string().optional(),
+  photoFocusX: z.coerce.number().min(0).max(100).optional(),
+  photoFocusY: z.coerce.number().min(0).max(100).optional(),
+  photoZoom: z.coerce.number().min(1).max(1.8).optional(),
   email: z.string().optional(),
   sortOrder: z.coerce.number().int().optional(),
 });
@@ -731,6 +753,9 @@ export async function createStaffMember(formData: FormData) {
     role: formData.get("role"),
     bio: formData.get("bio") || undefined,
     photoUrl: formData.get("photoUrl") || undefined,
+    photoFocusX: formData.get("photoFocusX") || undefined,
+    photoFocusY: formData.get("photoFocusY") || undefined,
+    photoZoom: formData.get("photoZoom") || undefined,
     email: formData.get("email") || undefined,
     sortOrder: formData.get("sortOrder") || undefined,
   });
@@ -765,6 +790,9 @@ export async function createStaffMember(formData: FormData) {
     role: s.role,
     bio: s.bio || null,
     photoUrl: photoUrl || null,
+    photoFocusX: s.photoFocusX ?? 50,
+    photoFocusY: s.photoFocusY ?? 50,
+    photoZoom: s.photoZoom ?? 1,
     email: s.email || null,
     sortOrder,
   });
@@ -784,6 +812,9 @@ export async function updateStaffMember(formData: FormData) {
     role: formData.get("role"),
     bio: formData.get("bio") || undefined,
     photoUrl: formData.get("photoUrl") || undefined,
+    photoFocusX: formData.get("photoFocusX") || undefined,
+    photoFocusY: formData.get("photoFocusY") || undefined,
+    photoZoom: formData.get("photoZoom") || undefined,
     email: formData.get("email") || undefined,
     sortOrder: formData.get("sortOrder") || undefined,
   });
@@ -810,6 +841,9 @@ export async function updateStaffMember(formData: FormData) {
       role: s.role,
       bio: s.bio || null,
       photoUrl: photoUrl || null,
+      photoFocusX: s.photoFocusX ?? 50,
+      photoFocusY: s.photoFocusY ?? 50,
+      photoZoom: s.photoZoom ?? 1,
       email: s.email || null,
       sortOrder: s.sortOrder ?? (typeof existingSortOrder === "number" ? existingSortOrder : 0),
     },

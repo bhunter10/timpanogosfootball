@@ -92,7 +92,22 @@ export default async function AdminStaffPage({ searchParams }: AdminStaffPagePro
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-white">Directory</h2>
         <StaffDirectory
-          key={staff.map((member) => `${member.id}:${member.sortOrder}`).join("|")}
+          key={staff
+            .map((member) =>
+              [
+                member.id,
+                member.sortOrder,
+                member.name,
+                member.role,
+                member.bio,
+                member.photoUrl,
+                member.photoFocusX,
+                member.photoFocusY,
+                member.photoZoom,
+                member.email,
+              ].join(":"),
+            )
+            .join("|")}
           staff={staff}
         />
       </section>

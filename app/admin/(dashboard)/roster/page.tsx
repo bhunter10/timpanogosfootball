@@ -43,7 +43,29 @@ export default async function AdminRosterPage({ searchParams }: AdminRosterPageP
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-white">Players</h2>
         <RosterDirectory
-          key={players.map((player) => `${player.id}:${player.sortOrder}`).join("|")}
+          key={players
+            .map((player) =>
+              [
+                player.id,
+                player.sortOrder,
+                player.name,
+                player.jerseyNumber,
+                player.classYear,
+                player.positions.join("/"),
+                player.height,
+                player.weight,
+                player.photoUrl,
+                player.hudlUrl,
+                player.xUrl,
+                player.instagramUrl,
+                player.email,
+                player.status,
+                player.honors?.join("/"),
+                player.stats?.join("/"),
+                player.isProspect,
+              ].join(":"),
+            )
+            .join("|")}
           players={players}
         />
       </section>

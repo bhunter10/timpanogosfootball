@@ -30,6 +30,7 @@ function reorderItems(items: Prospect[], activeId: string, overId: string): Pros
 
 export function RosterDirectory({ players }: RosterDirectoryProps) {
   const [items, setItems] = useState(players);
+  const [openItemIds, setOpenItemIds] = useState<Set<string>>(new Set());
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dropTargetId, setDropTargetId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -42,13 +43,29 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
 
   function handleDrop(event: DragEvent<HTMLLIElement>, overId: string) {
     event.preventDefault();
-    if (!draggedId) return;
+    if (!draggedId || openItemIds.has(overId)) return;
 
     const nextItems = reorderItems(items, draggedId, overId);
     setItems(nextItems);
     setDraggedId(null);
     setDropTargetId(null);
     persistOrder(nextItems);
+  }
+
+  function handleDetailsToggle(id: string, isOpen: boolean) {
+    setOpenItemIds((current) => {
+      const next = new Set(current);
+      if (isOpen) {
+        next.add(id);
+      } else {
+        next.delete(id);
+      }
+      return next;
+    });
+
+    if (isOpen) {
+      setDropTargetId((current) => (current === id ? null : current));
+    }
   }
 
   if (items.length === 0) {
@@ -62,53 +79,68 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
         {isPending ? <p className="shrink-0 text-[var(--tf-neon)]">Saving order...</p> : null}
       </div>
       <ul className="mt-4 space-y-3">
-        {items.map((player) => (
-          <li
-            key={player.id}
-            draggable
-            aria-label={`Drag ${player.name} to reorder`}
-            onDragStart={(event) => {
-              event.dataTransfer.effectAllowed = "move";
-              event.dataTransfer.setData("text/plain", player.id);
-              setDraggedId(player.id);
-            }}
-            onDragEnd={() => {
-              setDraggedId(null);
-              setDropTargetId(null);
-            }}
-            onDragEnter={(event) => {
-              event.preventDefault();
-              if (draggedId && draggedId !== player.id) {
-                setDropTargetId(player.id);
-              }
-            }}
-            onDragOver={(event) => {
-              event.preventDefault();
-              if (draggedId && draggedId !== player.id) {
-                setDropTargetId(player.id);
-              }
-            }}
-            onDrop={(event) => handleDrop(event, player.id)}
-            className={`relative cursor-grab rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-100 transition active:cursor-grabbing ${
-              draggedId === player.id ? "border-[var(--tf-neon)]/70 opacity-60" : "border-white/10"
-            }`}
-          >
-            {dropTargetId === player.id ? (
-              <span
-                aria-hidden="true"
-                className="absolute -top-2 left-4 right-4 h-1 rounded-full bg-[var(--tf-neon)] shadow-[0_0_14px_rgba(57,255,20,0.7)]"
-              />
-            ) : null}
-            <div className="flex items-start gap-2">
-              <span
-                aria-hidden="true"
-                className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-400 transition hover:text-[var(--tf-neon)]"
-              >
-                <span className="h-0.5 w-4 rounded-full bg-current" />
-                <span className="h-0.5 w-4 rounded-full bg-current" />
-                <span className="h-0.5 w-4 rounded-full bg-current" />
-              </span>
-              <details className="min-w-0 flex-1">
+        {items.map((player) => {
+          const isOpen = openItemIds.has(player.id);
+
+          return (
+            <li
+              key={player.id}
+              draggable={!isOpen}
+              aria-label={isOpen ? undefined : `Drag ${player.name} to reorder`}
+              onDragStart={(event) => {
+                if (isOpen) {
+                  event.preventDefault();
+                  return;
+                }
+
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData("text/plain", player.id);
+                setDraggedId(player.id);
+              }}
+              onDragEnd={() => {
+                setDraggedId(null);
+                setDropTargetId(null);
+              }}
+              onDragEnter={(event) => {
+                event.preventDefault();
+                if (draggedId && draggedId !== player.id && !isOpen) {
+                  setDropTargetId(player.id);
+                }
+              }}
+              onDragOver={(event) => {
+                event.preventDefault();
+                if (draggedId && draggedId !== player.id && !isOpen) {
+                  setDropTargetId(player.id);
+                }
+              }}
+              onDrop={(event) => handleDrop(event, player.id)}
+              className={`relative rounded-xl border bg-zinc-900/40 p-4 text-sm text-zinc-100 transition ${
+                isOpen ? "cursor-default" : "cursor-grab active:cursor-grabbing"
+              } ${
+                draggedId === player.id
+                  ? "border-[var(--tf-neon)]/70 opacity-60"
+                  : "border-white/10"
+              }`}
+            >
+              {dropTargetId === player.id ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-2 left-4 right-4 h-1 rounded-full bg-[var(--tf-neon)] shadow-[0_0_14px_rgba(57,255,20,0.7)]"
+                />
+              ) : null}
+              <div className="flex items-start gap-2">
+                <span
+                  aria-hidden="true"
+                  className="mt-1 flex h-9 w-7 shrink-0 flex-col items-center justify-center gap-1 px-1 text-zinc-400 transition hover:text-[var(--tf-neon)]"
+                >
+                  <span className="h-0.5 w-4 rounded-full bg-current" />
+                  <span className="h-0.5 w-4 rounded-full bg-current" />
+                  <span className="h-0.5 w-4 rounded-full bg-current" />
+                </span>
+                <details
+                  className="min-w-0 flex-1"
+                  onToggle={(event) => handleDetailsToggle(player.id, event.currentTarget.open)}
+                >
                 <summary className="grid cursor-pointer list-none grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
                   <span className="min-w-0">
                     <span className="block truncate font-medium text-white">
@@ -136,19 +168,20 @@ export function RosterDirectory({ players }: RosterDirectoryProps) {
                     </button>
                   </div>
                 </form>
-              </details>
-              <form action={deleteRosterPlayer} className="shrink-0">
-                <input type="hidden" name="id" value={player.id} />
-                <button
-                  type="submit"
-                  className="rounded-full border border-red-500/40 px-4 py-1.5 text-xs font-semibold text-red-200 hover:bg-red-950/40"
-                >
-                  Delete
-                </button>
-              </form>
-            </div>
-          </li>
-        ))}
+                </details>
+                <form action={deleteRosterPlayer} className="shrink-0">
+                  <input type="hidden" name="id" value={player.id} />
+                  <button
+                    type="submit"
+                    className="rounded-full border border-red-500/40 px-4 py-1.5 text-xs font-semibold text-red-200 hover:bg-red-950/40"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </>
   );

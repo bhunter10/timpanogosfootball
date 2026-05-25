@@ -37,6 +37,15 @@ function formatAnnouncementDate(dateISO?: string) {
   }).format(date);
 }
 
+function formatAnnouncementDates(dateISOs?: string[], fallbackISO?: string) {
+  const dates = (dateISOs?.length ? dateISOs : fallbackISO ? [fallbackISO] : [])
+    .map(formatAnnouncementDate)
+    .filter((date): date is string => Boolean(date));
+
+  if (dates.length <= 2) return dates.join(" & ") || undefined;
+  return `${dates.slice(0, -1).join(", ")} & ${dates[dates.length - 1]}`;
+}
+
 function isInternalHref(href: string) {
   return href.startsWith("/");
 }
@@ -306,7 +315,10 @@ export default async function Home() {
         {announcements.length > 0 ? (
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
             {announcements.map((announcement) => {
-              const date = formatAnnouncementDate(announcement.dateISO);
+              const date = formatAnnouncementDates(
+                announcement.dateISOs,
+                announcement.dateStartISO ?? announcement.dateISO,
+              );
               const meta = [announcement.label, date].filter(Boolean).join(" / ");
               const href = announcement.href;
               const linkLabel = announcement.linkLabel || "Read More";
@@ -366,8 +378,8 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-14 md:px-6 lg:pb-20">
-        <div>
-          <div className="border-b border-white/15 pb-5">
+        <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/20">
+          <div className="border-b border-white/15 px-4 py-5 md:px-6">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.28em] text-[var(--tf-neon)]">
                 Season
@@ -378,14 +390,14 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="mt-5 grid gap-3 md:mt-0 md:block md:divide-y md:divide-white/10">
+          <div className="grid gap-3 p-4 md:p-6">
             {(upcomingGames.length ? upcomingGames : [nextGame]).map((game) => {
               const date = formatScheduleGameDate(game.dateISO);
               const mapHref = getMapHref(game.address);
               return (
                 <div
                   key={game.id}
-                  className="grid max-w-full grid-cols-[44px_minmax(0,1fr)] gap-x-3 gap-y-2 overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] px-3 py-4 md:grid-cols-[80px_1fr_auto] md:items-center md:gap-4 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-5"
+                  className="grid max-w-full grid-cols-[44px_minmax(0,1fr)] gap-x-3 gap-y-2 overflow-hidden rounded-lg border border-white/10 bg-white/[0.04] px-3 py-4 md:grid-cols-[80px_1fr_auto] md:items-center md:gap-4 md:px-5 md:py-5"
                 >
                   <div className="grid w-11 shrink-0 gap-0.5 rounded-md border border-white/10 bg-[var(--tf-navy)] px-1 py-2 text-center md:block md:w-14 md:px-1.5 md:py-2">
                     <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--tf-neon)]">
@@ -450,7 +462,7 @@ export default async function Home() {
               );
             })}
           </div>
-          <div className="border-t border-white/10 pt-5">
+          <div className="border-t border-white/10 px-4 py-5 md:px-6">
             <Link
               href="/schedule"
               className="text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
