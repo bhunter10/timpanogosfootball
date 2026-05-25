@@ -1,3 +1,5 @@
+const productionSiteOrigin = "https://timpanogosfootball.com";
+
 function normalizeOrigin(value?: string) {
   if (!value) return undefined;
   const trimmed = value.trim().replace(/\/+$/, "");
@@ -11,7 +13,7 @@ export function getPublicSiteOrigin() {
     normalizeOrigin(process.env.SITE_URL) ??
     normalizeOrigin(process.env.VERCEL_PROJECT_PRODUCTION_URL) ??
     normalizeOrigin(process.env.VERCEL_URL) ??
-    "http://localhost:3000"
+    productionSiteOrigin
   );
 }
 
