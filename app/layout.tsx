@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono, Oswald } from "next/font/google";
 import { SiteChrome } from "@/components/site-chrome";
 import { getSiteUrl, siteDescription, siteImage, siteName } from "@/lib/seo";
@@ -66,6 +67,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-[var(--tf-black)] font-sans text-white">
         <SiteChrome>{children}</SiteChrome>
+        <Analytics />
       </body>
     </html>
   );

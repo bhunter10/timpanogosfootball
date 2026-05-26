@@ -61,10 +61,6 @@ export default function TeamCalendarPage() {
                 Timpanogos Football
               </h2>
             </div>
-            <p className="max-w-sm text-sm leading-6 text-zinc-300 sm:text-right">
-              Embedded agenda view for quick scanning. Use the buttons above for Google
-              Calendar controls.
-            </p>
           </div>
           <div className="bg-white">
             <iframe
