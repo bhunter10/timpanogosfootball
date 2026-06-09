@@ -151,7 +151,7 @@ export default async function Home() {
                 href={TICKETS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-sm border border-white/30 bg-black/25 px-6 py-3 text-sm font-black uppercase tracking-wide text-white backdrop-blur transition hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
+                className="inline-flex items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] backdrop-blur transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
               >
                 Game Tickets
               </a>
@@ -257,14 +257,14 @@ export default async function Home() {
                     href={nextGameAction.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center rounded-sm bg-[var(--tf-neon)] px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110 sm:w-auto"
+                    className="inline-flex w-full items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] sm:w-auto"
                   >
                     {nextGameAction.label}
                   </a>
                 ) : (
                   <Link
                     href={nextGameAction.href}
-                    className="inline-flex w-full items-center justify-center rounded-sm bg-[var(--tf-neon)] px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110 sm:w-auto"
+                    className="inline-flex w-full items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] sm:w-auto"
                   >
                     {nextGameAction.label}
                   </Link>
