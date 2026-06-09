@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MobileNav } from "@/components/mobile-nav";
+import { DONATE_URL } from "@/lib/site-links";
 
 type NavItem = {
   href: string;
@@ -23,6 +24,7 @@ const nav: readonly NavItem[] = [
   },
   { href: "/prospects", label: "Prospects" },
   { href: "/shop", label: "Shop" },
+  { href: DONATE_URL, label: "Donate", external: true },
 ];
 
 export function SiteHeader() {

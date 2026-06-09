@@ -6,7 +6,7 @@ import { getScheduleGames } from "@/lib/data/schedule";
 import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { createPageMetadata, getSiteUrl, JsonLd } from "@/lib/seo";
-import { TICKETS_URL } from "@/lib/site-links";
+import { DONATE_URL, TICKETS_URL } from "@/lib/site-links";
 
 const heroImage = "/images/timpanogos-football-hero-option1.webp";
 
@@ -81,6 +81,7 @@ export default async function Home() {
 
   const quickLinks: readonly QuickLink[] = [
     { title: "Tickets", href: TICKETS_URL, external: true },
+    { title: "Donate", href: DONATE_URL, external: true },
     { title: "Schedule", href: "/schedule" },
     { title: "Roster", href: "/roster" },
     { title: "Staff", href: "/staff" },
@@ -153,6 +154,14 @@ export default async function Home() {
                 className="inline-flex items-center justify-center rounded-sm border border-white/30 bg-black/25 px-6 py-3 text-sm font-black uppercase tracking-wide text-white backdrop-blur transition hover:border-[var(--tf-neon)] hover:text-[var(--tf-neon)]"
               >
                 Game Tickets
+              </a>
+              <a
+                href={DONATE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] backdrop-blur transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
+              >
+                Donate
               </a>
             </div>
           </div>
@@ -267,7 +276,7 @@ export default async function Home() {
       </section>
 
       <section className="border-y border-white/10 bg-[var(--tf-navy)]">
-        <div className="mx-auto grid max-w-7xl gap-px bg-white/10 md:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-px bg-white/10 md:grid-cols-5">
           {quickLinks.map((link) =>
             link.external ? (
               <a
