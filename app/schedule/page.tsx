@@ -7,6 +7,8 @@ import { getHeadersOrigin } from "@/lib/site-url";
 import { getScheduleGames } from "@/lib/data/schedule";
 import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { createPageMetadata, getSiteUrl, JsonLd } from "@/lib/seo";
+import { getNextGameByKickoff } from "@/lib/schedule-next-game";
+import { getScheduleResultClassName } from "@/lib/schedule-result-style";
 import {
   scheduleTeamLevels,
   type ScheduleGame,
@@ -202,6 +204,18 @@ function GameTile({ game }: { game: ScheduleGame }) {
             </p>
           )}
         </div>
+        {game.result ? (
+          <div className="sm:col-span-2">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-400">
+              Result
+            </p>
+            <span
+              className={`mt-1 inline-flex w-fit rounded-sm border px-3 py-2 text-xs font-black uppercase tracking-wide ${getScheduleResultClassName(game.result)}`}
+            >
+              {game.result}
+            </span>
+          </div>
+        ) : null}
       </div>
     </article>
   );
@@ -220,7 +234,7 @@ export default async function SchedulePage({ searchParams }: SchedulePageProps) 
   const selectedTeamLevel = getSelectedTeamLevel(team);
   const selectedTeamLabel = getTeamLevelLabel(selectedTeamLevel);
   const games = allGames.filter((game) => game.teamLevel === selectedTeamLevel);
-  const nextGame = games.find((game) => !game.result) ?? games[0];
+  const nextGame = getNextGameByKickoff(games);
   const nextGameDate = nextGame
     ? formatScheduleGameDate(nextGame.dateISO, "--")
     : null;

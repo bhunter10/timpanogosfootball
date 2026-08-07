@@ -6,6 +6,8 @@ import { getScheduleGames } from "@/lib/data/schedule";
 import { formatScheduleGameDate } from "@/lib/date/schedule-time";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { createPageMetadata, getSiteUrl, JsonLd } from "@/lib/seo";
+import { getNextGameByKickoff } from "@/lib/schedule-next-game";
+import { getScheduleResultClassName } from "@/lib/schedule-result-style";
 import { DONATE_URL, TICKETS_URL } from "@/lib/site-links";
 
 const heroImage = "/images/timpanogos-football-hero-l2q-0157.webp";
@@ -98,7 +100,7 @@ export default async function Home() {
   const games = allGames.filter((game) => game.teamLevel === "varsity");
   const hasSchedule = games.length > 0;
   const nextGame =
-    games.find((game) => !game.result) ?? games[0] ?? {
+    getNextGameByKickoff(games) ?? {
       id: "placeholder",
       opponent: "Schedule Coming Soon",
       dateISO: "",
@@ -505,7 +507,9 @@ export default async function Home() {
                     </p>
                   </div>
                   {game.result ? (
-                    <span className="col-start-2 w-fit rounded-sm border border-white/15 px-3 py-2 text-xs font-black uppercase tracking-wide text-zinc-200 md:col-start-auto">
+                    <span
+                      className={`col-start-2 w-fit rounded-sm border px-3 py-2 text-xs font-black uppercase tracking-wide md:col-start-auto ${getScheduleResultClassName(game.result)}`}
+                    >
                       {game.result}
                     </span>
                   ) : null}

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ShopProductGrid } from "@/components/shop-product-grid";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { getPrintifyCatalog } from "@/lib/printify/catalog";
 import { createPageMetadata } from "@/lib/seo";
+
+const shopHeroImage = "/images/shop-hero-l2q-0168-v4.webp";
 
 export const metadata: Metadata = {
   ...createPageMetadata({
@@ -10,6 +13,7 @@ export const metadata: Metadata = {
     description:
       "Shop Timpanogos Football apparel, fan gear, and Timberwolves team merchandise.",
     path: "/shop",
+    image: shopHeroImage,
   }),
 };
 
@@ -21,9 +25,17 @@ export default async function ShopPage() {
 
   return (
     <main className="bg-[var(--tf-black)] text-white">
-      <section className="relative isolate h-[325px] overflow-hidden border-b border-white/10 bg-[var(--tf-navy)]">
+      <section className="relative isolate h-[325px] overflow-hidden border-b border-white/10 bg-black">
+        <Image
+          src={shopHeroImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:84px_84px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(57,255,20,0.16),transparent_30%),linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.88)_48%,rgba(2,9,23,0.68)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,9,23,0.98)_0%,rgba(2,9,23,0.82)_42%,rgba(2,9,23,0.12)_72%,rgba(2,9,23,0)_100%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
           <p className="text-sm font-black uppercase tracking-[0.36em] text-[var(--tf-neon)]">
             Team Gear
@@ -34,7 +46,6 @@ export default async function ShopPage() {
           <p className="mt-5 max-w-xl text-sm leading-6 text-zinc-200 md:text-base">
             {settings.shopMessage}
           </p>
-
         </div>
       </section>
 
