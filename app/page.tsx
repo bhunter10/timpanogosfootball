@@ -8,7 +8,7 @@ import { getSiteSettings } from "@/lib/data/site-settings";
 import { createPageMetadata, getSiteUrl, JsonLd } from "@/lib/seo";
 import { DONATE_URL, TICKETS_URL } from "@/lib/site-links";
 
-const heroImage = "/images/timpanogos-football-hero-option1.webp";
+const heroImage = "/images/timpanogos-football-hero-l2q-0157.webp";
 
 export const metadata: Metadata = {
   ...createPageMetadata({
