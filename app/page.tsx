@@ -22,6 +22,45 @@ export const metadata: Metadata = {
 
 type QuickLink = { title: string; href: string; external?: boolean };
 
+function ArrowIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+    >
+      <path
+        d="M5 12h13"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+      <path
+        d="m13 6 6 6-6 6"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
+function ButtonArrow({
+  variant = "outline",
+}: {
+  variant?: "solid" | "outline";
+}) {
+  const colorClass = variant === "solid" ? "text-[var(--tf-navy)]" : "";
+
+  return (
+    <ArrowIcon
+      className={`ml-3 size-5 shrink-0 transition duration-200 group-hover:translate-x-1 ${colorClass}`}
+    />
+  );
+}
+
 function getMapHref(address?: string) {
   if (!address) return undefined;
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
@@ -143,25 +182,28 @@ export default async function Home() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/schedule"
-                className="inline-flex items-center justify-center rounded-sm bg-[var(--tf-neon)] px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110"
+                className="group inline-flex items-center justify-center rounded-sm bg-[var(--tf-neon)] px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-navy)] transition hover:brightness-110"
               >
-                View Schedule
+                <span>View Schedule</span>
+                <ButtonArrow variant="solid" />
               </Link>
               <a
                 href={TICKETS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] backdrop-blur transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
+                className="group inline-flex items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] backdrop-blur transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
               >
-                Game Tickets
+                <span>Game Tickets</span>
+                <ButtonArrow />
               </a>
               <a
                 href={DONATE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] backdrop-blur transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
+                className="group inline-flex items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-6 py-3 text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] backdrop-blur transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)]"
               >
-                Donate
+                <span>Donate</span>
+                <ButtonArrow />
               </a>
             </div>
           </div>
@@ -257,16 +299,18 @@ export default async function Home() {
                     href={nextGameAction.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] sm:w-auto"
+                    className="group inline-flex w-full items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] sm:w-auto"
                   >
-                    {nextGameAction.label}
+                    <span>{nextGameAction.label}</span>
+                    <ButtonArrow />
                   </a>
                 ) : (
                   <Link
                     href={nextGameAction.href}
-                    className="inline-flex w-full items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] sm:w-auto"
+                    className="group inline-flex w-full items-center justify-center rounded-sm border border-[var(--tf-neon)] bg-[var(--tf-neon)]/10 px-4 py-2.5 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] transition hover:bg-[var(--tf-neon)] hover:text-[var(--tf-navy)] sm:w-auto"
                   >
-                    {nextGameAction.label}
+                    <span>{nextGameAction.label}</span>
+                    <ButtonArrow />
                   </Link>
                 )}
               </div>
@@ -289,9 +333,7 @@ export default async function Home() {
                 <span className="font-display text-2xl font-bold uppercase text-white">
                   {link.title}
                 </span>
-                <span className="font-mono text-sm text-[var(--tf-neon)] transition group-hover:translate-x-1">
-                  -&gt;
-                </span>
+                <ArrowIcon className="size-6 shrink-0 text-[var(--tf-neon)] transition duration-200 group-hover:translate-x-1 group-hover:text-white" />
               </a>
             ) : (
               <Link
@@ -302,9 +344,7 @@ export default async function Home() {
                 <span className="font-display text-2xl font-bold uppercase text-white">
                   {link.title}
                 </span>
-                <span className="font-mono text-sm text-[var(--tf-neon)] transition group-hover:translate-x-1">
-                  -&gt;
-                </span>
+                <ArrowIcon className="size-6 shrink-0 text-[var(--tf-neon)] transition duration-200 group-hover:translate-x-1 group-hover:text-white" />
               </Link>
             ),
           )}
@@ -357,18 +397,20 @@ export default async function Home() {
                     isInternalHref(href) ? (
                       <Link
                         href={href}
-                        className="mt-6 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
+                        className="group mt-6 inline-flex items-center text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
                       >
-                        {linkLabel}
+                        <span>{linkLabel}</span>
+                        <ArrowIcon className="ml-2 size-4 transition duration-200 group-hover:translate-x-1" />
                       </Link>
                     ) : (
                       <a
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-6 text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
+                        className="group mt-6 inline-flex items-center text-xs font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
                       >
-                        {linkLabel}
+                        <span>{linkLabel}</span>
+                        <ArrowIcon className="ml-2 size-4 transition duration-200 group-hover:translate-x-1" />
                       </a>
                     )
                   ) : null}
@@ -474,9 +516,10 @@ export default async function Home() {
           <div className="border-t border-white/10 px-4 py-5 md:px-6">
             <Link
               href="/schedule"
-              className="text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
+              className="group inline-flex items-center text-sm font-black uppercase tracking-wide text-[var(--tf-neon)] hover:text-white"
             >
-              View full schedule
+              <span>View full schedule</span>
+              <ArrowIcon className="ml-2 size-4 transition duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
